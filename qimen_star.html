@@ -294,8 +294,10 @@ function JiQi(year) {
     dytm+= ((ss < 10) ? "0" : "") + ss+"秒";
     return dytm.trim();
   };
+  /**
+   * 四柱計算, 子初換日
+   */
   this.GetGZ = function(y,m,d,h,i,s) {
-    console.log("this.getgz",y,m,d,h,i,s);
     var jtoday = date_to_julian_day2(y,m,d) + 
       date_to_julian_time(h,i,s);
     var jqTime=new Array;
@@ -317,29 +319,31 @@ function JiQi(year) {
     rtn_gz.push(di[ygz % 12]);
     // 計月柱
     var dgz = -1;
-    for(var i = 24; i > 0; i--) {
-      console.log(i,jtoday," ", jqTime[i-1]);
-      if(jtoday > jqTime[i-1]) {
-        dgz = i;
+    for(var ii = 24; ii > 0; ii--) {
+      if(jtoday > jqTime[ii-1]) {
+        dgz = ii;
         break;
       }
     }
     if(dgz < 0) dgz = 1;if(dgz%2 == 0) dgz--;
     dgz = Math.floor(dgz / 2);if(dgz == 12) dgz = 11;
-    console.log('asdfa',tin.substr(Math.floor((ygz%10)%5*2+2),12)[dgz]);
     rtn_gz.push(tin.substr(Math.floor((ygz%10)%5*2+2),12)[dgz]);  // 月干
     rtn_gz.push("寅卯辰巳午未申酉戌亥子丑".charAt(dgz));            // 月支
-    console.log(rtn_gz);
     // 計日柱
     var jda = jtoday + 0.5;
     var thes = ((jda - Math.floor(jda)) * 86400) + 3600;
     var dayjd = Math.floor(jda) + thes / 86400;
     dgz = (Math.floor(dayjd + 49) % 60 + 60) % 60;
+    // if(h >= 23) dgz--; // 子正換日處理, 測試用
     rtn_gz.push(tin[dgz % 10]); // 日干
     rtn_gz.push(di[dgz % 12]);  // 日支
     // 計時柱
     var dh = dayjd * 12;
+    //var hgz = (Math.floor(dh + 48) % 60 + 60) % 60;console.log('hgz',(Math.floor(dh + 48) % 60));
     var hgz = (Math.floor(dh + 48) % 60 + 60) % 60;
+    //console.log(h,Math.ceil(h/2)%12,di[(h/2)%12],di[hgz % 12]);
+    //if((h%2) == 1 && i == 0) hgz += 1;
+    if((Math.ceil(h/2)%12) != (hgz%12)) hgz++;
     rtn_gz.push(tin[hgz % 10]); // 日干
     rtn_gz.push(di[hgz % 12]);  // 日支
     return rtn_gz.join("");
@@ -349,7 +353,6 @@ function JiQi(year) {
  * test program
  */
 function BaZi(y,m,d,h,i,s,gender) {
-  console.log("Bazi:",y,m,d,h,i,s,gender);
   // 輸入資料
   //var gender = 1; // 性別: 男1 女0
   //var d = new Date(1983,9-1,9,0,10,0); // 人手輸入
@@ -382,7 +385,6 @@ function BaZi(y,m,d,h,i,s,gender) {
   // 起四柱
   //var fcol = jiqi.GetGZ(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(), d.getMinutes(), d.getSeconds()); // 排四柱
   var fcol = jiqi.GetGZ(y,m,d,h,i,s); // 排四柱
-  console.log(fcol);
   var tcol0 = new Array;
   var dcol0 = new Array;
   for(var i = 6; i > -1 ; i -= 2) tcol0.push(fcol[i]);
@@ -395,7 +397,6 @@ function BaZi(y,m,d,h,i,s,gender) {
   document.write("※※※※","\r\n");
   // 起地支藏干
   var dei_hidden = new Array("9  ","597","024","1  ","419","246","35 ","513","648","7  ","473","80 ");
-  console.log(dcol0);
   for(var i = 0; i < 3; i++) {
     var _t_d_h = new Array;   // 印地支藏干用, 無運算之用
     for(var j = 0; j < 4; j++) {
@@ -534,13 +535,13 @@ function QiMen(y,m,d,h,i,s) {
   }
   document.write("<pre>");
   var jqpos = 0;  // 計算當前節氣
-  for(var i = 1; i < 25; i++) {
-    if(jtoday < jqTime[i]) {
+  for(var ii = 1; ii < 25; ii++) {
+    if(jtoday < jqTime[ii]) {
       //document.write(d, "\t",jiqi.Jtime(false,jtoday),"\r\n");
       document.write(jiqi.Jtime(false,jtoday),"\r\n");
-      document.write("當前節氣: ","\r\n",jiqi.jq0[i-1],",", jiqi.Jtime(false,jqTime[i-1]),"\r\n");
+      document.write("當前節氣: ",jiqi.jq0[ii-1],",", jiqi.Jtime(false,jqTime[ii-1]),"\r\n");
       document.write("\r\n");
-      jqpos = i - 1;
+      jqpos = ii - 1;
       break;
     }
   }
@@ -588,12 +589,28 @@ function QiMen(y,m,d,h,i,s) {
   //console.log("using_kook",using_kook);
   document.write("陰陽".charAt(dun_type),"遁"," 一二三四五六七八九".charAt(using_kook),"局","\r\n");
   // 計旬首
-  var chun_sau = "子丑寅卯辰巳午未申酉戌亥".indexOf(dcol0[1]) - "甲乙丙丁戊己庚辛壬癸".indexOf(tcol0[1]);
-  if(chun_sau < 0) chun_sau += 12;
-  document.write("日旬首：甲","子寅辰午申戌".charAt(parseInt(chun_sau/2)),"\r\n");
+  document.write("旬首(時日月年)：","\r\n");
+  //　時旬首
   var chun_sau = "子丑寅卯辰巳午未申酉戌亥".indexOf(dcol0[0]) - "甲乙丙丁戊己庚辛壬癸".indexOf(tcol0[0]);
   if(chun_sau < 0) chun_sau += 12;
-  document.write("時旬首：甲","子寅辰午申戌".charAt(parseInt(chun_sau/2)),"\r\n");
+  document.write("甲","子寅辰午申戌".charAt(parseInt(chun_sau/2)),"　");
+  // 日旬首
+  var chun_sau = "子丑寅卯辰巳午未申酉戌亥".indexOf(dcol0[1]) - "甲乙丙丁戊己庚辛壬癸".indexOf(tcol0[1]);
+  if(chun_sau < 0) chun_sau += 12;
+  document.write("甲","子寅辰午申戌".charAt(parseInt(chun_sau/2)),"　");
+  // 月旬首
+  var chun_sau = "子丑寅卯辰巳午未申酉戌亥".indexOf(dcol0[2]) - "甲乙丙丁戊己庚辛壬癸".indexOf(tcol0[2]);
+  if(chun_sau < 0) chun_sau += 12;
+  document.write("甲","子寅辰午申戌".charAt(parseInt(chun_sau/2)),"　");
+  // 年旬首
+  var chun_sau = "子丑寅卯辰巳午未申酉戌亥".indexOf(dcol0[3]) - "甲乙丙丁戊己庚辛壬癸".indexOf(tcol0[3]);
+  if(chun_sau < 0) chun_sau += 12;
+  document.write("甲","子寅辰午申戌".charAt(parseInt(chun_sau/2)),"\r\n");
+  
+  /** 重計時旬首 **/
+  //　時旬首
+  var chun_sau = "子丑寅卯辰巳午未申酉戌亥".indexOf(dcol0[0]) - "甲乙丙丁戊己庚辛壬癸".indexOf(tcol0[0]);
+  if(chun_sau < 0) chun_sau += 12;
   // 建地盤
   var dei_pan = ""; // 建地盤
   if(dun_type == 1) { // 陽遁
@@ -627,7 +644,7 @@ function QiMen(y,m,d,h,i,s) {
     while(jik_fu_star < 1) jik_fu_star += 9;
   }
   //if(jik_fu_star == 5) jik_fu_star = 2; // 禽星寄二宮  
-  document.write("值符天","，蓬芮衝輔禽心柱任英".charAt(jik_fu_idx),"落",jik_fu_star,"宮","\r\n");
+  document.write("值符天","，蓬芮衝輔禽心柱任英".charAt(jik_fu_idx),"落",jik_fu_star,"宮","　");
   if(jik_fu_star == 5) jik_fu_star = 2; // 禽星寄二宮
   // 計值使, 不分陰陽遁
   var jik_fu_mun = 0;
@@ -743,6 +760,10 @@ function QiMen(y,m,d,h,i,s) {
   document.write(dcol0.join(""),"\r\n");
   // 輸出四課三傳
   document.write("四課:","\r\n");
+  for(var i = 0; i < 4; i++) {
+    document.write(luiyin.helpMan.charAt("子丑寅卯辰巳午未辛酉戌亥".indexOf(luiyin.four[0][i])));
+  }
+  document.write("\r\n");
   document.write(luiyin.four[0],"\r\n");
   document.write(luiyin.four[1],"\r\n");
   document.write("三傳:", luiyin.three,"\r\n");
@@ -759,9 +780,9 @@ function QiMen(y,m,d,h,i,s) {
   for(var i = 0; i < 3; i+=1) {
     for(var j =0; j < 3; j+=1) {
       if(_sqbx[i][j] == 5) {
-        var _i = _start_at.y + 0 * 5;
+        var _i = _start_at.y;
         var _j = _start_at.x + 2 * 5;
-        _p[_i+3][_j+0] = dei_pan[_sqbx[i][j]-1];
+        _p[_i+3][_j] = dei_pan[5-1];
         continue;
       }
       //var _i = _start_at.x + i * 4 + 1;
@@ -782,6 +803,11 @@ function QiMen(y,m,d,h,i,s) {
     }
   }
   // astro, 參星
+  for(var i in astro.zodiac) {
+    for(var j in astro.zodiac[i]) {
+      astro.zodiac[i][j] = '<font color="#00FF00">'+astro.zodiac[i][j]+'</font>';
+    }
+  }
   var _g = luiyin.genOnTime;
   var _got = astro.zodiac[_g[11]];if(_got.length) {
     for(var i = 0; i < 4; i++) if(typeof _got[i] != 'undefined') _p[18][13+i] = _got[i];
@@ -833,32 +859,32 @@ function QiMen(y,m,d,h,i,s) {
   }
   // luiyin.genOnTime
   var _got = luiyin.genOnTime;
-  _p[17][14] = _got[11]; // 亥
-  _p[17][9]  = _got[0];  // 子
-  _p[17][4]  = _got[1];  // 丑
-  _p[14][2]  = _got[2];  // 寅
-  _p[9][2]  = _got[3];   // 卯
-  _p[4][2]  = _got[4];   // 寅
-  _p[2][4] = _got[5];    // 巳
-  _p[2][9]  = _got[6];   // 午
-  _p[2][14]  = _got[7];  // 未
-  _p[4][17]  = _got[8];   // 申
-  _p[9][17]  = _got[9];   // 酉
-  _p[14][17]  = _got[10]; // 戌
+  _p[17][14] = '<font color="red">'+ _got[11] + "</font>"; // 亥
+  _p[17][9]  = '<font color="red">'+ _got[0]  + "</font>"; // 子
+  _p[17][4]  = '<font color="red">'+ _got[1]  + "</font>"; // 丑
+  _p[14][2]  = '<font color="red">'+ _got[2]  + "</font>"; // 寅
+  _p[9][2]   = '<font color="red">'+ _got[3]  + "</font>"; // 卯
+  _p[4][2]   = '<font color="red">'+ _got[4]  + "</font>"; // 寅
+  _p[2][4]   = '<font color="red">'+ _got[5]  + "</font>"; // 巳
+  _p[2][9]   = '<font color="red">'+ _got[6]  + "</font>"; // 午
+  _p[2][14]  = '<font color="red">'+ _got[7]  + "</font>"; // 未
+  _p[4][17]  = '<font color="red">'+ _got[8]  + "</font>"; // 申
+  _p[9][17]  = '<font color="red">'+ _got[9]  + "</font>"; // 酉
+  _p[14][17] = '<font color="red">'+ _got[10] + "</font>"; // 戌
   // LuiYin.helpMan
   var _got = luiyin.helpMan
-  _p[17][15] = _got[11]; // 亥
-  _p[17][10]  = _got[0];  // 子
-  _p[17][5]  = _got[1];  // 丑
-  _p[15][2]  = _got[2];  // 寅
-  _p[10][2]  = _got[3];   // 卯
-  _p[5][2]  = _got[4];   // 寅
-  _p[2][5] = _got[5];    // 巳
-  _p[2][10]  = _got[6];   // 午
-  _p[2][15]  = _got[7];  // 未
-  _p[5][17]  = _got[8];   // 申
-  _p[10][17]  = _got[9];   // 酉
-  _p[15][17]  = _got[10]; // 戌
+  _p[17][15] = '<font color="red">'+ _got[11] + "</font>"; // 亥
+  _p[17][10] = '<font color="red">'+ _got[0]  + "</font>"; // 子
+  _p[17][5]  = '<font color="red">'+ _got[1]  + "</font>"; // 丑
+  _p[15][2]  = '<font color="red">'+ _got[2]  + "</font>"; // 寅
+  _p[10][2]  = '<font color="red">'+ _got[3]  + "</font>"; // 卯
+  _p[5][2]   = '<font color="red">'+ _got[4]  + "</font>"; // 寅
+  _p[2][5]   = '<font color="red">'+ _got[5]  + "</font>"; // 巳
+  _p[2][10]  = '<font color="red">'+ _got[6]  + "</font>"; // 午
+  _p[2][15]  = '<font color="red">'+ _got[7]  + "</font>"; // 未
+  _p[5][17]  = '<font color="red">'+ _got[8]  + "</font>"; // 申
+  _p[10][17] = '<font color="red">'+ _got[9]  + "</font>"; // 酉
+  _p[15][17] = '<font color="red">'+ _got[10] + "</font>"; // 戌
   
   ////console.log("LuiYin.helpMan:",luiyin.helpMan);
   ////console.log("LuiYin.genOnTime:",luiyin.genOnTime);
@@ -895,14 +921,14 @@ function LuiYin(y,m,d,h,i,s) {
   }
   document.write("<pre>");
   var jqpos = 0;  // 計算當前節氣
-  for(var i = 1; i < 25; i++) {
-    if(jtoday < jqTime[i]) {
+  for(var ii = 1; ii < 25; ii++) {
+    if(jtoday < jqTime[ii]) {
       //document.write(d, "\t",jiqi.Jtime(false,jtoday),"\r\n");
       document.write(jiqi.Jtime(false,jtoday),"\r\n");
-      document.write("當前節氣: ",jiqi.jq0[i-1],"\r\n");
-      document.write(jiqi.Jtime(false,jqTime[i-1]),"\r\n");
+      document.write("當前節氣: ",jiqi.jq0[ii-1],"\r\n");
+      document.write(jiqi.Jtime(false,jqTime[ii-1]),"\r\n");
       document.write("\r\n");
-      jqpos = i - 1;
+      jqpos = ii - 1;
       break;
     }
   }
@@ -918,10 +944,6 @@ function LuiYin(y,m,d,h,i,s) {
   document.write("　日","\r\n");
   document.write(tcol0.join(""),"\r\n");
   document.write(dcol0.join(""),"\r\n");
-  // 計日旬首
-  var chun_sau = "子丑寅卯辰巳午未申酉戌亥".indexOf(dcol0[1]) - "甲乙丙丁戊己庚辛壬癸".indexOf(tcol0[1]);
-  if(chun_sau < 0) chun_sau += 12;
-  document.write("日旬首：甲","子寅辰午申戌".charAt(parseInt(chun_sau/2)),"\r\n");
   document.write("\r\n");
   // 計當下月將
   var _arrGen = new Array;
@@ -949,13 +971,13 @@ function LuiYin(y,m,d,h,i,s) {
   var _dnt = gnm.indexOf(_gen_text);
   var day_night_tin = "卯辰巳午未申酉戌亥子丑寅";
   var day_night_tin = day_night_tin.indexOf("子丑寅卯辰巳午未申酉戌亥".charAt(_dnt));
-  ////console.log("day_night_tin: ",day_night_tin, ", _dnt: ", _dnt);
+  console.log("day_night_tin: ",day_night_tin, ", _dnt: ", _dnt);
   var tin_idx  = "甲乙丙丁戊己庚辛壬癸".indexOf(tcol0[1]);
   var help_man;
   if(day_night_tin < 6) { // 日貴人
     var help_man = "丑子亥亥丑子丑午巳巳".charAt(tin_idx);
   } else { //夜貴人
-    var help_man = "未申酉西未申未馬卯卯".charAt(tin_idx);
+    var help_man = "未申酉西未申未寅卯卯".charAt(tin_idx);
   }
   var help_man2;
   var _tmp  = gnm.indexOf(help_man); //console.log(gnm.charAt(_tmp));
@@ -1036,7 +1058,6 @@ function LuiYin(y,m,d,h,i,s) {
   _output.four = [_out1.join(""),_out0.join("")];
   document.write("\r\n");
   //發三傳
-  console.log(fcol.substr(4,2),"子丑寅卯辰巳午未申酉戌亥".indexOf(_out1[3]));
   var _three = luiyin_720(fcol.substr(4,2),"子丑寅卯辰巳午未申酉戌亥".indexOf(_out1[3]));
   _output.three = _three;
   document.write('　',"發三傳",_three.substr(3),"\r\n");
@@ -1982,7 +2003,7 @@ function _gui_cal() {
   //console.log("bazi-call:",d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds(),g);
   BaZi(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds(),g);
   
-  //LuiYin(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
+  LuiYin(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
   QiMen(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
   $("#display").html("");
   $("#display").html(_buffer);
@@ -2030,7 +2051,7 @@ function _gui_cal2() {
   //console.log("bazi-call:",d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds(),g);
   BaZi(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds(),g);
   
-  //LuiYin(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
+  LuiYin(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
   QiMen(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
   $("#display").html("");
   $("#display").html(_buffer);
@@ -2047,14 +2068,21 @@ function _gui_cal2() {
 $(document).ready(_gui_cal);
 </script>
 <style type="text/css">
-body { margin-top: 1cm;}
+body { margin-top: 1.2cm;}
 input { border: 2pt solid #CCC; margin: 5pt; padding: 5pt }
+#nav {
+  position:fixed; height: 1cm; right: 0; left: 0; top: 0;background-color: #FCC;
+}
+.nav2 {
+  -webkit-writing-mode:vertical-rl; writing-mode: tb-rl;
+}
 </style>
 </head>
-<body>
-  <div id="display" style="font-size:0.4cm"></div>
-  <div id="nav" style="position:fixed; height: 1cm; left: 0; right: 0; top: 0;background-color: #FCC">
-    <p onclick="_gui_cal2()" style="font-size: 0.4cm; margin: 0px;">奇門穿壬參星　by summer@hkgolden</p>
+<body style="background-color:#000000">
+  <div id="display" style="font-size:0.4cm;color:#FFFFFF;background-color:#000000"></div>
+  <div id="nav">
+    <p onclick="_gui_cal2()" style="font-size: 0.7cm; margin: 0px;">
+    奇門穿壬參星 by summer@hkgolden</p>
   </div>
 </body>
 </html>
