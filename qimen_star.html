@@ -3,11 +3,11 @@
 <meta charset="utf-8"/>
 <meta
      name="viewport"
-     content="width=100%; 
-             initial-scale=1;
-             maximum-scale=1;
-             minimum-scale=1; 
-             user-scalable=no;"
+     content="width=100%,
+             initial-scale=1,
+             maximum-scale=1,
+             minimum-scale=1,
+             user-scalable=no"
     />
 <script language="JavaScript">
 /*! jQuery v2.0.3 | (c) 2005, 2013 jQuery Foundation, Inc. | jquery.org/license
@@ -488,7 +488,9 @@ function BaZi(y,m,d,h,i,s,gender) {
   document.write(dcol.join(""),"\r\n");
   */
   for(var i = 0; i < 12; i++) {
-    document.write(tcol[i],dcol[i],":",jiqi.Jtime(false,start_time + 3652.5 * i), "\r\n");
+    //document.write(tcol[i],dcol[i],":",jiqi.Jtime(false,start_time + 3652.5 * i), "\r\n");
+    document.write(tcol[i],dcol[i],'　');
+    if((i+1)%4 == 0) document.write("\r\n");
   }
   document.write("\r\n");
   /**
@@ -540,7 +542,6 @@ function QiMen(y,m,d,h,i,s) {
       //document.write(d, "\t",jiqi.Jtime(false,jtoday),"\r\n");
       document.write(jiqi.Jtime(false,jtoday),"\r\n");
       document.write("當前節氣: ",jiqi.jq0[ii-1],",", jiqi.Jtime(false,jqTime[ii-1]),"\r\n");
-      document.write("\r\n");
       jqpos = ii - 1;
       break;
     }
@@ -563,7 +564,7 @@ function QiMen(y,m,d,h,i,s) {
   if(idx2 > 0) {
     idx2 = (idx2 == 1)? 2 : 1;
   }
-  document.write(jiqi.jq0[jqpos],"上中下".charAt(idx2),"元","\r\n");
+  document.write(jiqi.jq0[jqpos],"上中下".charAt(idx2),"元","　");
   //
   // 計算當前局數
   // 計陰陽遁
@@ -588,25 +589,6 @@ function QiMen(y,m,d,h,i,s) {
   }
   //console.log("using_kook",using_kook);
   document.write("陰陽".charAt(dun_type),"遁"," 一二三四五六七八九".charAt(using_kook),"局","\r\n");
-  // 計旬首
-  document.write("旬首(時日月年)：","\r\n");
-  //　時旬首
-  var chun_sau = "子丑寅卯辰巳午未申酉戌亥".indexOf(dcol0[0]) - "甲乙丙丁戊己庚辛壬癸".indexOf(tcol0[0]);
-  if(chun_sau < 0) chun_sau += 12;
-  document.write("甲","子寅辰午申戌".charAt(parseInt(chun_sau/2)),"　");
-  // 日旬首
-  var chun_sau = "子丑寅卯辰巳午未申酉戌亥".indexOf(dcol0[1]) - "甲乙丙丁戊己庚辛壬癸".indexOf(tcol0[1]);
-  if(chun_sau < 0) chun_sau += 12;
-  document.write("甲","子寅辰午申戌".charAt(parseInt(chun_sau/2)),"　");
-  // 月旬首
-  var chun_sau = "子丑寅卯辰巳午未申酉戌亥".indexOf(dcol0[2]) - "甲乙丙丁戊己庚辛壬癸".indexOf(tcol0[2]);
-  if(chun_sau < 0) chun_sau += 12;
-  document.write("甲","子寅辰午申戌".charAt(parseInt(chun_sau/2)),"　");
-  // 年旬首
-  var chun_sau = "子丑寅卯辰巳午未申酉戌亥".indexOf(dcol0[3]) - "甲乙丙丁戊己庚辛壬癸".indexOf(tcol0[3]);
-  if(chun_sau < 0) chun_sau += 12;
-  document.write("甲","子寅辰午申戌".charAt(parseInt(chun_sau/2)),"\r\n");
-  
   /** 重計時旬首 **/
   //　時旬首
   var chun_sau = "子丑寅卯辰巳午未申酉戌亥".indexOf(dcol0[0]) - "甲乙丙丁戊己庚辛壬癸".indexOf(tcol0[0]);
@@ -755,18 +737,40 @@ function QiMen(y,m,d,h,i,s) {
   // 完結
   **/
   // 輸出八字
-  document.write("八字:","\r\n");
-  document.write(tcol0.join(""),"\r\n");
-  document.write(dcol0.join(""),"\r\n");
+  document.write("八字:");
+  for(var i = 0; i < 8; i += 2) document.write("　",fcol.substr(i, 2));
+  document.write("\r\n");
+  // 計空亡
+  document.write("空亡:");
+  for(var i = 0; i < 4; i++) {
+    var chun_sau = "子丑寅卯辰巳午未申酉戌亥".indexOf(dcol0[3-i]) - "甲乙丙丁戊己庚辛壬癸".indexOf(tcol0[3-i]);
+    if(chun_sau < 0) chun_sau += 12;
+    var hung_mon = chun_sau - 2;
+    if(hung_mon < 0) hung_mon += 12;
+    document.write("　","子丑寅卯辰巳午未申酉戌亥".substr(hung_mon, 2));
+  }
+  document.write("\r\n");
+  //document.write(tcol0.join(""),"\r\n");
+  //document.write(dcol0.join(""),"\r\n");
   // 輸出四課三傳
   document.write("四課:","\r\n");
   for(var i = 0; i < 4; i++) {
-    document.write(luiyin.helpMan.charAt("子丑寅卯辰巳午未辛酉戌亥".indexOf(luiyin.four[0][i])));
+    document.write(luiyin.helpMan.charAt(luiyin.genOnTime.indexOf(luiyin.four[0][i])));
   }
   document.write("\r\n");
   document.write(luiyin.four[0],"\r\n");
   document.write(luiyin.four[1],"\r\n");
-  document.write("三傳:", luiyin.three,"\r\n");
+  document.write("三傳:\r\n");
+  document.write(luiyin.three_relation.join(""),"\r\n");
+  document.write(luiyin.three_gan.join(""),"\r\n");
+  document.write(luiyin.three,"\r\n");
+  document.write(luiyin.three_helper.join(""),"\r\n");
+  /**
+   _output.three = _three;
+  _output.three_gan = new Array;
+  _output.three_relation = new Array;
+  _output.three_helper = new Array;
+  **/
   // 
   var _size = 20;
   var _p = new Array(_size);
@@ -872,7 +876,7 @@ function QiMen(y,m,d,h,i,s) {
   _p[9][17]  = '<font color="red">'+ _got[9]  + "</font>"; // 酉
   _p[14][17] = '<font color="red">'+ _got[10] + "</font>"; // 戌
   // LuiYin.helpMan
-  var _got = luiyin.helpMan
+  var _got = luiyin.helpMan;
   _p[17][15] = '<font color="red">'+ _got[11] + "</font>"; // 亥
   _p[17][10] = '<font color="red">'+ _got[0]  + "</font>"; // 子
   _p[17][5]  = '<font color="red">'+ _got[1]  + "</font>"; // 丑
@@ -885,6 +889,46 @@ function QiMen(y,m,d,h,i,s) {
   _p[5][17]  = '<font color="red">'+ _got[8]  + "</font>"; // 申
   _p[10][17] = '<font color="red">'+ _got[9]  + "</font>"; // 酉
   _p[15][17] = '<font color="red">'+ _got[10] + "</font>"; // 戌
+  //　輸出時日天干用以穿壬
+    //日旬干
+    var chun_sau = "子丑寅卯辰巳午未申酉戌亥".indexOf(dcol0[1]) - "甲乙丙丁戊己庚辛壬癸".indexOf(tcol0[1]);
+    if(chun_sau < 0) chun_sau += 12;
+    var chun_gan = "甲乙丙丁戊己庚辛壬癸　　甲乙丙丁戊己庚辛壬癸　　".substr(12-chun_sau,12);
+    console.log("日旬干：",chun_gan);
+    chun_gan = chun_gan.substr("子丑寅卯辰巳午未申酉戌亥".indexOf(luiyin.genOnTime[0])) +
+      chun_gan.substr(0,"子丑寅卯辰巳午未申酉戌亥".indexOf(luiyin.genOnTime[0]));
+    var _got = chun_gan;
+    _p[17][13] = '<font color="yellow">'+ _got[11] + "</font>"; // 亥
+    _p[17][8]  = '<font color="yellow">'+ _got[0]  + "</font>"; // 子
+    _p[17][3]  = '<font color="yellow">'+ _got[1]  + "</font>"; // 丑
+    _p[13][2]  = '<font color="yellow">'+ _got[2]  + "</font>"; // 寅
+    _p[8][2]   = '<font color="yellow">'+ _got[3]  + "</font>"; // 卯
+    _p[3][2]   = '<font color="yellow">'+ _got[4]  + "</font>"; // 寅
+    _p[2][3]   = '<font color="yellow">'+ _got[5]  + "</font>"; // 巳
+    _p[2][8]   = '<font color="yellow">'+ _got[6]  + "</font>"; // 午
+    _p[2][13]  = '<font color="yellow">'+ _got[7]  + "</font>"; // 未
+    _p[3][17]  = '<font color="yellow">'+ _got[8]  + "</font>"; // 申
+    _p[8][17]  = '<font color="yellow">'+ _got[9]  + "</font>"; // 酉
+    _p[13][17] = '<font color="yellow">'+ _got[10] + "</font>"; // 戌
+    //時旬干
+    var chun_sau = "子丑寅卯辰巳午未申酉戌亥".indexOf(dcol0[0]) - "甲乙丙丁戊己庚辛壬癸".indexOf(tcol0[0]);
+    if(chun_sau < 0) chun_sau += 12;
+    var chun_gan = "甲乙丙丁戊己庚辛壬癸　　甲乙丙丁戊己庚辛壬癸　　".substr(12-chun_sau,12);
+    console.log("時旬干：",chun_gan);
+    var _got = chun_gan;
+    _p[17][16] = '<font color="blue">'+ _got[11] + "</font>"; // 亥
+    _p[17][11] = '<font color="blue">'+ _got[0]  + "</font>"; // 子
+    _p[17][6]  = '<font color="blue">'+ _got[1]  + "</font>"; // 丑
+    _p[16][2]  = '<font color="blue">'+ _got[2]  + "</font>"; // 寅
+    _p[11][2]  = '<font color="blue">'+ _got[3]  + "</font>"; // 卯
+    _p[6][2]   = '<font color="blue">'+ _got[4]  + "</font>"; // 寅
+    _p[2][6]   = '<font color="blue">'+ _got[5]  + "</font>"; // 巳
+    _p[2][11]  = '<font color="blue">'+ _got[6]  + "</font>"; // 午
+    _p[2][16]  = '<font color="blue">'+ _got[7]  + "</font>"; // 未
+    _p[6][17]  = '<font color="blue">'+ _got[8]  + "</font>"; // 申
+    _p[11][17] = '<font color="blue">'+ _got[9]  + "</font>"; // 酉
+    _p[16][17] = '<font color="blue">'+ _got[10] + "</font>"; // 戌
+  document.write("\r\n");
   
   ////console.log("LuiYin.helpMan:",luiyin.helpMan);
   ////console.log("LuiYin.genOnTime:",luiyin.genOnTime);
@@ -971,7 +1015,6 @@ function LuiYin(y,m,d,h,i,s) {
   var _dnt = gnm.indexOf(_gen_text);
   var day_night_tin = "卯辰巳午未申酉戌亥子丑寅";
   var day_night_tin = day_night_tin.indexOf("子丑寅卯辰巳午未申酉戌亥".charAt(_dnt));
-  console.log("day_night_tin: ",day_night_tin, ", _dnt: ", _dnt);
   var tin_idx  = "甲乙丙丁戊己庚辛壬癸".indexOf(tcol0[1]);
   var help_man;
   if(day_night_tin < 6) { // 日貴人
@@ -1060,13 +1103,28 @@ function LuiYin(y,m,d,h,i,s) {
   //發三傳
   var _three = luiyin_720(fcol.substr(4,2),"子丑寅卯辰巳午未申酉戌亥".indexOf(_out1[3]));
   _output.three = _three;
+  _output.three_gan = new Array;
+  _output.three_relation = new Array;
+  _output.three_helper = new Array;
   document.write('　',"發三傳",_three.substr(3),"\r\n");
-  document.write('　',
-    _5elem_relation.charAt(_5elem.indexOf(_dei_zhi_5elem.charAt("子丑寅卯辰巳午未申酉戌亥".indexOf(_three[0])))),
-    _tin_gan.charAt(gnm.indexOf(_three[0])),
-    _three[0],
-    help_man2.charAt(gnm.indexOf(_three[0])),
-    "\r\n");
+  for(var i = 0; i < 3; i++) {
+    document.write('　',
+      _5elem_relation.charAt(_5elem.indexOf(_dei_zhi_5elem.charAt("子丑寅卯辰巳午未申酉戌亥".indexOf(_three[i])))),
+      _tin_gan.charAt(gnm.indexOf(_three[i])),
+      _three[i],
+      help_man2.charAt(gnm.indexOf(_three[i])),
+      "\r\n");
+    _output.three_gan.push(
+      _tin_gan.charAt(gnm.indexOf(_three[i]))
+      );
+    _output.three_relation.push(
+      _5elem_relation.charAt(_5elem.indexOf(_dei_zhi_5elem.charAt("子丑寅卯辰巳午未申酉戌亥".indexOf(_three[i]))))
+      );
+    _output.three_helper.push(
+      help_man2.charAt(gnm.indexOf(_three[i]))
+      );
+  }
+  /*****
   document.write('　',
     _5elem_relation.charAt(_5elem.indexOf(_dei_zhi_5elem.charAt("子丑寅卯辰巳午未申酉戌亥".indexOf(_three[1])))),
     _tin_gan.charAt(gnm.indexOf(_three[1])),
@@ -1079,6 +1137,7 @@ function LuiYin(y,m,d,h,i,s) {
     _three[2],
     help_man2.charAt(gnm.indexOf(_three[2])),
     "\r\n");
+  *****/
   // 完結
   document.write("</pre>","\r\n");
   return _output;
@@ -1962,6 +2021,314 @@ function genResult(y,m,d,h,i,s) {
 //document.write('<pre>參星',"\r\n");
 //document.write(genResult(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds()))
 //document.write('</pre>',"\r\n");
+/** 神煞計算 **/
+function _god_effect(fcol) {
+  var dei_zhi = "子丑寅卯辰巳午未申酉戌亥";   // 歲支
+  var yuet_kin = "寅卯辰巳午未申酉戌亥子丑";  // 月建
+  var yat_gon = "甲乙丙丁戊己庚辛壬癸";   // 日干
+  var yat_ji  = "子丑寅卯辰巳午未申酉戌亥";   // 日支
+  var out = new Array;
+  //歲支
+  out['太歲']   = "子丑寅卯辰巳午未申酉戌亥".charAt(dei_zhi.indexOf(fcol[1]));
+  out['大將軍'] = "酉酉子子子卯卯卯午午午酉".charAt(dei_zhi.indexOf(fcol[1]));
+  out['歲破']   = "午未申酉戌亥子丑寅卯辰巳".charAt(dei_zhi.indexOf(fcol[1]));
+ // out['大耗']   = "午未申酉戌亥子丑寅卯辰巳".charAt(dei_zhi.indexOf(fcol[1]));
+  out['小耗']   = "巳午未申酉戌亥子丑寅卯辰".charAt(dei_zhi.indexOf(fcol[1]));
+  //out['死符']   = "巳午未申酉戌亥子丑寅卯辰".charAt(dei_zhi.indexOf(fcol[1]));
+  out['喪門']   = "寅卯辰巳午未申酉戌亥子丑".charAt(dei_zhi.indexOf(fcol[1]));
+  out['弔客']   = "戌亥子丑寅卯辰巳午未申酉".charAt(dei_zhi.indexOf(fcol[1]));
+  //out['太陰']   = "戌亥子丑寅卯辰巳午未申酉".charAt(dei_zhi.indexOf(fcol[1]));
+  out['病符']   = "亥子丑寅卯辰巳午未申酉戌".charAt(dei_zhi.indexOf(fcol[1]));
+  out['官符']   = "辰巳午未申酉戌亥子丑寅卯".charAt(dei_zhi.indexOf(fcol[1]));
+  //out['畜官']   = "辰巳午未申酉戌亥子丑寅卯".charAt(dei_zhi.indexOf(fcol[1]));
+  out['白虎']   = "申酉戌亥子丑寅卯辰巳午未".charAt(dei_zhi.indexOf(fcol[1]));
+  out['歲刑']   = "卯戌巳子辰申午丑寅酉未亥".charAt(dei_zhi.indexOf(fcol[1]));
+  out['黃旛']   = "辰丑戌未辰丑戌未辰丑戌未".charAt(dei_zhi.indexOf(fcol[1]));
+  //out['華蓋']   = "辰丑戌未辰丑戌未辰丑戌未".charAt(dei_zhi.indexOf(fcol[1]));
+  out['豹尾']   = "戌未辰丑戌未辰丑戌未辰丑".charAt(dei_zhi.indexOf(fcol[1]));
+  out['歲墓']   = "未申酉戌亥子丑寅卯辰巳午".charAt(dei_zhi.indexOf(fcol[1]));
+  out['大禍']   = "卯戌巳子未寅酉辰亥午丑申".charAt(dei_zhi.indexOf(fcol[1]));
+  out['六害']   = "卯子酉午卯子酉午卯子酉午".charAt(dei_zhi.indexOf(fcol[1]));
+  out['歲馬']   = "寅亥申巳寅亥申巳寅亥申巳".charAt(dei_zhi.indexOf(fcol[1]));
+  out['劫煞']   = "巳寅亥申巳寅亥申巳寅亥申".charAt(dei_zhi.indexOf(fcol[1]));
+  out['災煞']   = "午卯子酉午卯子酉午卯子酉".charAt(dei_zhi.indexOf(fcol[1]));
+  out['歲煞']   = "未辰丑戌未辰丑戌未辰丑戌".charAt(dei_zhi.indexOf(fcol[1]));
+  //out['天煞']   = "未辰丑戌未辰丑戌未辰丑戌".charAt(dei_zhi.indexOf(fcol[1]));
+  out['地煞']   = "申巳寅亥申巳寅亥申巳寅亥".charAt(dei_zhi.indexOf(fcol[1]));
+  out['咸池']   = "酉午卯子酉午卯子酉午卯子".charAt(dei_zhi.indexOf(fcol[1]));
+  out['亡神']   = "亥申巳寅亥申巳寅亥申巳寅".charAt(dei_zhi.indexOf(fcol[1]));
+  out['將星']   = "子酉午卯子酉午卯子酉午卯".charAt(dei_zhi.indexOf(fcol[1]));
+  out['攀鞍']   = "丑戌未辰丑戌未辰丑戌未辰".charAt(dei_zhi.indexOf(fcol[1]));
+  out['六合']   = "卯辰巳午未申酉戌亥子丑寅".charAt(dei_zhi.indexOf(fcol[1]));
+  out['龍德']   = "未申酉戌亥子丑寅卯辰巳午".charAt(dei_zhi.indexOf(fcol[1]));
+  out['福德']   = "酉戌亥子丑寅卯辰巳午未申".charAt(dei_zhi.indexOf(fcol[1]));
+  out['太陽']   = "丑寅卯辰巳午未申酉戌亥子".charAt(dei_zhi.indexOf(fcol[1]));
+  //out['青龍']   = "丑寅卯辰巳午未申酉戌亥子".charAt(dei_zhi.indexOf(fcol[1]));
+  // 月建
+  out['天喜']   = "戌戌戌丑丑丑辰辰辰未未未".charAt(yuet_kin.indexOf(fcol[3]));
+  out['三丘']   = "丑丑丑辰辰辰未未未戌戌戌".charAt(yuet_kin.indexOf(fcol[3]));
+  //out['關神']   = "丑丑丑辰辰辰未未未戌戌戌".charAt(yuet_kin.indexOf(fcol[3]));
+  //out['管神']   = "丑丑丑辰辰辰未未未戌戌戌".charAt(yuet_kin.indexOf(fcol[3]));
+  out['皇書']   = "寅寅寅巳巳巳申申申亥亥亥".charAt(yuet_kin.indexOf(fcol[3]));
+  out['賊神']   = "卯卯卯午午午酉酉酉子子子".charAt(yuet_kin.indexOf(fcol[3]));
+  out['奸神']   = "寅寅寅亥亥亥申申申巳巳巳".charAt(yuet_kin.indexOf(fcol[3]));
+  out['遊神']   = "丑丑丑子子子亥亥亥戌戌戌".charAt(yuet_kin.indexOf(fcol[3]));
+  out['戲神']   = "巳巳巳子子子酉酉酉辰辰辰".charAt(yuet_kin.indexOf(fcol[3]));
+  out['憂神']   = "丑丑丑子子子戌戌戌亥亥亥".charAt(yuet_kin.indexOf(fcol[3]));
+  out['孤神']   = "巳巳巳申申申亥亥亥寅寅寅".charAt(yuet_kin.indexOf(fcol[3]));
+  out['寡宿']   = "丑丑丑辰辰辰未未未戌戌戌".charAt(yuet_kin.indexOf(fcol[3]));
+  out['五墓']   = "未未未戌戌戌丑丑丑辰辰辰".charAt(yuet_kin.indexOf(fcol[3]));
+  out['天車']   = "巳巳巳辰辰辰未未未酉酉西".charAt(yuet_kin.indexOf(fcol[3]));
+  out['地獄']   = "未未未戌戌戌辰辰辰丑丑丑".charAt(yuet_kin.indexOf(fcol[3]));
+  out['四廢']   = "酉酉酉子子子卯卯卯午午午".charAt(yuet_kin.indexOf(fcol[3]));
+  out['天耳']   = "戌戌戌丑丑丑辰辰辰未未未".charAt(yuet_kin.indexOf(fcol[3]));
+  out['天目']   = "辰辰辰未未未戌戌戌丑丑丑".charAt(yuet_kin.indexOf(fcol[3]));
+  out['絕氣']   = "申申申亥亥亥寅寅寅巳巳巳".charAt(yuet_kin.indexOf(fcol[3]));
+  out['戰雄']   = "寅寅寅巳巳巳申申申亥亥亥".charAt(yuet_kin.indexOf(fcol[3]));
+  out['戰雌']   = "申申申亥亥亥寅寅寅巳巳巳".charAt(yuet_kin.indexOf(fcol[3]));
+  //out['煞神']   = "申申申亥亥亥寅寅寅巳巳巳".charAt(yuet_kin.indexOf(fcol[3]));
+  out['浴盆']   = "辰辰辰未未未戌戌戌丑丑丑".charAt(yuet_kin.indexOf(fcol[3]));
+  out['火鬼']   = "午午午酉酉酉子子子卯卯卯".charAt(yuet_kin.indexOf(fcol[3]));
+  out['喪車']   = "酉酉酉子子子卯卯卯午午午".charAt(yuet_kin.indexOf(fcol[3]));
+  out['哭神']   = "未未未戌戌戌丑丑丑辰辰辰".charAt(yuet_kin.indexOf(fcol[3]));
+  out['鑰神']   = "巳巳巳申申申亥亥亥寅寅寅".charAt(yuet_kin.indexOf(fcol[3]));
+  //out['喝散']   = "巳巳巳申申申亥亥亥寅寅寅".charAt(yuet_kin.indexOf(fcol[3]));
+  out['吏神']   = "寅寅寅巳巳巳申申申亥亥亥".charAt(yuet_kin.indexOf(fcol[3]));
+  out['轉煞']   = "卯卯卯午午午酉酉酉子子子".charAt(yuet_kin.indexOf(fcol[3]));
+  out['飛禍']   = "申申申寅寅寅巳巳巳亥亥亥".charAt(yuet_kin.indexOf(fcol[3]));
+  out['絲麻']   = "卯卯卯午午午酉酉酉子子子".charAt(yuet_kin.indexOf(fcol[3]));
+  out['死別']   = "戌戌戌未未未辰辰辰丑丑丑".charAt(yuet_kin.indexOf(fcol[3]));
+  out['返魂']   = "亥亥亥寅寅寅申申申巳巳巳".charAt(yuet_kin.indexOf(fcol[3]));
+  out['梁神']   = "巳巳巳申申申亥亥亥寅寅寅".charAt(yuet_kin.indexOf(fcol[3]));
+  out['龍神']   = "辰辰辰未未未戌戌戌丑丑丑弓".charAt(yuet_kin.indexOf(fcol[3]));
+  out['刀砧']   = "子子子卯卯卯午午午酉酉酉".charAt(yuet_kin.indexOf(fcol[3]));
+  out['奸盜']   = "卯卯卯午午午酉酉酉子子子".charAt(yuet_kin.indexOf(fcol[3]));
+  out['天轉(干)']   = "乙乙乙丙丙丙辛辛辛壬壬壬".charAt(yuet_kin.indexOf(fcol[3]));
+  out['天轉(支)']   = "卯卯卯午午午酉酉酉子子子".charAt(yuet_kin.indexOf(fcol[3]));
+  out['地轉(干)']   = "辛辛辛戊戊戊癸癸癸丙丙丙".charAt(yuet_kin.indexOf(fcol[3]));
+  out['地轉(支)']   = "辛辛辛戊戊戊癸癸癸丙丙丙".charAt(yuet_kin.indexOf(fcol[3]));
+  out['天德']   = "未申亥戌亥寅丑寅巳辰巳申".charAt(yuet_kin.indexOf(fcol[3]));
+  out['天德合'] = "亥　未巳　未巳　戌申　辰".charAt(yuet_kin.indexOf(fcol[3]));
+  out['月德']   = "巳寅亥申巳寅亥申巳寅亥申".charAt(yuet_kin.indexOf(fcol[3]));
+  out['月德合'] = "戌未未辰戌未未辰戌未未辰".charAt(yuet_kin.indexOf(fcol[3]));
+  out['天解']   = "申未午巳辰卯寅丑子亥戌酉".charAt(yuet_kin.indexOf(fcol[3]));
+  out['地解']   = "申申酉酉戌戌亥亥午午未未".charAt(yuet_kin.indexOf(fcol[3]));
+  out['解神']   = "申申戌戌子子寅寅辰辰午午".charAt(yuet_kin.indexOf(fcol[3]));
+  out['會神']   = "未戌寅亥酉子丑午巳卯申辰".charAt(yuet_kin.indexOf(fcol[3]));
+  out['信神']   = "申戌寅丑亥辰巳未巳未申戌".charAt(yuet_kin.indexOf(fcol[3]));
+  out['生炁']   = "子丑寅卯辰巳午未申酉戌亥".charAt(yuet_kin.indexOf(fcol[3]));
+  out['死炁']   = "午未申酉戌亥子丑寅卯辰巳".charAt(yuet_kin.indexOf(fcol[3]));
+  out['死神']   = "巳午未申酉戌亥子丑寅卯辰".charAt(yuet_kin.indexOf(fcol[3]));
+  out['成神']   = "巳申亥寅巳申亥寅巳申亥寅".charAt(yuet_kin.indexOf(fcol[3]));
+  out['血支']   = "丑寅卯辰巳午未申酉戌亥子".charAt(yuet_kin.indexOf(fcol[3]));
+  out['血忌']   = "丑未寅申卯酉辰戌巳亥午子".charAt(yuet_kin.indexOf(fcol[3]));
+  out['飛魂']   = "亥子丑寅卯辰巳午未申酉戌".charAt(yuet_kin.indexOf(fcol[3]));
+  out['喪魄']   = "未辰丑戌未辰丑戌未辰丑戌".charAt(yuet_kin.indexOf(fcol[3]));
+  out['月厭']   = "戌酉申未午巳辰卯寅丑子亥".charAt(yuet_kin.indexOf(fcol[3]));
+  out['上喪']   = "辰未戌丑辰未戌丑辰未戌丑".charAt(yuet_kin.indexOf(fcol[3]));
+  out['下喪']   = "未辰丑戌未辰丑戌未辰丑戌".charAt(yuet_kin.indexOf(fcol[3]));
+  out['大時']   = "卯子酉午卯子酉午卯子酉午".charAt(yuet_kin.indexOf(fcol[3]));
+  out['小時']   = "寅卯辰巳午未申酉戌亥子丑".charAt(yuet_kin.indexOf(fcol[3]));
+  out['破碎']   = "酉巳丑酉巳丑酉巳丑酉巳丑".charAt(yuet_kin.indexOf(fcol[3]));
+  out['歸忌']   = "丑寅子丑寅子丑寅子丑寅子".charAt(yuet_kin.indexOf(fcol[3]));
+  out['往亡']   = "寅巳申亥卯午酉子辰未戌丑".charAt(yuet_kin.indexOf(fcol[3]));
+  out['飛廉']   = "戌巳午未寅卯辰亥子丑申酉".charAt(yuet_kin.indexOf(fcol[3]));
+  out['月刑']   = "巳子辰申午丑寅酉未亥卯戌".charAt(yuet_kin.indexOf(fcol[3]));
+  out['天賊']   = "辰酉寅未子巳戌卯申丑午亥".charAt(yuet_kin.indexOf(fcol[3]));
+  out['厭對']   = "辰卯寅丑子亥戌酉申未午巳".charAt(yuet_kin.indexOf(fcol[3]));
+  //out['血光']   = "辰卯寅丑子亥戌酉申未午巳".charAt(yuet_kin.indexOf(fcol[3]));
+  out['月破']   = "申酉戌亥子丑寅卯辰巳午未".charAt(yuet_kin.indexOf(fcol[3]));
+  out['大煞']   = "午卯子酉午卯子酉午卯子酉".charAt(yuet_kin.indexOf(fcol[3]));
+  out['遊禍']   = "巳寅亥申巳寅亥申巳寅亥申".charAt(yuet_kin.indexOf(fcol[3]));
+  out['受死']   = "戌辰亥巳子午丑未寅申卯酉".charAt(yuet_kin.indexOf(fcol[3]));
+  out['月煞']   = "丑戌未辰丑戌未辰丑戌未辰".charAt(yuet_kin.indexOf(fcol[3]));
+  out['天鬼']   = "酉午卯子酉午卯子酉午卯子".charAt(yuet_kin.indexOf(fcol[3]));
+  out['孝服']   = "午未申酉戌亥子丑寅卯辰巳".charAt(yuet_kin.indexOf(fcol[3]));
+  out['孝杖']   = "巳午未申酉戌亥子丑寅卯辰".charAt(yuet_kin.indexOf(fcol[3]));
+  out['天巫']   = "辰巳午未申酉戌亥子丑寅卯".charAt(yuet_kin.indexOf(fcol[3]));
+  out['迷惑']   = "丑戌未辰丑戌未辰丑戌未辰".charAt(yuet_kin.indexOf(fcol[3]));
+  out['相負']   = "亥亥丑丑卯卯巳巳未未酉酉".charAt(yuet_kin.indexOf(fcol[3]));
+  out['枉屈']   = "巳巳未未酉酉亥亥丑丑卯卯".charAt(yuet_kin.indexOf(fcol[3]));
+  out['瓦煞1']   = "巳子丑寅卯辰亥午未申酉戌".charAt(yuet_kin.indexOf(fcol[3]));
+  out['瓦煞2']   = "亥午未申酉戌巳子丑寅卯辰".charAt(yuet_kin.indexOf(fcol[3]));
+  out['門煞']   = "戌酉辰卯戌酉辰卯戌酉辰卯".charAt(yuet_kin.indexOf(fcol[3]));
+  out['夢神']   = "辰戌丑未辰戌丑未辰戌丑未".charAt(yuet_kin.indexOf(fcol[3]));
+  out['五鬼']   = "午辰寅酉卯申丑巳子未亥戌".charAt(yuet_kin.indexOf(fcol[3]));
+  out['月鬼']   = "未辰丑戌未辰丑戌未辰丑戌".charAt(yuet_kin.indexOf(fcol[3]));
+  out['奸門']   = "申亥寅巳申亥寅巳申亥寅巳".charAt(yuet_kin.indexOf(fcol[3]));
+  out['桃花']   = "卯子酉午卯子酉午卯子酉午".charAt(yuet_kin.indexOf(fcol[3]));
+  out['披麻']   = "子酉午卯子酉午卯子酉午卯".charAt(yuet_kin.indexOf(fcol[3]));
+  out['天馬']   = "午申戌子寅辰午申戌子寅辰".charAt(yuet_kin.indexOf(fcol[3]));
+  out['陽煞']   = "亥寅巳申亥寅巳申亥寅巳申".charAt(yuet_kin.indexOf(fcol[3]));
+  out['陰煞']   = "巳辰卯寅丑子亥戌酉申未午".charAt(yuet_kin.indexOf(fcol[3]));
+  out['書信']   = "酉戌亥子丑寅卯辰巳午未申".charAt(yuet_kin.indexOf(fcol[3]));
+  //out['天機']   = "酉戌亥子丑寅卯辰巳午未申".charAt(yuet_kin.indexOf(fcol[3]));
+  out['月害']   = "巳辰卯寅丑子亥戌酉申未午".charAt(yuet_kin.indexOf(fcol[3]));
+  out['滅門']   = "亥午丑申卯戌巳子未寅酉辰".charAt(yuet_kin.indexOf(fcol[3]));
+  out['大禍']   = "巳子未寅酉辰亥午丑申卯戌".charAt(yuet_kin.indexOf(fcol[3]));
+  out['火光']   = "戌酉申未午巳辰卯寅丑子亥".charAt(yuet_kin.indexOf(fcol[3]));
+  out['火燭']   = "巳午未申酉戌亥子丑寅卯辰".charAt(yuet_kin.indexOf(fcol[3]));
+  out['雌虎']   = "辰巳午未申酉戌亥子丑寅卯".charAt(yuet_kin.indexOf(fcol[3]));
+  out['雨師']   = "子卯午酉子卯午酉子卯午酉".charAt(yuet_kin.indexOf(fcol[3]));
+  out['風伯']   = "申未什巳辰卯寅丑子亥戌酉".charAt(yuet_kin.indexOf(fcol[3]));
+  out['月合']   = "亥戌酉申未午巳辰卯寅丑子".charAt(yuet_kin.indexOf(fcol[3]));
+  out['風煞']   = "寅丑子亥戌酉申未午巳辰卯".charAt(yuet_kin.indexOf(fcol[3]));
+  out['雨煞']   = "子丑寅卯辰巳午未申酉戌亥".charAt(yuet_kin.indexOf(fcol[3]));
+  out['天書']   = "戌亥子丑寅卯辰巳午未申酉".charAt(yuet_kin.indexOf(fcol[3]));
+  out['雷煞']   = "亥申巳寅亥申巳寅亥申巳寅".charAt(yuet_kin.indexOf(fcol[3]));
+  //out['女災']   = "亥申巳寅亥申巳寅亥申巳寅".charAt(yuet_kin.indexOf(fcol[3]));
+  out['天火']   = "子卯午酉子卯午酉子卯午酉".charAt(yuet_kin.indexOf(fcol[3]));
+  out['月奸']   = "丑辰未戌丑辰未戌丑辰未戌".charAt(yuet_kin.indexOf(fcol[3]));
+  out['雷公']   = "卯子酉午卯子酉午卯子酉午".charAt(yuet_kin.indexOf(fcol[3]));
+  out['天倉']   = "寅丑子亥戌酉申未午巳辰卯".charAt(yuet_kin.indexOf(fcol[3]));
+  out['天財']   = "辰午申戌子寅辰午申戌子寅".charAt(yuet_kin.indexOf(fcol[3]));
+  out['天詔']   = "亥子丑寅卯辰巳午未申酉戌".charAt(yuet_kin.indexOf(fcol[3]));
+  out['遊煞']   = "卯辰巳午未申酉戌亥子丑寅".charAt(yuet_kin.indexOf(fcol[3]));
+  out['天雞']   = "酉申未午巳辰卯寅丑子亥戌".charAt(yuet_kin.indexOf(fcol[3]));
+  out['謾語']   = "午未申酉戌亥子丑寅卯辰巳".charAt(yuet_kin.indexOf(fcol[3]));
+  out['天坑']   = "丑寅卯辰巳午未申酉戌亥子".charAt(yuet_kin.indexOf(fcol[3]));
+  out['盜神']   = "卯午酉子卯午酉子卯午酉子".charAt(yuet_kin.indexOf(fcol[3]));
+  out['邪神']   = "未午巳辰卯寅丑子亥戌酉申".charAt(yuet_kin.indexOf(fcol[3]));
+  out['天廁']   = "寅巳申亥卯午酉子辰未戌丑".charAt(yuet_kin.indexOf(fcol[3]));
+  out['產煞']   = "寅巳申亥寅巳申亥寅巳申亥".charAt(yuet_kin.indexOf(fcol[3]));
+  out['劫煞']   = "亥申巳寅亥申巳寅亥申巳寅".charAt(yuet_kin.indexOf(fcol[3]));
+  out['大耗']   = "申酉戌亥子丑寅卯辰巳午未".charAt(yuet_kin.indexOf(fcol[3]));
+  out['小耗']   = "未申酉戌亥子丑寅卯辰巳午".charAt(yuet_kin.indexOf(fcol[3]));
+  out['皇恩']   = "未酉亥丑卯巳未酉亥丑卯巳".charAt(yuet_kin.indexOf(fcol[3]));
+  out['天盜']   = "寅亥申巳寅亥申巳寅亥申巳".charAt(yuet_kin.indexOf(fcol[3]));
+  out['亡神']   = "巳寅亥申巳寅亥申巳寅亥申".charAt(yuet_kin.indexOf(fcol[3]));
+  out['火怪']   = "戌未辰丑戌未辰丑戌未辰丑".charAt(yuet_kin.indexOf(fcol[3]));
+  out['天醫']   = "辰巳午未申酉戌亥子丑寅卯".charAt(yuet_kin.indexOf(fcol[3]));
+  out['地醫']   = "戌亥子丑寅卯辰巳午未申酉".charAt(yuet_kin.indexOf(fcol[3]));
+  out['纏繞1']   = "申酉戌亥子丑寅卯辰巳午未".charAt(yuet_kin.indexOf(fcol[3]));
+  out['纏繞2']   = "申未午巳辰卯寅丑子亥戌酉".charAt(yuet_kin.indexOf(fcol[3]));
+  out['天破']   = "午酉子卯午酉子卯午酉子卯".charAt(yuet_kin.indexOf(fcol[3]));
+  out['小煞']   = "丑戌未辰丑戌未辰丑戌未辰".charAt(yuet_kin.indexOf(fcol[3]));
+  out['枯骨']   = "未申酉戌亥子丑寅卯辰巳午".charAt(yuet_kin.indexOf(fcol[3]));
+  out['瘟煞']   = "辰巳午未申酉戌亥子丑寅卯".charAt(yuet_kin.indexOf(fcol[3]));
+  out['兒煞']   = "亥子丑寅卯辰巳午未申酉戌".charAt(yuet_kin.indexOf(fcol[3]));
+  out['刑亡']   = "戌亥子丑申酉辰巳午未寅卯".charAt(yuet_kin.indexOf(fcol[3]));
+  out['道路']   = "申酉戌亥子丑寅卯辰巳午未".charAt(yuet_kin.indexOf(fcol[3]));
+  out['天吏']   = "酉午卯子酉午卯子酉午卯子".charAt(yuet_kin.indexOf(fcol[3]));
+  out['災煞']   = "子酉午卯子酉午卯子酉午卯".charAt(yuet_kin.indexOf(fcol[3]));
+  out['懸索']   = "卯子酉午卯子酉午卯子酉午".charAt(yuet_kin.indexOf(fcol[3]));
+  out['天煞']   = "丑戌未辰丑戌未辰丑戌未辰".charAt(yuet_kin.indexOf(fcol[3]));
+  out['天咒']   = "酉午卯子酉午卯子酉午卯子".charAt(yuet_kin.indexOf(fcol[3]));
+  out['墓門']   = "亥申巳寅亥申巳寅亥申巳寅".charAt(yuet_kin.indexOf(fcol[3]));
+  out['長繩']   = "酉午卯子酉午卯子酉午卯子".charAt(yuet_kin.indexOf(fcol[3]));
+  out['木煞']   = "寅卯辰巳午未申酉戌亥子丑".charAt(yuet_kin.indexOf(fcol[3]));
+  //out['天虎']   = "寅卯辰巳午未申酉戌亥子丑".charAt(yuet_kin.indexOf(fcol[3]));
+  out['天龍']   = "卯辰巳午未申酉戌亥子丑寅".charAt(yuet_kin.indexOf(fcol[3]));
+  out['厄煞']   = "巳午未申酉戌亥子丑寅卯辰".charAt(yuet_kin.indexOf(fcol[3]));
+  //out['電煞']   = "巳午未申酉戌亥子丑寅卯辰".charAt(yuet_kin.indexOf(fcol[3]));
+  out['官符']   = "午未申酉戌亥子丑寅卯辰巳".charAt(yuet_kin.indexOf(fcol[3]));
+  //out['畜官']   = "午未申酉戌亥子丑寅卯辰巳".charAt(yuet_kin.indexOf(fcol[3]));
+  out['井煞']   = "未申酉戌亥子丑寅卯辰巳午".charAt(yuet_kin.indexOf(fcol[3]));
+  out['井煞']   = "未申酉戌亥子丑寅卯辰巳午".charAt(yuet_kin.indexOf(fcol[3]));
+  out['天錢']   = "酉戌亥子丑寅卯辰巳午未申".charAt(yuet_kin.indexOf(fcol[3]));
+  out['天愿']   = "戌亥子丑寅卯辰巳午未申酉".charAt(yuet_kin.indexOf(fcol[3]));
+  out['伏連']   = "亥子丑寅卯辰巳午未申酉戌".charAt(yuet_kin.indexOf(fcol[3]));
+  //out['哭忌']   = "亥子丑寅卯辰巳午未申酉戌".charAt(yuet_kin.indexOf(fcol[3]));
+  //out['病煞']   = "亥子丑寅卯辰巳午未申酉戌".charAt(yuet_kin.indexOf(fcol[3]));
+  out['佛煞']   = "丑寅卯辰巳午未申酉戌亥子".charAt(yuet_kin.indexOf(fcol[3]));
+  //out['天牛']   = "丑寅卯辰巳午未申酉戌亥子".charAt(yuet_kin.indexOf(fcol[3]));
+  out['天羊']   = "未申酉戌亥子丑寅卯辰巳午".charAt(yuet_kin.indexOf(fcol[3]));
+  out['墳墓']   = "丑寅卯辰巳午未申酉戌亥子".charAt(yuet_kin.indexOf(fcol[3]));
+  out['天猪']   = "亥戌酉申未午巳辰卯寅丑子".charAt(yuet_kin.indexOf(fcol[3]));
+  out['天鼠']   = "子亥戌酉申未午巳辰卯寅丑".charAt(yuet_kin.indexOf(fcol[3]));
+  //out['天視']   = "子亥戌酉申未午巳辰卯寅丑".charAt(yuet_kin.indexOf(fcol[3]));
+  out['天怪']   = "丑子亥戌酉申未午巳辰卯寅".charAt(yuet_kin.indexOf(fcol[3]));
+  out['燭命']   = "卯寅丑子亥戌酉申未午巳辰".charAt(yuet_kin.indexOf(fcol[3]));
+  out['地咒']   = "午巳辰卯寅丑子亥戌酉申未".charAt(yuet_kin.indexOf(fcol[3]));
+  //out['破器']   = "午巳辰卯寅丑子亥戌酉申未".charAt(yuet_kin.indexOf(fcol[3]));
+  out['陰奸']   = "未午巳辰卯寅丑子亥戌酉申".charAt(yuet_kin.indexOf(fcol[3]));
+  out['天猴']   = "申未午巳辰卯寅丑子亥戌酉".charAt(yuet_kin.indexOf(fcol[3]));
+  out['軒轅']   = "酉申未午巳辰卯寅丑子亥戌".charAt(yuet_kin.indexOf(fcol[3]));
+  //out['折傷']   = "酉申未午巳辰卯寅丑子亥戌".charAt(yuet_kin.indexOf(fcol[3]));
+  out['天狗']   = "戌酉申未午巳辰卯寅丑子亥".charAt(yuet_kin.indexOf(fcol[3]));
+  //out['四足']   = "戌酉申未午巳辰卯寅丑子亥".charAt(yuet_kin.indexOf(fcol[3]));
+  //out['石煞']   = "戌酉申未午巳辰卯寅丑子亥".charAt(yuet_kin.indexOf(fcol[3]));
+  out['白衣']   = "未辰丑未辰丑未辰丑未辰丑".charAt(yuet_kin.indexOf(fcol[3]));
+  out['華蓋']   = "戌未辰丑戌未辰丑戌未辰丑".charAt(yuet_kin.indexOf(fcol[3]));
+  out['天獄']   = "亥申巳寅亥申巳寅亥申巳寅".charAt(yuet_kin.indexOf(fcol[3]));
+  //out['天網']   = "亥申巳寅亥申巳寅亥申巳寅".charAt(yuet_kin.indexOf(fcol[3]));
+  out['坑坎']   = "子酉午卯子酉午卯子酉午卯".charAt(yuet_kin.indexOf(fcol[3]));
+  //out['山魈']   = "子酉午卯子酉午卯子酉午卯".charAt(yuet_kin.indexOf(fcol[3]));
+  //out['鏡煞']   = "子酉午卯子酉午卯子酉午卯".charAt(yuet_kin.indexOf(fcol[3]));
+  out['五盜']   = "丑戌未辰丑戌未辰丑戌未辰".charAt(yuet_kin.indexOf(fcol[3]));
+  out['邪鬼']   = "辰丑戌未辰丑戌未辰丑戌未".charAt(yuet_kin.indexOf(fcol[3]));
+  out['伏骨']   = "午卯子酉午卯子酉午卯子酉".charAt(yuet_kin.indexOf(fcol[3]));
+  out['穢煞']   = "未辰丑戌未辰丑戌未辰丑戌".charAt(yuet_kin.indexOf(fcol[3]));
+  out['天旺']   = "巳申亥寅巳申亥寅巳申亥寅".charAt(yuet_kin.indexOf(fcol[3]));
+  out['爐煞']   = "未戌丑辰未戌丑辰未戌丑辰".charAt(yuet_kin.indexOf(fcol[3]));
+  //out['獄神']   = "未戌丑辰未戌丑辰未戌丑辰".charAt(yuet_kin.indexOf(fcol[3]));
+  out['天信']   = "酉子卯午酉子卯午酉子卯午".charAt(yuet_kin.indexOf(fcol[3]));
+  out['反激']   = "戌丑辰未戌丑辰未戌丑辰未".charAt(yuet_kin.indexOf(fcol[3]));
+  out['釜神']   = "寅巳申亥寅巳申亥寅巳申亥".charAt(yuet_kin.indexOf(fcol[3]));
+  //out['奸私']   = "寅巳申亥寅巳申亥寅巳申亥".charAt(yuet_kin.indexOf(fcol[3]));
+  out['天械']   = "辰未戌丑辰未戌丑辰未戌丑".charAt(yuet_kin.indexOf(fcol[3]));
+  out['天刑']   = "寅辰午申戌子寅辰午申戌子".charAt(yuet_kin.indexOf(fcol[3]));
+  out['怪煞']   = "卯巳未酉亥丑卯巳未酉亥丑".charAt(yuet_kin.indexOf(fcol[3]));
+  out['獸煞']   = "戌子寅辰午申戌子寅辰午申".charAt(yuet_kin.indexOf(fcol[3]));
+  out['聖心']   = "亥巳子午丑未寅申卯酉辰戌".charAt(yuet_kin.indexOf(fcol[3]));
+  out['玉宇']   = "卯酉辰戌巳亥午子未丑申寅".charAt(yuet_kin.indexOf(fcol[3]));
+  out['金堂']   = "辰戌巳亥午子未丑申寅酉卯".charAt(yuet_kin.indexOf(fcol[3]));
+  out['罪至']   = "午子未丑申寅酉卯戌辰亥巳".charAt(yuet_kin.indexOf(fcol[3]));
+  out['恩赦']   = "戌丑辰未酉卯子午寅巳申亥".charAt(yuet_kin.indexOf(fcol[3]));
+  // 日煞 - 日干
+  out['日德']   = "寅申巳亥巳寅申巳亥巳".charAt(yat_gon.indexOf(fcol[4]));
+  out['日祿']   = "寅卯巳午巳午申酉亥子".charAt(yat_gon.indexOf(fcol[4]));
+  out['日墓']   = "未戌戌丑戌丑丑辰辰未".charAt(yat_gon.indexOf(fcol[4]));
+  out['日解']   = "亥申未丑酉亥申未丑酉".charAt(yat_gon.indexOf(fcol[4]));
+  out['飛符']   = "巳辰卯寅丑午未申酉戌".charAt(yat_gon.indexOf(fcol[4]));
+  out['羊刃']   = "卯辰午未午未酉戌子丑".charAt(yat_gon.indexOf(fcol[4]));
+  out['飛刃']   = "酉戌子丑子丑卯辰午未".charAt(yat_gon.indexOf(fcol[4]));
+  out['日盜']   = "子亥卯申巳子亥卯申巳".charAt(yat_gon.indexOf(fcol[4]));
+  out['日奸']   = "亥酉辰申巳亥酉辰申巳".charAt(yat_gon.indexOf(fcol[4]));
+  out['日淫']   = "午午未未戌戌寅寅巳巳".charAt(yat_gon.indexOf(fcol[4]));
+  out['遊都']   = "丑子寅巳申丑子寅巳申".charAt(yat_gon.indexOf(fcol[4]));
+  out['魯都']   = "未午申亥寅未午申亥寅".charAt(yat_gon.indexOf(fcol[4]));
+  out['日賊']   = "辰午申亥寅辰午申亥寅".charAt(yat_gon.indexOf(fcol[4]));
+  out['日醫']   = "卯亥丑未巳卯亥丑未巳".charAt(yat_gon.indexOf(fcol[4]));
+  out['賢貴']   = "丑申寅寅午丑申寅寅午".charAt(yat_gon.indexOf(fcol[4]));
+  out['文星']   = "亥亥寅寅午午巳巳申申".charAt(yat_gon.indexOf(fcol[4]));
+  out['干奇']   = "午巳辰卯寅丑未申酉戌".charAt(yat_gon.indexOf(fcol[4]));
+  out['大煞']   = "亥亥未未戌戌寅寅巳巳".charAt(yat_gon.indexOf(fcol[4]));
+  out['福星']   = "子丑子子未未丑丑巳巳".charAt(yat_gon.indexOf(fcol[4]));
+  out['進神1']  = "子子子子子卯卯卯卯卯".charAt(yat_gon.indexOf(fcol[4]));
+  out['進神2']  = "午午午午午酉酉酉酉酉".charAt(yat_gon.indexOf(fcol[4]));
+  out['退神1']  = "丑丑丑丑丑辰辰辰辰辰".charAt(yat_gon.indexOf(fcol[4]));
+  out['退神2']  = "未未未未未戌戌戌戌戌".charAt(yat_gon.indexOf(fcol[4]));
+  // 日支神煞表
+  out['支德']  = "巳午未申酉戌亥子丑寅卯辰".charAt(yat_ji.indexOf(fcol[5]));
+  out['支儀']  = "午巳辰卯寅丑未申酉戌亥子".charAt(yat_ji.indexOf(fcol[5]));
+  out['支刑']  = "卯未申子辰寅午戌巳酉丑亥".charAt(yat_ji.indexOf(fcol[5]));
+  out['支沖']  = "午未申酉戌亥子丑寅卯辰巳".charAt(yat_ji.indexOf(fcol[5]));
+  out['支破']  = "酉辰亥午丑申卯戌巳子未寅".charAt(yat_ji.indexOf(fcol[5]));
+  out['支害']  = "未午巳辰卯寅丑子亥戌酉申".charAt(yat_ji.indexOf(fcol[5]));
+  out['支墓']  = "辰辰未未辰戌戌辰丑丑辰辰".charAt(yat_ji.indexOf(fcol[5]));
+  out['支鬼1']  = "辰卯申酉寅亥子卯午巳寅丑".charAt(yat_ji.indexOf(fcol[5]));
+  out['支鬼2']  = "戌卯申酉寅亥子卯午巳寅戌".charAt(yat_ji.indexOf(fcol[5]));
+  out['破碎']  = "巳丑酉巳丑酉巳丑酉巳丑酉".charAt(yat_ji.indexOf(fcol[5]));
+  out['死神']  = "卯辰巳午未申酉戌亥子丑寅".charAt(yat_ji.indexOf(fcol[5]));
+  out['病符']  = "亥子丑寅卯辰巳午未申酉戌".charAt(yat_ji.indexOf(fcol[5]));
+  out['勾神']  = "卯戌巳子未寅酉辰亥午丑申".charAt(yat_ji.indexOf(fcol[5]));
+  out['絞神']  = "酉辰亥午丑申卯戌巳子未寅".charAt(yat_ji.indexOf(fcol[5]));
+  out['驛馬']  = "寅亥申巳寅亥申巳寅亥申巳".charAt(yat_ji.indexOf(fcol[5]));
+  out['華蓋']  = "辰丑戌未辰丑戌未辰丑戌未".charAt(yat_ji.indexOf(fcol[5]));
+  out['劫煞']  = "巳寅亥申巳寅亥申巳寅亥申".charAt(yat_ji.indexOf(fcol[5]));
+  out['災煞']  = "午卯子酉午卯子酉午卯子酉".charAt(yat_ji.indexOf(fcol[5]));
+  out['咸池']  = "酉午卯子酉午卯子酉午卯子".charAt(yat_ji.indexOf(fcol[5]));
+  out['雷電']  = "辰辰未未戌戌丑丑寅寅卯卯".charAt(yat_ji.indexOf(fcol[5]));
+  out['晴朗']  = "午未申酉戌亥子丑寅卯辰巳".charAt(yat_ji.indexOf(fcol[5]));
+  var _out = new Array;
+  for(var i = 0; i < 12; i++) _out[yat_ji[i]] = new Array;
+  for(var o in out) {
+    _out[ out[o]].push(o);
+  }
+  return out;
+}
+
 /**
  *輸出
  */
@@ -2003,7 +2370,7 @@ function _gui_cal() {
   //console.log("bazi-call:",d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds(),g);
   BaZi(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds(),g);
   
-  LuiYin(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
+  //LuiYin(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
   QiMen(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
   $("#display").html("");
   $("#display").html(_buffer);
@@ -2051,7 +2418,7 @@ function _gui_cal2() {
   //console.log("bazi-call:",d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds(),g);
   BaZi(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds(),g);
   
-  LuiYin(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
+  //LuiYin(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
   QiMen(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
   $("#display").html("");
   $("#display").html(_buffer);
@@ -2081,7 +2448,7 @@ input { border: 2pt solid #CCC; margin: 5pt; padding: 5pt }
 <body style="background-color:#000000">
   <div id="display" style="font-size:0.4cm;color:#FFFFFF;background-color:#000000"></div>
   <div id="nav">
-    <p onclick="_gui_cal2()" style="font-size: 0.7cm; margin: 0px;">
+    <p onclick="_gui_cal2()" style="font-size: 0.5cm; margin: 0px;">
     奇門穿壬參星 by summer@hkgolden</p>
   </div>
 </body>
