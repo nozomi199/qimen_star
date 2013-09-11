@@ -418,40 +418,75 @@ function BaZi(y,m,d,h,i,s,gender) {
     document.write("子丑寅卯辰巳午未申酉戌亥".substr(hung_mon, 2),"　　");
   }
   document.write("\r\n");
-  // 起年神煞
-  document.write("※※年神煞※※※※※※※※","\r\n");
-  var _god_e_d = _god_effect_year(fcol);
-  //var _god_e_d = _god_effect(fcol);
-  var i = 0;
-  var _h = _god_e_d[dcol0[0]],
-      _d = _god_e_d[dcol0[1]],
-      _m = _god_e_d[dcol0[2]],
-      _y = _god_e_d[dcol0[3]];
-  var _god_e_d_max = Math.max(_h.length,_d.length,_m.length,_y.length);
-  for(var i = 0; i < _god_e_d_max; i++) {
-    var t0 = _h[i] ? _h[i] : '　　　';
-    var t1 = _d[i] ? _d[i] : '　　　';
-    var t2 = _m[i] ? _m[i] : '　　　';
-    var t3 = _y[i] ? _y[i] : '　　　';
-    document.write(t0,'　',t1,'　',t2,'　',t3,"\r\n");
-  }
-  // 起日神煞
-  document.write("※※日神煞※※※※※※※※","\r\n");
-  var _god_e_d = _god_effect_day(fcol);
-  //var _god_e_d = _god_effect(fcol);
-  var i = 0;
-  var _h = _god_e_d[dcol0[0]],
-      _d = _god_e_d[dcol0[1]],
-      _m = _god_e_d[dcol0[2]],
-      _y = _god_e_d[dcol0[3]];
-  var _god_e_d_max = Math.max(_h.length,_d.length,_m.length,_y.length);
-  for(var i = 0; i < _god_e_d_max; i++) {
-    var t0 = _h[i] ? _h[i] : '　　　';
-    var t1 = _d[i] ? _d[i] : '　　　';
-    var t2 = _m[i] ? _m[i] : '　　　';
-    var t3 = _y[i] ? _y[i] : '　　　';
-    document.write(t0,'　',t1,'　',t2,'　',t3,"\r\n");
-  }
+  var _cb = $.Callbacks();
+  _cb.add(function(value) {
+    "use strict";
+    document.write("※※神煞※※※※※※※※","\r\n");
+    var _hh = new Array,
+        _dd = new Array,
+        _mm = new Array,
+        _yy = new Array;
+    // 起年神煞
+    var _god_e_d = _god_effect_year(fcol);
+    var _h = _god_e_d[dcol0[0]],
+        _d = _god_e_d[dcol0[1]],
+        _m = _god_e_d[dcol0[2]],
+        _y = _god_e_d[dcol0[3]];
+    for(var o in _h) _hh.push(_h[o]);
+    for(var o in _d) _dd.push(_d[o]);
+    for(var o in _m) _mm.push(_m[o]);
+    //for(var o in _y) _yy.push(_y[o]);
+    // 起月神煞-干
+    var _god_e_d = _god_effect_month_gan(fcol);
+    var _h = _god_e_d[tcol0[0]],
+        _d = _god_e_d[tcol0[1]],
+        _m = _god_e_d[tcol0[2]],
+        _y = _god_e_d[tcol0[3]];
+    for(var o in _h) _hh.push(_h[o]);
+    for(var o in _d) _dd.push(_d[o]);
+    //for(var o in _m) _mm.push(_m[o]);
+    for(var o in _y) _yy.push(_y[o]);
+    // 起月神煞-支
+    var _god_e_d = _god_effect_month_ji(fcol);
+    var _h = _god_e_d[dcol0[0]],
+        _d = _god_e_d[dcol0[1]],
+        _m = _god_e_d[dcol0[2]],
+        _y = _god_e_d[dcol0[3]];
+    for(var o in _h) _hh.push(_h[o]);
+    for(var o in _d) _dd.push(_d[o]);
+    //for(var o in _m) _mm.push(_m[o]);
+    for(var o in _y) _yy.push(_y[o]);
+    // 起日神煞-干
+    var _god_e_d = _god_effect_day_gan(fcol);
+    var _h = _god_e_d[tcol0[0]],
+        _d = _god_e_d[tcol0[1]],
+        _m = _god_e_d[tcol0[2]],
+        _y = _god_e_d[tcol0[3]];
+    for(var o in _h) _hh.push(_h[o]);
+    //for(var o in _d) _dd.push(_d[o]);
+    for(var o in _m) _mm.push(_m[o]);
+    for(var o in _y) _yy.push(_y[o]);
+    // 起日神煞-支
+    var _god_e_d = _god_effect_day_ji(fcol);
+    var _h = _god_e_d[dcol0[0]],
+        _d = _god_e_d[dcol0[1]],
+        _m = _god_e_d[dcol0[2]],
+        _y = _god_e_d[dcol0[3]];
+    for(var o in _h) _hh.push(_h[o]);
+    //for(var o in _d) _dd.push(_d[o]);
+    for(var o in _m) _mm.push(_m[o]);
+    for(var o in _y) _yy.push(_y[o]);
+    // 輸出
+    var _god_e_d_max = Math.max(_hh.length,_dd.length,_mm.length,_yy.length);
+    for(var i = 0; i < _god_e_d_max; i++) {
+      var t0 = _hh[i] ? _hh[i] : '　　　';
+      var t1 = _dd[i] ? _dd[i] : '　　　';
+      var t2 = _mm[i] ? _mm[i] : '　　　';
+      var t3 = _yy[i] ? _yy[i] : '　　　';
+      document.write(t0,'　',t1,'　',t2,'　',t3,"\r\n");
+    }
+  });
+  _cb.fire("fire");
   document.write("\r\n");
   // 起大運
   var posneg = ("甲乙丙丁戊己庚辛壬癸".indexOf(fcol[0])+1) % 2; // 陰陽年: 陰年0, 陽年1
@@ -471,16 +506,6 @@ function BaZi(y,m,d,h,i,s,gender) {
     }
     start_time = jtoday - jqTime[jqpos2];
   }
-  //console.log("jtoday:",jtoday);
-  //console.log("jqpos2:",jqpos2,"value:",jqTime[jqpos2]);
-  //console.log("start_time:", start_time);
-  /**
-  document.write("jqpos[0]:", jqTime[0],"\r\n");
-  document.write("jtoday:", jtoday,"\r\n");
-  document.write("jqTime:", jqTime[jqpos],"\r\n");
-  document.write("star_time:", start_time,"\r\n");
-  document.write("jq:",jiqi.jq0[jqpos],"\r\n");
-  */
   // 計小運
   document.write("計小運：","\r\n");
   var start_small = start_time / 3;
@@ -2070,41 +2095,64 @@ function _god_effect_year(fcol) {
   var yat_ji  = "子丑寅卯辰巳午未申酉戌亥";   // 日支
   var out = new Array;
   //歲支
-  out['太歲']   = "子丑寅卯辰巳午未申酉戌亥".charAt(dei_zhi.indexOf(fcol[1]));
-  out['大將軍'] = "酉酉子子子卯卯卯午午午酉".charAt(dei_zhi.indexOf(fcol[1]));
-  out['歲破']   = "午未申酉戌亥子丑寅卯辰巳".charAt(dei_zhi.indexOf(fcol[1]));
- // out['大耗']   = "午未申酉戌亥子丑寅卯辰巳".charAt(dei_zhi.indexOf(fcol[1]));
-  out['小耗']   = "巳午未申酉戌亥子丑寅卯辰".charAt(dei_zhi.indexOf(fcol[1]));
-  //out['死符']   = "巳午未申酉戌亥子丑寅卯辰".charAt(dei_zhi.indexOf(fcol[1]));
-  out['喪門']   = "寅卯辰巳午未申酉戌亥子丑".charAt(dei_zhi.indexOf(fcol[1]));
-  out['弔客']   = "戌亥子丑寅卯辰巳午未申酉".charAt(dei_zhi.indexOf(fcol[1]));
-  //out['太陰']   = "戌亥子丑寅卯辰巳午未申酉".charAt(dei_zhi.indexOf(fcol[1]));
-  out['病符']   = "亥子丑寅卯辰巳午未申酉戌".charAt(dei_zhi.indexOf(fcol[1]));
-  out['官符']   = "辰巳午未申酉戌亥子丑寅卯".charAt(dei_zhi.indexOf(fcol[1]));
-  //out['畜官']   = "辰巳午未申酉戌亥子丑寅卯".charAt(dei_zhi.indexOf(fcol[1]));
-  out['白虎']   = "申酉戌亥子丑寅卯辰巳午未".charAt(dei_zhi.indexOf(fcol[1]));
-  out['歲刑']   = "卯戌巳子辰申午丑寅酉未亥".charAt(dei_zhi.indexOf(fcol[1]));
-  out['黃旛']   = "辰丑戌未辰丑戌未辰丑戌未".charAt(dei_zhi.indexOf(fcol[1]));
-  //out['華蓋']   = "辰丑戌未辰丑戌未辰丑戌未".charAt(dei_zhi.indexOf(fcol[1]));
-  out['豹尾']   = "戌未辰丑戌未辰丑戌未辰丑".charAt(dei_zhi.indexOf(fcol[1]));
-  out['歲墓']   = "未申酉戌亥子丑寅卯辰巳午".charAt(dei_zhi.indexOf(fcol[1]));
-  out['大禍']   = "卯戌巳子未寅酉辰亥午丑申".charAt(dei_zhi.indexOf(fcol[1]));
-  out['六害']   = "卯子酉午卯子酉午卯子酉午".charAt(dei_zhi.indexOf(fcol[1]));
-  out['歲馬']   = "寅亥申巳寅亥申巳寅亥申巳".charAt(dei_zhi.indexOf(fcol[1]));
-  out['劫煞']   = "巳寅亥申巳寅亥申巳寅亥申".charAt(dei_zhi.indexOf(fcol[1]));
-  out['災煞']   = "午卯子酉午卯子酉午卯子酉".charAt(dei_zhi.indexOf(fcol[1]));
-  out['歲煞']   = "未辰丑戌未辰丑戌未辰丑戌".charAt(dei_zhi.indexOf(fcol[1]));
-  //out['天煞']   = "未辰丑戌未辰丑戌未辰丑戌".charAt(dei_zhi.indexOf(fcol[1]));
-  out['地煞']   = "申巳寅亥申巳寅亥申巳寅亥".charAt(dei_zhi.indexOf(fcol[1]));
-  out['咸池']   = "酉午卯子酉午卯子酉午卯子".charAt(dei_zhi.indexOf(fcol[1]));
-  out['亡神']   = "亥申巳寅亥申巳寅亥申巳寅".charAt(dei_zhi.indexOf(fcol[1]));
-  out['將星']   = "子酉午卯子酉午卯子酉午卯".charAt(dei_zhi.indexOf(fcol[1]));
-  out['攀鞍']   = "丑戌未辰丑戌未辰丑戌未辰".charAt(dei_zhi.indexOf(fcol[1]));
-  out['六合']   = "卯辰巳午未申酉戌亥子丑寅".charAt(dei_zhi.indexOf(fcol[1]));
   out['龍德']   = "未申酉戌亥子丑寅卯辰巳午".charAt(dei_zhi.indexOf(fcol[1]));
-  out['福德']   = "酉戌亥子丑寅卯辰巳午未申".charAt(dei_zhi.indexOf(fcol[1]));
-  out['太陽']   = "丑寅卯辰巳午未申酉戌亥子".charAt(dei_zhi.indexOf(fcol[1]));
-  //out['青龍']   = "丑寅卯辰巳午未申酉戌亥子".charAt(dei_zhi.indexOf(fcol[1]));
+  out['金匱']   = "子酉午卯子酉午卯子酉午卯".charAt(dei_zhi.indexOf(fcol[1]));
+  out['將星']   = "子酉午卯子酉午卯子酉午卯".charAt(dei_zhi.indexOf(fcol[1]));
+  out['紅鸞']   = "卯寅丑子亥戌酉申未午巳辰".charAt(dei_zhi.indexOf(fcol[1]));
+  out['天狗']   = "戌亥子丑寅卯辰巳午未申酉".charAt(dei_zhi.indexOf(fcol[1]));
+  out['勾絞']   = "卯辰巳午未申酉戌亥子丑寅".charAt(dei_zhi.indexOf(fcol[1]));
+  out['歲破']   = "午未申酉戌亥子丑寅卯辰巳".charAt(dei_zhi.indexOf(fcol[1]));
+  out['破碎']   = "午未申酉戌亥子丑寅卯辰巳".charAt(dei_zhi.indexOf(fcol[1]));
+  out['大耗']   = "午未申酉戌亥子丑寅卯辰巳".charAt(dei_zhi.indexOf(fcol[1]));
+  out['五鬼']   = "辰巳午未申酉戌亥子丑寅卯".charAt(dei_zhi.indexOf(fcol[1]));
+  out['官符']   = "辰巳午未申酉戌亥子丑寅卯".charAt(dei_zhi.indexOf(fcol[1]));
+  out['桃花']   = "酉午卯子酉午卯子酉午卯子".charAt(dei_zhi.indexOf(fcol[1]));
+  out['血刃']   = "戌酉申未午巳辰卯寅丑子亥".charAt(dei_zhi.indexOf(fcol[1]));
+  //
+  var _out = new Array;
+  for(var i = 0; i < 12; i++) _out[yat_ji[i]] = new Array;
+  for(var o in out) {
+    if(out[o] == '　') continue;
+    if(o.length < 3)
+      _out[out[o]].push(o+'　');
+    else
+      _out[out[o]].push(o.substr(0,3));
+  }
+  return _out;
+}
+/** 神煞計算 - 計月干支 - 輸出天干 **/
+function _god_effect_month_gan(fcol) {
+  var dei_zhi = "子丑寅卯辰巳午未申酉戌亥";   // 歲支
+  var yuet_kin = "寅卯辰巳午未申酉戌亥子丑";  // 月建
+  var yat_gon = "甲乙丙丁戊己庚辛壬癸";   // 日干
+  var yat_ji  = "子丑寅卯辰巳午未申酉戌亥";   // 日支
+  var out = new Array;
+  //歲支
+  out['天德']   = "己庚丁甲壬辛辛甲癸　丙乙".charAt(dei_zhi.indexOf(fcol[3]));
+  out['月德']   = "壬庚丙甲壬庚丙甲壬庚丙甲".charAt(dei_zhi.indexOf(fcol[3]));
+  //
+  var _out = new Array;
+  for(var i = 0; i < 10; i++) _out[yat_gon[i]] = new Array;
+  for(var o in out) {
+    if(out[o] == '　') continue;
+    if(o.length < 3)
+      _out[out[o]].push(o+'　');
+    else
+      _out[out[o]].push(o.substr(0,3));
+  }
+  return _out;
+}
+/** 神煞計算 - 計月干支 - 輸出地支 **/
+function _god_effect_month_ji(fcol) {
+  var dei_zhi = "子丑寅卯辰巳午未申酉戌亥";   // 歲支
+  var yuet_kin = "寅卯辰巳午未申酉戌亥子丑";  // 月建
+  var yat_gon = "甲乙丙丁戊己庚辛壬癸";   // 日干
+  var yat_ji  = "子丑寅卯辰巳午未申酉戌亥";   // 日支
+  var out = new Array;
+  //月支
+  out['天德']   = "　　　　　　　　　寅　　".charAt(dei_zhi.indexOf(fcol[3]));
+  out['血刃']   = "午子丑未寅申卯酉辰戌巳亥".charAt(dei_zhi.indexOf(fcol[3]));
+  //
   var _out = new Array;
   for(var i = 0; i < 12; i++) _out[yat_ji[i]] = new Array;
   for(var o in out) {
@@ -2117,61 +2165,60 @@ function _god_effect_year(fcol) {
   return _out;
 }
 /** 神煞計算 - 計日干支-地支輸出 **/
-function _god_effect_day(fcol) {
+function _god_effect_day_gan(fcol) {
   var dei_zhi = "子丑寅卯辰巳午未申酉戌亥";   // 歲支
   var yuet_kin = "寅卯辰巳午未申酉戌亥子丑";  // 月建
   var yat_gon = "甲乙丙丁戊己庚辛壬癸";   // 日干
   var yat_ji  = "子丑寅卯辰巳午未申酉戌亥";   // 日支
   var out = new Array;
   // 日煞 - 日干
-  out['日德']   = "寅申巳亥巳寅申巳亥巳".charAt(yat_gon.indexOf(fcol[4]));
-  out['日祿']   = "寅卯巳午巳午申酉亥子".charAt(yat_gon.indexOf(fcol[4]));
-  out['日墓']   = "未戌戌丑戌丑丑辰辰未".charAt(yat_gon.indexOf(fcol[4]));
-  out['日解']   = "亥申未丑酉亥申未丑酉".charAt(yat_gon.indexOf(fcol[4]));
-  out['飛符']   = "巳辰卯寅丑午未申酉戌".charAt(yat_gon.indexOf(fcol[4]));
-  out['羊刃']   = "卯辰午未午未酉戌子丑".charAt(yat_gon.indexOf(fcol[4]));
-  out['飛刃']   = "酉戌子丑子丑卯辰午未".charAt(yat_gon.indexOf(fcol[4]));
-  out['日盜']   = "子亥卯申巳子亥卯申巳".charAt(yat_gon.indexOf(fcol[4]));
-  out['日奸']   = "亥酉辰申巳亥酉辰申巳".charAt(yat_gon.indexOf(fcol[4]));
-  out['日淫']   = "午午未未戌戌寅寅巳巳".charAt(yat_gon.indexOf(fcol[4]));
-  out['遊都']   = "丑子寅巳申丑子寅巳申".charAt(yat_gon.indexOf(fcol[4]));
-  out['魯都']   = "未午申亥寅未午申亥寅".charAt(yat_gon.indexOf(fcol[4]));
-  out['日賊']   = "辰午申亥寅辰午申亥寅".charAt(yat_gon.indexOf(fcol[4]));
-  out['日醫']   = "卯亥丑未巳卯亥丑未巳".charAt(yat_gon.indexOf(fcol[4]));
-  out['賢貴']   = "丑申寅寅午丑申寅寅午".charAt(yat_gon.indexOf(fcol[4]));
-  out['文星']   = "亥亥寅寅午午巳巳申申".charAt(yat_gon.indexOf(fcol[4]));
-  out['干奇']   = "午巳辰卯寅丑未申酉戌".charAt(yat_gon.indexOf(fcol[4]));
-  out['大煞']   = "亥亥未未戌戌寅寅巳巳".charAt(yat_gon.indexOf(fcol[4]));
-  out['福星']   = "子丑子子未未丑丑巳巳".charAt(yat_gon.indexOf(fcol[4]));
-  out['進神1']  = "子子子子子卯卯卯卯卯".charAt(yat_gon.indexOf(fcol[4]));
-  out['進神2']  = "午午午午午酉酉酉酉酉".charAt(yat_gon.indexOf(fcol[4]));
-  out['退神1']  = "丑丑丑丑丑辰辰辰辰辰".charAt(yat_gon.indexOf(fcol[4]));
-  out['退神2']  = "未未未未未戌戌戌戌戌".charAt(yat_gon.indexOf(fcol[4]));
+  out['天財']    = "戊己庚辛壬癸甲乙丙丁".charAt(yat_gon.indexOf(fcol[4]));
+  //
+  var _out = new Array;
+  for(var i = 0; i < 10; i++) _out[yat_gon[i]] = new Array;
+  for(var o in out) {
+    if(out[o] == '　') continue;
+    _out[ out[o]].push(o.substr(0,2)+'　');
+  }
+  return _out;
+}
+/** 神煞計算 - 計日干支-地支輸出 **/
+function _god_effect_day_ji(fcol) {
+  var dei_zhi = "子丑寅卯辰巳午未申酉戌亥";   // 歲支
+  var yuet_kin = "寅卯辰巳午未申酉戌亥子丑";  // 月建
+  var yat_gon = "甲乙丙丁戊己庚辛壬癸";   // 日干
+  var yat_ji  = "子丑寅卯辰巳午未申酉戌亥";   // 日支
+  var out = new Array;
+  // 日煞 - 日干
+  out['天乙1']   = "丑子亥戌丑子丑午卯卯".charAt(yat_gon.indexOf(fcol[4]));
+  out['天乙2']   = "未申酉酉未申未寅巳巳".charAt(yat_gon.indexOf(fcol[4]));
+  out['文昌']    = "巳午申酉申酉亥子寅卯".charAt(yat_gon.indexOf(fcol[4]));
+  out['祿神']    = "寅卯巳午巳午申丑亥子".charAt(yat_gon.indexOf(fcol[4]));
+  out['羊刃']    = "卯辰午未午未酉戌子丑".charAt(yat_gon.indexOf(fcol[4]));
+  out['紅豔1']   = "申申寅未辰辰戌酉子申".charAt(yat_gon.indexOf(fcol[4]));
+  out['紅豔2']   = "午午　　　　　　　　".charAt(yat_gon.indexOf(fcol[4]));
+  out['學堂']    = "亥午寅酉寅酉巳子申卯".charAt(yat_gon.indexOf(fcol[4]));
+  out['流霞']    = "酉戌未申巳午辰卯亥寅".charAt(yat_gon.indexOf(fcol[4]));
+  out['飛刃']    = "酉戌子丑子丑卯辰午未".charAt(yat_gon.indexOf(fcol[4]));
+  //out['天財']    = "戊己庚辛壬癸甲乙丙丁".charAt(yat_gon.indexOf(fcol[4]));
+  out['金輿']    = "辰巳未申未申戌亥丑寅".charAt(yat_gon.indexOf(fcol[4]));
   // 日支神煞表
-  out['支德']  = "巳午未申酉戌亥子丑寅卯辰".charAt(yat_ji.indexOf(fcol[5]));
-  out['支儀']  = "午巳辰卯寅丑未申酉戌亥子".charAt(yat_ji.indexOf(fcol[5]));
-  out['支刑']  = "卯未申子辰寅午戌巳酉丑亥".charAt(yat_ji.indexOf(fcol[5]));
-  out['支沖']  = "午未申酉戌亥子丑寅卯辰巳".charAt(yat_ji.indexOf(fcol[5]));
-  out['支破']  = "酉辰亥午丑申卯戌巳子未寅".charAt(yat_ji.indexOf(fcol[5]));
-  out['支害']  = "未午巳辰卯寅丑子亥戌酉申".charAt(yat_ji.indexOf(fcol[5]));
-  out['支墓']  = "辰辰未未辰戌戌辰丑丑辰辰".charAt(yat_ji.indexOf(fcol[5]));
-  out['支鬼1']  = "辰卯申酉寅亥子卯午巳寅丑".charAt(yat_ji.indexOf(fcol[5]));
-  out['支鬼2']  = "戌卯申酉寅亥子卯午巳寅戌".charAt(yat_ji.indexOf(fcol[5]));
-  out['破碎']  = "巳丑酉巳丑酉巳丑酉巳丑酉".charAt(yat_ji.indexOf(fcol[5]));
-  out['死神']  = "卯辰巳午未申酉戌亥子丑寅".charAt(yat_ji.indexOf(fcol[5]));
-  out['病符']  = "亥子丑寅卯辰巳午未申酉戌".charAt(yat_ji.indexOf(fcol[5]));
-  out['勾神']  = "卯戌巳子未寅酉辰亥午丑申".charAt(yat_ji.indexOf(fcol[5]));
-  out['絞神']  = "酉辰亥午丑申卯戌巳子未寅".charAt(yat_ji.indexOf(fcol[5]));
-  out['驛馬']  = "寅亥申巳寅亥申巳寅亥申巳".charAt(yat_ji.indexOf(fcol[5]));
   out['華蓋']  = "辰丑戌未辰丑戌未辰丑戌未".charAt(yat_ji.indexOf(fcol[5]));
+  out['將星']  = "子酉午卯子酉午卯子酉午卯".charAt(yat_ji.indexOf(fcol[5]));
+  out['驛馬']  = "寅亥申巳寅亥申巳寅亥申巳".charAt(yat_ji.indexOf(fcol[5]));
+  out['桃花']  = "酉午卯子酉午卯子酉午卯子".charAt(yat_ji.indexOf(fcol[5]));
+  out['血刃']  = "戌酉申未午巳辰卯寅丑子亥".charAt(yat_ji.indexOf(fcol[5]));
+  out['孤辰']  = "寅寅巳巳巳申申申亥亥亥寅".charAt(yat_ji.indexOf(fcol[5]));
+  out['寡宿']  = "戌戌丑丑丑辰辰辰未未未戌".charAt(yat_ji.indexOf(fcol[5]));
+  out['喪門']  = "寅卯辰巳午未申酉戌亥子丑".charAt(yat_ji.indexOf(fcol[5]));
   out['劫煞']  = "巳寅亥申巳寅亥申巳寅亥申".charAt(yat_ji.indexOf(fcol[5]));
-  out['災煞']  = "午卯子酉午卯子酉午卯子酉".charAt(yat_ji.indexOf(fcol[5]));
-  out['咸池']  = "酉午卯子酉午卯子酉午卯子".charAt(yat_ji.indexOf(fcol[5]));
-  out['雷電']  = "辰辰未未戌戌丑丑寅寅卯卯".charAt(yat_ji.indexOf(fcol[5]));
-  out['晴朗']  = "午未申酉戌亥子丑寅卯辰巳".charAt(yat_ji.indexOf(fcol[5]));
+  out['隔角']  = "寅卯辰巳午未申酉戌亥子丑".charAt(yat_ji.indexOf(fcol[5]));
+  out['亡神']  = "亥申巳寅亥申巳寅亥申巳寅".charAt(yat_ji.indexOf(fcol[5]));
+  //
   var _out = new Array;
   for(var i = 0; i < 12; i++) _out[yat_ji[i]] = new Array;
   for(var o in out) {
+    if(out[o] == '　') continue;
     _out[ out[o]].push(o.substr(0,2)+'　');
   }
   return _out;
