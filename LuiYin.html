@@ -2276,10 +2276,10 @@ function _gui_cal() {
   //
   var d = new Date();
   var g = 1;
-  BaZi(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds(),g);
-  //LuiYin(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
-  QiMen(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
-  astro_firdaria(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
+  //BaZi(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds(),g);
+  LuiYin(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
+  //QiMen(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
+  //astro_firdaria(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
   $("#display").html("");
   $("#display").html(_buffer);
   document.write = o_doc_write;
@@ -2312,10 +2312,10 @@ function _gui_cal2() {
   } else {
     return;
   }
-  BaZi(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds(),g);
-  //LuiYin(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
-  QiMen(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
-  astro_firdaria(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
+  //BaZi(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds(),g);
+  LuiYin(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
+  //QiMen(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
+  //astro_firdaria(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
   $("#display").html("");
   $("#display").html(_buffer);
   document.write = o_doc_write;
@@ -2337,7 +2337,7 @@ input { border: 2pt solid #CCC; margin: 5pt; padding: 5pt }
   <div id="display" style="font-size:0.4cm;color:#FFFFFF;background-color:#000000"></div>
   <div id="nav">
     <p onclick="_gui_cal2()" style="font-size: 0.5cm; margin: 0px;">
-    奇門穿壬參星 by summer@hkgolden</p>
+    大六壬神數 by 森麻@hkgolden</p>
   </div>
 </body>
 </html>
