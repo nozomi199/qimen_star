@@ -65,7 +65,7 @@ function date_to_julian_time(h,i,s) {
    */
   return ((h * 3600) + (i * 60) + s) /86400;
 }
-function JiQi(year) {
+function JiQi() {
   "use strict";
   /**
    * 內部參照用
@@ -391,10 +391,10 @@ function BaZi(y,m,d,h,i,s,gender) {
   for(var i = 7; i > -1 ; i -= 2) dcol0.push(fcol[i]);
   document.write("四柱:","\r\n");
   document.write("　　　日","\r\n");
-  document.write("※※※※※※※※※※※※※※※※※※","\r\n");
+  document.write("※※※※※※※※※※※※※※※","\r\n");
   document.write(tcol0.join("　　　"),"\r\n");
   document.write(dcol0.join("　　　"),"\r\n");
-  document.write("※※※※※※※※※※※※※※※※※※","\r\n");
+  document.write("※※※※※※※※※※※※※※※","\r\n");
   // 起地支藏干
   var dei_hidden = new Array("9  ","597","024","1  ","419","246","35 ","513","648","7  ","473","80 ");
   for(var i = 0; i < 3; i++) {
@@ -409,7 +409,7 @@ function BaZi(y,m,d,h,i,s,gender) {
     }
     document.write(_t_d_h.join("　　　"),"\r\n");
   }
-  document.write("※※空亡※※※※※※※※","\r\n");
+  document.write("※※空亡※※※※※※※※※※※","\r\n");
   for(var i = 0; i < 4; i++) {
     var chun_sau = "子丑寅卯辰巳午未申酉戌亥".indexOf(dcol0[i]) - "甲乙丙丁戊己庚辛壬癸".indexOf(tcol0[i]);
     if(chun_sau < 0) chun_sau += 12;
@@ -421,7 +421,7 @@ function BaZi(y,m,d,h,i,s,gender) {
   var _cb = $.Callbacks();
   _cb.add(function(value) {
     "use strict";
-    document.write("※※神煞※※※※※※※※","\r\n");
+    document.write("※※神煞※※※※※※※※※※※","\r\n");
     var _hh = new Array,
         _dd = new Array,
         _mm = new Array,
@@ -1010,6 +1010,8 @@ function QiMen(y,m,d,h,i,s) {
   for(var i = 0; i < _line; i++) {
     document.write(astro.position.slice(i*4,i*4+4).join("　"),"\r\n");
   }
+  document.write("\r\n");
+  astro_firdaria(y,m,d,h,i,s);
   document.write("</pre>","\r\n");
   return _p;
 }
@@ -2226,6 +2228,35 @@ function _god_effect_day_ji(fcol) {
 /** 十二長生 **/
 function twelev_life(fcol) {
   // to be coded
+}
+/** 計算法達星限 **/
+function astro_firdaria(yy,mm,dd,hh,ii,ss) {
+  "use strict";
+  var jq = new JiQi();
+  var jtoday = date_to_julian_day2(yy,mm,dd) + date_to_julian_time(hh,ii,ss);
+  var period = {'日':10,'金':8,'水':13,'月':9,'土':11,'木':12,'火':7};
+  if(hh >=5 && hh <= 17) {
+    var period_start = ['日','金','水','月','土','木','火'];
+  } else {
+    var period_start = ['月','土','木','火','日','金','水'];
+  }
+  document.write("法達星限計算：","\r\n");
+  var _current_day = jtoday;
+  var current_period = period_start.slice(0);
+  for(var i = 0; i < 7; i++) {
+    var active_day  = period[current_period[0]] * 365.25;
+    var average_day = active_day/7;
+    document.write("大期: ",current_period[0],"\r\n");
+    for(var j = 0; j < 7; j++) {
+      document.write(current_period[0],':',current_period[j],"\t",jq.Jtime(false,_current_day),"\r\n");
+      _current_day += average_day;
+    }
+    current_period.push(current_period.shift());
+  }
+  document.write("大期: 羅喉(北交點)",jq.Jtime(false,_current_day),"\r\n");
+  _current_day += 365.25 * 3;
+  document.write("大期: 計都(南交點)",jq.Jtime(false,_current_day),"\r\n");
+  _current_day += 365.25 * 2;
 }
 /**
  *輸出
