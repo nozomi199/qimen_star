@@ -1002,10 +1002,21 @@ function QiMen(y,m,d,h,i,s) {
     document.write(_p[i].join(""),"\r\n");
   }
   document.write("\r\n");
+  /** 十干生剋 **/
+  for(var i = 0; i < 9; i++) {
+    document.write(tin_pan[i],dei_pan[i],'：',qimen_gan_relation(tin_pan[i],dei_pan[i]));
+    if((i+1) % 3 == 0) 
+      document.write("\r\n");
+    else
+      document.write("　");
+  }
+  document.write("\r\n");
+  /** 行星位置 **/
   var _line = astro.relation.length / 4 + 1;
   for(var i = 0; i < _line; i++) {
     document.write(astro.relation.slice(i*4,i*4+4).join("　"),"\r\n");
   }
+  /** 行星相位 **/
   var _line = astro.position.length / 4 + 1;
   for(var i = 0; i < _line; i++) {
     document.write(astro.position.slice(i*4,i*4+4).join("　"),"\r\n");
@@ -1087,7 +1098,7 @@ function LuiYin(y,m,d,h,i,s) {
   if(day_night_tin < 6) { // 日貴人
     var help_man = "丑子亥亥丑子丑午巳巳".charAt(tin_idx);
   } else { //夜貴人
-    var help_man = "未申酉西未申未寅卯卯".charAt(tin_idx);
+    var help_man = "未申酉酉未申未寅卯卯".charAt(tin_idx);
   }
   var help_man2;
   var _tmp  = gnm.indexOf(help_man); //console.log(gnm.charAt(_tmp));
@@ -2223,6 +2234,11 @@ function _god_effect_day_ji(fcol) {
     _out[ out[o]].push(o.substr(0,2)+'　');
   }
   return _out;
+}
+/** 計算奇門天地盤十干生剋 **/
+function qimen_gan_relation(tin,dei) {
+  var tin_dei = {"\u5e9a\u5df1": "\u592a\u767d\u5927\u5211", "\u5df1\u620a": "\u72ac\u9047\u9752\u9f8d", "\u4e01\u4e01": "\u5947\u5165\u592a\u9670", "\u4e01\u7678": "\u6731\u96c0\u6295\u6c5f", "\u7678\u4e19": "\u83ef\u84cb\u6096\u5e2b", "\u8f9b\u4e01": "\u7344\u795e\u5f97\u5947", "\u58ec\u58ec": "\u86c7\u5165\u5730\u7f85", "\u620a\u8f9b": "\u9752\u9f8d\u6298\u8db3", "\u4e19\u4e01": "\u661f\u5947\u6731\u96c0", "\u4e59\u8f9b": "\u9752\u9f8d\u9003\u8d70", "\u8f9b\u4e19": "\u5e72\u5408\u6096\u5e2b", "\u58ec\u7678": "\u5e7c\u5973\u5978\u6deb", "\u4e19\u4e19": "\u6708\u5947\u6096\u5e2b", "\u58ec\u8f9b": "\u87a3\u86c7\u76f8\u7e8f", "\u4e59\u58ec": "\u65e5\u5947\u5165\u5730", "\u7678\u4e59": "\u83ef\u84cb\u9022\u661f", "\u58ec\u620a": "\u5c0f\u86c7\u5316\u9f8d", "\u5df1\u8f9b": "\u6e38\u9b42\u5165\u5893", "\u4e01\u4e19": "\u661f\u96a8\u6708\u8f49", "\u4e19\u58ec": "\u706b\u5165\u5929\u7f85", "\u7678\u7678": "\u5929\u7db2\u56db\u5f35", "\u7678\u4e01": "\u87a3\u86c7\u592d\u77ef", "\u5df1\u4e19": "\u706b\u6096\u5730\u6236", "\u4e59\u5e9a": "\u65e5\u5947\u88ab\u5211", "\u8f9b\u5e9a": "\u767d\u864e\u51fa\u529b", "\u58ec\u4e01": "\u5e72\u5408\u86c7\u5211", "\u5e9a\u7678": "\u592a\u767d\u6c96\u5211", "\u8f9b\u620a": "\u56f0\u9f8d\u88ab\u50b7", "\u4e59\u4e01": "\u5947\u5100\u76f8\u4f50", "\u7678\u5e9a": "\u592a\u767d\u5165\u7db2", "\u5df1\u5e9a": "\u5211\u683c\u8fd4\u540d", "\u7678\u8f9b": "\u7db2\u84cb\u5929\u7262", "\u5e9a\u58ec": "\u592a\u767d\u9000\u4f4d", "\u4e19\u5e9a": "\u8367\u5165\u592a\u767d", "\u4e59\u4e19": "\u5947\u5100\u9806\u9042", "\u4e01\u8f9b": "\u7389\u5973\u4f0f\u864e", "\u7678\u620a": "\u5929\u4e59\u6703\u5408", "\u5df1\u7678": "\u5730\u5211\u7384\u6b66", "\u4e01\u5e9a": "\u7389\u5973\u5211\u6bba", "\u58ec\u4e19": "\u6c34\u86c7\u5165\u706b", "\u620a\u4e59": "\u9752\u9f8d\u548c\u6703", "\u4e19\u7678": "\u83ef\u84cb\u6096\u5e2b", "\u5e9a\u4e59": "\u592a\u767d\u9022\u661f", "\u5e9a\u620a": "\u5929\u4e59\u4f0f\u5bae", "\u5df1\u5df1": "\u5730\u6236\u9022\u9b3c", "\u620a\u58ec": "\u9752\u9f8d\u7834\u7344", "\ufeff\u620a\u620a": "\u9752\u9f8d\u4f0f\u541f", "\u8f9b\u58ec": "\u51f6\u86c7\u5165\u7344", "\u4e19\u5df1": "\u706b\u6096\u5165\u5211", "\u4e59\u7678": "\u83ef\u84cb\u9022\u661f", "\u58ec\u5e9a": "\u592a\u767d\u64d2\u86c7", "\u4e59\u620a": "\u9670\u5bb3\u967d\u9580", "\u5df1\u4e01": "\u6731\u96c0\u5165\u5893", "\u8f9b\u4e59": "\u767d\u864e\u7316\u72c2", "\u5e9a\u8f9b": "\u592a\u767d\u91cd\u92d2", "\u4e01\u58ec": "\u4e94\u795e\u4e92\u5408", "\u620a\u7678": "\u9752\u9f8d\u83ef\u84cb", "\u4e19\u4e59": "\u65e5\u6708\u4e26\u884c", "\u5e9a\u5e9a": "\u592a\u767d\u540c\u5bae", "\u7678\u58ec": "\u5fa9\u898b\u87a3\u86c7", "\u4e19\u8f9b": "\u65e5\u6708\u76f8\u6703", "\u8f9b\u7678": "\u5929\u7262\u83ef\u84cb", "\u4e01\u4e59": "\u7389\u5973\u5947\u751f", "\u4e59\u5df1": "\u65e5\u5947\u5165\u5893", "\u5df1\u4e59": "\u5893\u795e\u4e0d\u660e", "\u620a\u4e01": "\u9752\u9f8d\u8000\u660e", "\u8f9b\u8f9b": "\u4f0f\u541f\u5929\u5ead", "\u8f9b\u5df1": "\u5165\u7344\u81ea\u5211", "\u4e59\u4e59": "\u65e5\u5947\u4f0f\u541f", "\u4e01\u620a": "\u9752\u9f8d\u8f49\u5149", "\u7678\u5df1": "\u83ef\u84cb\u5730\u6236", "\u5df1\u58ec": "\u5730\u7db2\u9ad8\u5f35", "\u620a\u5df1": "\u8cb4\u4eba\u5165\u7344", "\u4e01\u5df1": "\u706b\u5165\u52fe\u9673", "\u4e19\u620a": "\u98db\u9ce5\u8dcc\u7a74", "\u58ec\u5df1": "\u53cd\u541f\u86c7\u5211", "\u58ec\u4e59": "\u5c0f\u86c7\u5f97\u52e2", "\u5e9a\u4e19": "\u592a\u767d\u5165\u8367", "\u620a\u5e9a": "\u503c\u7b26\u98db\u5bae", "\u5e9a\u4e01": "\u592a\u767d\u53d7\u5211", "\u620a\u4e19": "\u9752\u9f8d\u8fd4\u9996"};
+  return tin_dei[tin+dei];
 }
 /** 十二長生 **/
 function twelev_life(fcol) {
