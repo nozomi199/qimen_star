@@ -334,7 +334,7 @@ function JiQi() {
     var thes = ((jda - Math.floor(jda)) * 86400) + 3600;
     var dayjd = Math.floor(jda) + thes / 86400;
     dgz = (Math.floor(dayjd + 49) % 60 + 60) % 60;
-    // if(h >= 23) dgz--; // 子正換日處理, 測試用
+    if(h >= 23) dgz--; // 子正換日處理, 測試用
     rtn_gz.push(tin[dgz % 10]); // 日干
     rtn_gz.push(di[dgz % 12]);  // 日支
     // 計時柱
