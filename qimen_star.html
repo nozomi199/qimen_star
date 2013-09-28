@@ -1015,6 +1015,18 @@ function QiMen(y,m,d,h,i,s) {
   
   ////console.log("LuiYin.helpMan:",luiyin.helpMan);
   ////console.log("LuiYin.genOnTime:",luiyin.genOnTime);
+  /** 畫井字 **/
+  for(var i = 2; i < 18; i++) {
+	_p[7][i] = "\uFF0D";
+	_p[12][i] = "\uFF0D";
+	_p[i][7] = "\uFF5C";
+	_p[i][12] = "\uFF5C";
+  }
+  _p[7][7] = "\uFF0B";
+  _p[7][12] = "\uFF0B";
+  _p[12][7] = "\uFF0B";
+  _p[12][12] = "\uFF0B";
+  /** 輸出印出栻盤 **/
   for(var i = 0; i < _size; i++) {//console.log(i,_p[i]);
     document.write(_p[i].join(""),"\r\n");
   }
