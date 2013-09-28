@@ -344,8 +344,12 @@ function JiQi() {
     //console.log(h,Math.ceil(h/2)%12,di[(h/2)%12],di[hgz % 12]);
     //if((h%2) == 1 && i == 0) hgz += 1;
     if((Math.ceil(h/2)%12) != (hgz%12)) hgz++;
-    rtn_gz.push(tin[hgz % 10]); // 日干
-    rtn_gz.push(di[hgz % 12]);  // 日支
+    rtn_gz.push(tin[hgz % 10]); // 時干
+    rtn_gz.push(di[hgz % 12]);  // 時支
+	// 計分柱
+	var minhz = i; if(h%2) minhz += 60; minhz = Math.floor(minhz / 2);
+	rtn_gz.push(tin[minhz % 10]); // 分干
+    rtn_gz.push(di[minhz % 12]);  // 分支
     return rtn_gz.join("");
   };
 }
@@ -387,19 +391,25 @@ function BaZi(y,m,d,h,i,s,gender) {
   var fcol = jiqi.GetGZ(y,m,d,h,i,s); // 排四柱
   var tcol0 = new Array;
   var dcol0 = new Array;
-  for(var i = 6; i > -1 ; i -= 2) tcol0.push(fcol[i]);
-  for(var i = 7; i > -1 ; i -= 2) dcol0.push(fcol[i]);
+  //四柱
+  //for(var i = 6; i > -1 ; i -= 2) tcol0.push(fcol[i]);
+  //for(var i = 7; i > -1 ; i -= 2) dcol0.push(fcol[i]);
+  for(var i = 8; i > -1 ; i -= 2) tcol0.push(fcol[i]);
+  for(var i = 9; i > -1 ; i -= 2) dcol0.push(fcol[i]);
+  //四柱含分柱
+  //tcol0.push(fcol[8]);
+  //dcol0.push(fcol[9]);
   document.write("四柱:","\r\n");
-  document.write("　　　日","\r\n");
-  document.write("※※※※※※※※※※※※※※※","\r\n");
+  document.write("分　　　時　　　日　　　月　　　年","\r\n");
+  document.write("\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D","\r\n");
   document.write(tcol0.join("　　　"),"\r\n");
   document.write(dcol0.join("　　　"),"\r\n");
-  document.write("※※※※※※※※※※※※※※※","\r\n");
+  document.write("\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D","\r\n");
   // 起地支藏干
   var dei_hidden = new Array("9  ","597","024","1  ","419","246","35 ","513","648","7  ","473","80 ");
   for(var i = 0; i < 3; i++) {
     var _t_d_h = new Array;   // 印地支藏干用, 無運算之用
-    for(var j = 0; j < 4; j++) {
+    for(var j = 0; j < 5; j++) {
       var _t_dei_idx = "子丑寅卯辰巳午未申酉戌亥".indexOf(dcol0[j]);
       if(dei_hidden[_t_dei_idx][i] == ' ') {
         _t_d_h.push("　");
@@ -409,8 +419,8 @@ function BaZi(y,m,d,h,i,s,gender) {
     }
     document.write(_t_d_h.join("　　　"),"\r\n");
   }
-  document.write("※※空亡※※※※※※※※※※※","\r\n");
-  for(var i = 0; i < 4; i++) {
+  document.write("\uFF0D\uFF0D空亡\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D","\r\n");
+  for(var i = 0; i < 5; i++) {
     var chun_sau = "子丑寅卯辰巳午未申酉戌亥".indexOf(dcol0[i]) - "甲乙丙丁戊己庚辛壬癸".indexOf(tcol0[i]);
     if(chun_sau < 0) chun_sau += 12;
     var hung_mon = chun_sau - 2;
@@ -421,57 +431,57 @@ function BaZi(y,m,d,h,i,s,gender) {
   var _cb = $.Callbacks();
   _cb.add(function(value) {
     "use strict";
-    document.write("※※神煞※※※※※※※※※※※","\r\n");
+    document.write("\uFF0D\uFF0D神煞\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D","\r\n");
     var _hh = new Array,
         _dd = new Array,
         _mm = new Array,
         _yy = new Array;
     // 起年神煞
     var _god_e_d = _god_effect_year(fcol);
-    var _h = _god_e_d[dcol0[0]],
-        _d = _god_e_d[dcol0[1]],
-        _m = _god_e_d[dcol0[2]],
-        _y = _god_e_d[dcol0[3]];
+    var _h = _god_e_d[dcol0[1]],
+        _d = _god_e_d[dcol0[2]],
+        _m = _god_e_d[dcol0[3]],
+        _y = _god_e_d[dcol0[4]];
     for(var o in _h) _hh.push(_h[o]);
     for(var o in _d) _dd.push(_d[o]);
     for(var o in _m) _mm.push(_m[o]);
     //for(var o in _y) _yy.push(_y[o]);
     // 起月神煞-干
     var _god_e_d = _god_effect_month_gan(fcol);
-    var _h = _god_e_d[tcol0[0]],
-        _d = _god_e_d[tcol0[1]],
-        _m = _god_e_d[tcol0[2]],
-        _y = _god_e_d[tcol0[3]];
+    var _h = _god_e_d[tcol0[1]],
+        _d = _god_e_d[tcol0[2]],
+        _m = _god_e_d[tcol0[3]],
+        _y = _god_e_d[tcol0[4]];
     for(var o in _h) _hh.push(_h[o]);
     for(var o in _d) _dd.push(_d[o]);
     //for(var o in _m) _mm.push(_m[o]);
     for(var o in _y) _yy.push(_y[o]);
     // 起月神煞-支
     var _god_e_d = _god_effect_month_ji(fcol);
-    var _h = _god_e_d[dcol0[0]],
-        _d = _god_e_d[dcol0[1]],
-        _m = _god_e_d[dcol0[2]],
-        _y = _god_e_d[dcol0[3]];
+    var _h = _god_e_d[dcol0[1]],
+        _d = _god_e_d[dcol0[2]],
+        _m = _god_e_d[dcol0[3]],
+        _y = _god_e_d[dcol0[4]];
     for(var o in _h) _hh.push(_h[o]);
     for(var o in _d) _dd.push(_d[o]);
     //for(var o in _m) _mm.push(_m[o]);
     for(var o in _y) _yy.push(_y[o]);
     // 起日神煞-干
     var _god_e_d = _god_effect_day_gan(fcol);
-    var _h = _god_e_d[tcol0[0]],
-        _d = _god_e_d[tcol0[1]],
-        _m = _god_e_d[tcol0[2]],
-        _y = _god_e_d[tcol0[3]];
+    var _h = _god_e_d[tcol0[1]],
+        _d = _god_e_d[tcol0[2]],
+        _m = _god_e_d[tcol0[3]],
+        _y = _god_e_d[tcol0[4]];
     for(var o in _h) _hh.push(_h[o]);
     //for(var o in _d) _dd.push(_d[o]);
     for(var o in _m) _mm.push(_m[o]);
     for(var o in _y) _yy.push(_y[o]);
     // 起日神煞-支
     var _god_e_d = _god_effect_day_ji(fcol);
-    var _h = _god_e_d[dcol0[0]],
-        _d = _god_e_d[dcol0[1]],
-        _m = _god_e_d[dcol0[2]],
-        _y = _god_e_d[dcol0[3]];
+    var _h = _god_e_d[dcol0[1]],
+        _d = _god_e_d[dcol0[2]],
+        _m = _god_e_d[dcol0[3]],
+        _y = _god_e_d[dcol0[4]];
     for(var o in _h) _hh.push(_h[o]);
     //for(var o in _d) _dd.push(_d[o]);
     for(var o in _m) _mm.push(_m[o]);
@@ -483,7 +493,7 @@ function BaZi(y,m,d,h,i,s,gender) {
       var t1 = _dd[i] ? _dd[i] : '　　　';
       var t2 = _mm[i] ? _mm[i] : '　　　';
       var t3 = _yy[i] ? _yy[i] : '　　　';
-      document.write(t0,'　',t1,'　',t2,'　',t3,"\r\n");
+      document.write('　　　　',t0,'　',t1,'　',t2,'　',t3,"\r\n");
     }
   });
   _cb.fire("fire");
@@ -806,18 +816,25 @@ function QiMen(y,m,d,h,i,s) {
   **/
   // 輸出八字
   document.write("八字:");
-  for(var i = 0; i < 8; i += 2) document.write("　",fcol.substr(i, 2));
+  for(var i = 0; i < 10; i += 2) document.write("　",fcol.substr(i, 2));
   document.write("\r\n");
   // 計空亡
   document.write("空亡:");
-  for(var i = 0; i < 4; i++) {
-    var chun_sau = "子丑寅卯辰巳午未申酉戌亥".indexOf(dcol0[3-i]) - "甲乙丙丁戊己庚辛壬癸".indexOf(tcol0[3-i]);
-    if(chun_sau < 0) chun_sau += 12;
-    var hung_mon = chun_sau - 2;
-    if(hung_mon < 0) hung_mon += 12;
-    document.write("　","子丑寅卯辰巳午未申酉戌亥".substr(hung_mon, 2));
-  }
-  document.write("\r\n");
+  var _func = function() {
+	var _dcol0 = dcol0.slice(), _tcol0 = tcol0.slice();
+	_tcol0.unshift(fcol[8]);_dcol0.unshift(fcol[9]);
+	//console.log(_tcol0,_dcol0);
+	for(var i = 0; i < 5; i++) {
+		var chun_sau = "子丑寅卯辰巳午未申酉戌亥".indexOf(_dcol0[4-i]) - "甲乙丙丁戊己庚辛壬癸".indexOf(_tcol0[4-i]);
+		if(chun_sau < 0) chun_sau += 12;
+		var hung_mon = chun_sau - 2;
+		if(hung_mon < 0) hung_mon += 12;
+		document.write("　","子丑寅卯辰巳午未申酉戌亥".substr(hung_mon, 2));
+	}
+	document.write("\r\n");
+  };
+  _func();
+  _func = null;
   //document.write(tcol0.join(""),"\r\n");
   //document.write(dcol0.join(""),"\r\n");
   // 輸出四課三傳
@@ -2771,7 +2788,7 @@ function gui_check_input_date(id) {
   var h = (id.substr(8,2))*1;
   var i = (id.substr(10,2))*1;
   var s = (id.substr(12,2))*1;
-  console.log(y,m,d,h,i,s);
+  //console.log(y,m,d,h,i,s);
   if ( (!(y % 4) && y % 100) || !(y % 400)) {
     daysInMonth[2] = 29;
   }
