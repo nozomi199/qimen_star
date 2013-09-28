@@ -347,7 +347,7 @@ function JiQi() {
     rtn_gz.push(tin[hgz % 10]); // 時干
     rtn_gz.push(di[hgz % 12]);  // 時支
 	// 計分柱
-	var minhz = i; if(h%2) minhz += 60; minhz = Math.floor(minhz / 2);
+	var minhz = i; if(h%2 == 0) minhz += 60; minhz = Math.floor(minhz / 2);
 	rtn_gz.push(tin[minhz % 10]); // 分干
     rtn_gz.push(di[minhz % 12]);  // 分支
     return rtn_gz.join("");
