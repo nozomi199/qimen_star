@@ -2409,7 +2409,7 @@ function _god_effect(fcol) {
   out['孤神']   = "巳巳巳申申申亥亥亥寅寅寅".charAt(yuet_kin.indexOf(fcol[3]));
   out['寡宿']   = "丑丑丑辰辰辰未未未戌戌戌".charAt(yuet_kin.indexOf(fcol[3]));
   out['五墓']   = "未未未戌戌戌丑丑丑辰辰辰".charAt(yuet_kin.indexOf(fcol[3]));
-  out['天車']   = "巳巳巳辰辰辰未未未酉酉西".charAt(yuet_kin.indexOf(fcol[3]));
+  out['天車']   = "巳巳巳辰辰辰未未未酉酉酉".charAt(yuet_kin.indexOf(fcol[3]));
   out['地獄']   = "未未未戌戌戌辰辰辰丑丑丑".charAt(yuet_kin.indexOf(fcol[3]));
   out['四廢']   = "酉酉酉子子子卯卯卯午午午".charAt(yuet_kin.indexOf(fcol[3]));
   out['天耳']   = "戌戌戌丑丑丑辰辰辰未未未".charAt(yuet_kin.indexOf(fcol[3]));
@@ -2656,7 +2656,11 @@ function _god_effect(fcol) {
   for(var i = 0; i < 12; i++) _out[yat_ji[i]] = new Array;
   for(var o in out) {
     if(out[o] == '　') continue;
-    _out[out[o]].push(o.substr(0,2));
+    try {
+      _out[out[o]].push(o.substr(0,2));
+    } catch(e) {
+      console.log(e,'_god_effect',o);
+    }
   }
   return _out;
 }
