@@ -838,18 +838,25 @@ function QiMen(y,m,d,h,i,s) {
   //document.write(tcol0.join(""),"\r\n");
   //document.write(dcol0.join(""),"\r\n");
   // 輸出四課三傳
-  document.write("四課:","\r\n");
+  document.write("四課:　　　　　三傳:","\r\n");
+  console.log("tmp",_tmp);
+  var _tmp = "";
   for(var i = 0; i < 4; i++) {
-    document.write(luiyin.helpMan.charAt(luiyin.genOnTime.indexOf(luiyin.four[0][i])));
+    //document.write(luiyin.helpMan.charAt(luiyin.genOnTime.indexOf(luiyin.four[0][i])));
+    _tmp += (luiyin.helpMan.charAt(luiyin.genOnTime.indexOf(luiyin.four[0][i])));
   }
+  document.write(_tmp,"　　　　",luiyin.three_relation.join(""),"\r\n");
+  document.write(luiyin.four[0],"　　　　",luiyin.three_gan.join(""),"\r\n");
+  document.write(luiyin.four[1],"　　　　",luiyin.three,"\r\n");
+  document.write("　　　　","　　　　",luiyin.three_helper.join(""),"\r\n");
   document.write("\r\n");
-  document.write(luiyin.four[0],"\r\n");
-  document.write(luiyin.four[1],"\r\n");
+  /*
   document.write("三傳:\r\n");
   document.write(luiyin.three_relation.join(""),"\r\n");
   document.write(luiyin.three_gan.join(""),"\r\n");
   document.write(luiyin.three,"\r\n");
   document.write(luiyin.three_helper.join(""),"\r\n");
+  */
   /**
    _output.three = _three;
   _output.three_gan = new Array;
@@ -857,14 +864,14 @@ function QiMen(y,m,d,h,i,s) {
   _output.three_helper = new Array;
   **/
   // 
-  var _size = 20;
+  var _size = 24;
   var _p = new Array(_size);
   for(var i = 0; i < _size;i++)	_p[i] = new Array(_size);
   for(var i = 0; i < _size; i++)
     for(var j =0; j < _size; j++)
       _p[i][j] = '　';
   // 輸出栻盤
-  var _start_at = new Object; _start_at.x = 3; _start_at.y = 3;
+  var _start_at = new Object; _start_at.x = 5; _start_at.y = 5;
   var _sqbx = [[4,9,2],[3,5,7],[8,1,6]];
   for(var i = 0; i < 3; i+=1) {
     for(var j =0; j < 3; j+=1) {
@@ -891,6 +898,7 @@ function QiMen(y,m,d,h,i,s) {
       }
     }
   }
+  
   // astro, 參星
   for(var i in astro.zodiac) {
     for(var j in astro.zodiac[i]) {
@@ -899,133 +907,184 @@ function QiMen(y,m,d,h,i,s) {
   }
   var _g = luiyin.genOnTime;
   var _got = astro.zodiac[_g[11]];if(_got.length) {
-    for(var i = 0; i < 4; i++) if(typeof _got[i] != 'undefined') _p[18][13+i] = _got[i];
-    for(var i = 0; i < 4; i++) if(typeof _got[i+4] != 'undefined') _p[19][13+i] = _got[i+4];
+    for(var i = 0; i < 4; i++) if(typeof _got[i] != 'undefined')   _p[_start_at.y + 16][_start_at.x + 10 + i] = _got[i];
+    for(var i = 0; i < 4; i++) if(typeof _got[i+4] != 'undefined') _p[_start_at.y + 17][_start_at.x + 10 + i] = _got[i+4];
+    for(var i = 0; i < 4; i++) if(typeof _got[i+8] != 'undefined') _p[_start_at.y + 18][_start_at.x + 10 + i] = _got[i+8];
   }
   var _got = astro.zodiac[_g[0]];if(_got.length) {
-    for(var i = 0; i < 4; i++) if(typeof _got[i] != 'undefined') _p[18][8+i] = _got[i];
-    for(var i = 0; i < 4; i++) if(typeof _got[i+4] != 'undefined') _p[19][8+i] = _got[i+4];
+    for(var i = 0; i < 4; i++) if(typeof _got[i] != 'undefined')   _p[_start_at.y + 16][_start_at.x + 5 + i] = _got[i];
+    for(var i = 0; i < 4; i++) if(typeof _got[i+4] != 'undefined') _p[_start_at.y + 17][_start_at.x + 5 + i] = _got[i+4];
+    for(var i = 0; i < 4; i++) if(typeof _got[i+8] != 'undefined') _p[_start_at.y + 18][_start_at.x + 5 + i] = _got[i+8];
   }
   var _got = astro.zodiac[_g[1]];if(_got.length) {
-    for(var i = 0; i < 4; i++) if(typeof _got[i] != 'undefined') _p[18][3+i] = _got[i];
-    for(var i = 0; i < 4; i++) if(typeof _got[i+4] != 'undefined') _p[19][3+i] = _got[i+4];
+    for(var i = 0; i < 4; i++) if(typeof _got[i] != 'undefined')   _p[_start_at.y + 16][_start_at.x + i] = _got[i];
+    for(var i = 0; i < 4; i++) if(typeof _got[i+4] != 'undefined') _p[_start_at.y + 17][_start_at.x + i] = _got[i+4];
+    for(var i = 0; i < 4; i++) if(typeof _got[i+8] != 'undefined') _p[_start_at.y + 18][_start_at.x + i] = _got[i+8];
   }
   var _got = astro.zodiac[_g[2]];if(_got.length) {
-    for(var i = 0; i < 4; i++) if(typeof _got[i] != 'undefined') _p[13+i][1] = _got[i];
-    for(var i = 0; i < 4; i++) if(typeof _got[i+4] != 'undefined') _p[13+i][0] = _got[i+4];
+    for(var i = 0; i < 4; i++) if(typeof _got[i] != 'undefined')   _p[_start_at.y + 10 + i][_start_at.x - 3] = _got[i];
+    for(var i = 0; i < 4; i++) if(typeof _got[i+4] != 'undefined') _p[_start_at.y + 10 + i][_start_at.x - 4 ] = _got[i+4];
+    for(var i = 0; i < 4; i++) if(typeof _got[i+8] != 'undefined') _p[_start_at.y + 10 + i][_start_at.x - 5 ] = _got[i+8];
   }
   var _got = astro.zodiac[_g[3]];if(_got.length) {
-    for(var i = 0; i < 4; i++) if(typeof _got[i] != 'undefined') _p[8+i][1] = _got[i];
-    for(var i = 0; i < 4; i++) if(typeof _got[i+4] != 'undefined') _p[13+i][0] = _got[i+4];
+    for(var i = 0; i < 4; i++) if(typeof _got[i] != 'undefined')   _p[_start_at.y + 5 + i][_start_at.x - 3] = _got[i];
+    for(var i = 0; i < 4; i++) if(typeof _got[i+4] != 'undefined') _p[_start_at.y + 5 + i][_start_at.x - 4 ] = _got[i+4];
+    for(var i = 0; i < 4; i++) if(typeof _got[i+8] != 'undefined') _p[_start_at.y + 5 + i][_start_at.x - 5 ] = _got[i+8];
   }
   var _got = astro.zodiac[_g[4]];if(_got.length) {
-    for(var i = 0; i < 4; i++) if(typeof _got[i] != 'undefined') _p[3+i][1] = _got[i];
-    for(var i = 0; i < 4; i++) if(typeof _got[i+4] != 'undefined') _p[3+i][0] = _got[i+4];
+    for(var i = 0; i < 4; i++) if(typeof _got[i] != 'undefined')   _p[_start_at.y + i][_start_at.x - 3] = _got[i];
+    for(var i = 0; i < 4; i++) if(typeof _got[i+4] != 'undefined') _p[_start_at.y + i][_start_at.x - 4 ] = _got[i+4];
+    for(var i = 0; i < 4; i++) if(typeof _got[i+8] != 'undefined') _p[_start_at.y + i][_start_at.x - 5 ] = _got[i+8];
   }
   var _got = astro.zodiac[_g[5]];if(_got.length) {
-    for(var i = 0; i < 4; i++) if(typeof _got[i] != 'undefined') _p[1][3+i] = _got[i];
-    for(var i = 0; i < 4; i++) if(typeof _got[i+4] != 'undefined') _p[0][3+i] = _got[i+4];
+    for(var i = 0; i < 4; i++) if(typeof _got[i] != 'undefined')   _p[_start_at.y - 3][_start_at.x + i] = _got[i];
+    for(var i = 0; i < 4; i++) if(typeof _got[i+4] != 'undefined') _p[_start_at.y - 4][_start_at.x + i] = _got[i+4];
+    for(var i = 0; i < 4; i++) if(typeof _got[i+8] != 'undefined') _p[_start_at.y - 5][_start_at.x + i] = _got[i+8];
   }
   var _got = astro.zodiac[_g[6]];if(_got.length) {
-    for(var i = 0; i < 4; i++) if(typeof _got[i] != 'undefined') _p[1][8+i] = _got[i];
-    for(var i = 0; i < 4; i++) if(typeof _got[i+4] != 'undefined') _p[0][8+i] = _got[i+4];
+    for(var i = 0; i < 4; i++) if(typeof _got[i] != 'undefined')   _p[_start_at.y - 3][_start_at.x + 5 + i] = _got[i];
+    for(var i = 0; i < 4; i++) if(typeof _got[i+4] != 'undefined') _p[_start_at.y - 4][_start_at.x + 5 + i] = _got[i+4];
+    for(var i = 0; i < 4; i++) if(typeof _got[i+8] != 'undefined') _p[_start_at.y - 5][_start_at.x + 5 + i] = _got[i+8];
   }
   var _got = astro.zodiac[_g[7]];if(_got.length) {
-    for(var i = 0; i < 4; i++) if(typeof _got[i] != 'undefined') _p[1][13+i] = _got[i];
-    for(var i = 0; i < 4; i++) if(typeof _got[i+4] != 'undefined') _p[0][13+i] = _got[i+4];
+    for(var i = 0; i < 4; i++) if(typeof _got[i] != 'undefined')   _p[_start_at.y - 3][_start_at.x + 10 + i] = _got[i];
+    for(var i = 0; i < 4; i++) if(typeof _got[i+4] != 'undefined') _p[_start_at.y - 4][_start_at.x + 10 + i] = _got[i+4];
+    for(var i = 0; i < 4; i++) if(typeof _got[i+8] != 'undefined') _p[_start_at.y - 5][_start_at.x + 10 + i] = _got[i+8];
   }
   var _got = astro.zodiac[_g[8]];if(_got.length) {
-    for(var i = 0; i < 4; i++) if(typeof _got[i] != 'undefined') _p[3+i][18] = _got[i];
-    for(var i = 0; i < 4; i++) if(typeof _got[i+4] != 'undefined') _p[3+i][19] = _got[i+4];
+    for(var i = 0; i < 4; i++) if(typeof _got[i] != 'undefined')   _p[_start_at.y + i][_start_at.x + 16] = _got[i];
+    for(var i = 0; i < 4; i++) if(typeof _got[i+4] != 'undefined') _p[_start_at.y + i][_start_at.x + 17] = _got[i+4];
+    for(var i = 0; i < 4; i++) if(typeof _got[i+8] != 'undefined') _p[_start_at.y + i][_start_at.x + 18] = _got[i+8];
   }
   var _got = astro.zodiac[_g[9]];if(_got.length) {
-    for(var i = 0; i < 4; i++) if(typeof _got[i] != 'undefined') _p[8+i][18] = _got[i];
-    for(var i = 0; i < 4; i++) if(typeof _got[i+4] != 'undefined') _p[13+i][19] = _got[i+4];
+    for(var i = 0; i < 4; i++) if(typeof _got[i] != 'undefined')   _p[_start_at.y + 5 + i][_start_at.x + 16] = _got[i];
+    for(var i = 0; i < 4; i++) if(typeof _got[i+4] != 'undefined') _p[_start_at.y + 5 + i][_start_at.x + 17] = _got[i+4];
+    for(var i = 0; i < 4; i++) if(typeof _got[i+8] != 'undefined') _p[_start_at.y + 5 + i][_start_at.x + 18] = _got[i+8];
   }
   var _got = astro.zodiac[_g[10]];if(_got.length) {
-    for(var i = 0; i < 4; i++) if(typeof _got[i] != 'undefined') _p[13+i][18] = _got[i];
-    for(var i = 0; i < 4; i++) if(typeof _got[i+4] != 'undefined') _p[13+i][19] = _got[i+4];
+    for(var i = 0; i < 4; i++) if(typeof _got[i] != 'undefined')   _p[_start_at.y + 10 + i][_start_at.x + 16] = _got[i];
+    for(var i = 0; i < 4; i++) if(typeof _got[i+4] != 'undefined') _p[_start_at.y + 10 + i][_start_at.x + 17] = _got[i+4];
+    for(var i = 0; i < 4; i++) if(typeof _got[i+8] != 'undefined') _p[_start_at.y + 10 + i][_start_at.x + 18] = _got[i+8];
   }
+  
   // luiyin.genOnTime
   var _got = luiyin.genOnTime;
-  _p[17][14] = '<font color="red">'+ _got[11] + "</font>"; // 亥
-  _p[17][9]  = '<font color="red">'+ _got[0]  + "</font>"; // 子
-  _p[17][4]  = '<font color="red">'+ _got[1]  + "</font>"; // 丑
-  _p[14][2]  = '<font color="red">'+ _got[2]  + "</font>"; // 寅
-  _p[9][2]   = '<font color="red">'+ _got[3]  + "</font>"; // 卯
-  _p[4][2]   = '<font color="red">'+ _got[4]  + "</font>"; // 寅
-  _p[2][4]   = '<font color="red">'+ _got[5]  + "</font>"; // 巳
-  _p[2][9]   = '<font color="red">'+ _got[6]  + "</font>"; // 午
-  _p[2][14]  = '<font color="red">'+ _got[7]  + "</font>"; // 未
-  _p[4][17]  = '<font color="red">'+ _got[8]  + "</font>"; // 申
-  _p[9][17]  = '<font color="red">'+ _got[9]  + "</font>"; // 酉
-  _p[14][17] = '<font color="red">'+ _got[10] + "</font>"; // 戌
+  _p[_start_at.y + 14][_start_at.x + 10 + 1] = '<font color="red">'+ _got[11] + "</font>"; // 亥
+  _p[_start_at.y + 14][_start_at.x + 5 + 1]  = '<font color="red">'+ _got[0]  + "</font>"; // 子
+  _p[_start_at.y + 14][_start_at.x + 0 + 1]  = '<font color="red">'+ _got[1]  + "</font>"; // 丑
+  _p[_start_at.y + 10 + 1][_start_at.x - 1]  = '<font color="red">'+ _got[2]  + "</font>"; // 寅
+  _p[_start_at.y + 5 + 1][_start_at.x - 1]   = '<font color="red">'+ _got[3]  + "</font>"; // 卯
+  _p[_start_at.y + 0 + 1][_start_at.x - 1]   = '<font color="red">'+ _got[4]  + "</font>"; // 寅
+  _p[_start_at.y - 1][_start_at.x + 0 + 1]   = '<font color="red">'+ _got[5]  + "</font>"; // 巳
+  _p[_start_at.y - 1][_start_at.x + 5 + 1]   = '<font color="red">'+ _got[6]  + "</font>"; // 午
+  _p[_start_at.y - 1][_start_at.x + 10 + 1]  = '<font color="red">'+ _got[7]  + "</font>"; // 未
+  _p[_start_at.y + 0 + 1][_start_at.x + 14]  = '<font color="red">'+ _got[8]  + "</font>"; // 申
+  _p[_start_at.y + 5 + 1][_start_at.x + 14]  = '<font color="red">'+ _got[9]  + "</font>"; // 酉
+  _p[_start_at.y + 10 + 1][_start_at.x + 14] = '<font color="red">'+ _got[10] + "</font>"; // 戌
   // LuiYin.helpMan
   var _got = luiyin.helpMan;
-  _p[17][15] = '<font color="red">'+ _got[11] + "</font>"; // 亥
-  _p[17][10] = '<font color="red">'+ _got[0]  + "</font>"; // 子
-  _p[17][5]  = '<font color="red">'+ _got[1]  + "</font>"; // 丑
-  _p[15][2]  = '<font color="red">'+ _got[2]  + "</font>"; // 寅
-  _p[10][2]  = '<font color="red">'+ _got[3]  + "</font>"; // 卯
-  _p[5][2]   = '<font color="red">'+ _got[4]  + "</font>"; // 寅
-  _p[2][5]   = '<font color="red">'+ _got[5]  + "</font>"; // 巳
-  _p[2][10]  = '<font color="red">'+ _got[6]  + "</font>"; // 午
-  _p[2][15]  = '<font color="red">'+ _got[7]  + "</font>"; // 未
-  _p[5][17]  = '<font color="red">'+ _got[8]  + "</font>"; // 申
-  _p[10][17] = '<font color="red">'+ _got[9]  + "</font>"; // 酉
-  _p[15][17] = '<font color="red">'+ _got[10] + "</font>"; // 戌
+  _p[_start_at.y + 14][_start_at.x + 10 + 2] = '<font color="red">'+ _got[11] + "</font>"; // 亥
+  _p[_start_at.y + 14][_start_at.x + 5 + 2]  = '<font color="red">'+ _got[0]  + "</font>"; // 子
+  _p[_start_at.y + 14][_start_at.x + 0 + 2]  = '<font color="red">'+ _got[1]  + "</font>"; // 丑
+  _p[_start_at.y + 10 + 2][_start_at.x - 1]  = '<font color="red">'+ _got[2]  + "</font>"; // 寅
+  _p[_start_at.y + 5 + 2][_start_at.x - 1]   = '<font color="red">'+ _got[3]  + "</font>"; // 卯
+  _p[_start_at.y + 0 + 2][_start_at.x - 1]   = '<font color="red">'+ _got[4]  + "</font>"; // 寅
+  _p[_start_at.y - 1][_start_at.x + 0 + 2]   = '<font color="red">'+ _got[5]  + "</font>"; // 巳
+  _p[_start_at.y - 1][_start_at.x + 5 + 2]   = '<font color="red">'+ _got[6]  + "</font>"; // 午
+  _p[_start_at.y - 1][_start_at.x + 10 + 2]  = '<font color="red">'+ _got[7]  + "</font>"; // 未
+  _p[_start_at.y + 0 + 2][_start_at.x + 14]  = '<font color="red">'+ _got[8]  + "</font>"; // 申
+  _p[_start_at.y + 5 + 2][_start_at.x + 14]  = '<font color="red">'+ _got[9]  + "</font>"; // 酉
+  _p[_start_at.y + 10 + 2][_start_at.x + 14] = '<font color="red">'+ _got[10] + "</font>"; // 戌
   //　輸出時日天干用以穿壬
-    //日旬干
-    var chun_sau = "子丑寅卯辰巳午未申酉戌亥".indexOf(dcol0[1]) - "甲乙丙丁戊己庚辛壬癸".indexOf(tcol0[1]);
+    //年旬干
+    var chun_sau = "子丑寅卯辰巳午未申酉戌亥".indexOf(dcol0[3]) - "甲乙丙丁戊己庚辛壬癸".indexOf(tcol0[3]);
     if(chun_sau < 0) chun_sau += 12;
-    var chun_gan = "甲乙丙丁戊己庚辛壬癸　　甲乙丙丁戊己庚辛壬癸　　".substr(12-chun_sau,12);
+    var chun_gan = "甲乙丙丁戊己庚辛壬癸\uFF0A\uFF0A甲乙丙丁戊己庚辛壬癸\uFF0A\uFF0A".substr(12-chun_sau,12);
     chun_gan = chun_gan.substr("子丑寅卯辰巳午未申酉戌亥".indexOf(luiyin.genOnTime[0])) +
       chun_gan.substr(0,"子丑寅卯辰巳午未申酉戌亥".indexOf(luiyin.genOnTime[0]));
     var _got = chun_gan;
-    _p[17][13] = '<font color="yellow">'+ _got[11] + "</font>"; // 亥
-    _p[17][8]  = '<font color="yellow">'+ _got[0]  + "</font>"; // 子
-    _p[17][3]  = '<font color="yellow">'+ _got[1]  + "</font>"; // 丑
-    _p[13][2]  = '<font color="yellow">'+ _got[2]  + "</font>"; // 寅
-    _p[8][2]   = '<font color="yellow">'+ _got[3]  + "</font>"; // 卯
-    _p[3][2]   = '<font color="yellow">'+ _got[4]  + "</font>"; // 寅
-    _p[2][3]   = '<font color="yellow">'+ _got[5]  + "</font>"; // 巳
-    _p[2][8]   = '<font color="yellow">'+ _got[6]  + "</font>"; // 午
-    _p[2][13]  = '<font color="yellow">'+ _got[7]  + "</font>"; // 未
-    _p[3][17]  = '<font color="yellow">'+ _got[8]  + "</font>"; // 申
-    _p[8][17]  = '<font color="yellow">'+ _got[9]  + "</font>"; // 酉
-    _p[13][17] = '<font color="yellow">'+ _got[10] + "</font>"; // 戌
+    _p[_start_at.y + 15][_start_at.x + 10 + 0] = '<font color="yellow">'+ _got[11] + "</font>"; // 亥
+    _p[_start_at.y + 15][_start_at.x + 5 + 0]  = '<font color="yellow">'+ _got[0]  + "</font>"; // 子
+    _p[_start_at.y + 15][_start_at.x + 0 + 0]  = '<font color="yellow">'+ _got[1]  + "</font>"; // 丑
+    _p[_start_at.y + 10 + 0][_start_at.x - 2]  = '<font color="yellow">'+ _got[2]  + "</font>"; // 寅
+    _p[_start_at.y + 5 + 0][_start_at.x - 2]   = '<font color="yellow">'+ _got[3]  + "</font>"; // 卯
+    _p[_start_at.y + 0 + 0][_start_at.x - 2]   = '<font color="yellow">'+ _got[4]  + "</font>"; // 寅
+    _p[_start_at.y - 2][_start_at.x + 0 + 0]   = '<font color="yellow">'+ _got[5]  + "</font>"; // 巳
+    _p[_start_at.y - 2][_start_at.x + 5 + 0]   = '<font color="yellow">'+ _got[6]  + "</font>"; // 午
+    _p[_start_at.y - 2][_start_at.x + 10 + 0]  = '<font color="yellow">'+ _got[7]  + "</font>"; // 未
+    _p[_start_at.y + 0 + 0][_start_at.x + 15]  = '<font color="yellow">'+ _got[8]  + "</font>"; // 申
+    _p[_start_at.y + 5 + 0][_start_at.x + 15]  = '<font color="yellow">'+ _got[9]  + "</font>"; // 酉
+    _p[_start_at.y + 10 + 0][_start_at.x + 15] = '<font color="yellow">'+ _got[10] + "</font>"; // 戌
+    //月旬干
+    var chun_sau = "子丑寅卯辰巳午未申酉戌亥".indexOf(dcol0[2]) - "甲乙丙丁戊己庚辛壬癸".indexOf(tcol0[2]);
+    if(chun_sau < 0) chun_sau += 12;
+    var chun_gan = "甲乙丙丁戊己庚辛壬癸\uFF0A\uFF0A甲乙丙丁戊己庚辛壬癸\uFF0A\uFF0A".substr(12-chun_sau,12);
+    chun_gan = chun_gan.substr("子丑寅卯辰巳午未申酉戌亥".indexOf(luiyin.genOnTime[0])) +
+      chun_gan.substr(0,"子丑寅卯辰巳午未申酉戌亥".indexOf(luiyin.genOnTime[0]));
+    var _got = chun_gan;
+    _p[_start_at.y + 15][_start_at.x + 10 + 1] = '<font color="yellow">'+ _got[11] + "</font>"; // 亥
+    _p[_start_at.y + 15][_start_at.x + 5 + 1]  = '<font color="yellow">'+ _got[0]  + "</font>"; // 子
+    _p[_start_at.y + 15][_start_at.x + 0 + 1]  = '<font color="yellow">'+ _got[1]  + "</font>"; // 丑
+    _p[_start_at.y + 10 + 1][_start_at.x - 2]  = '<font color="yellow">'+ _got[2]  + "</font>"; // 寅
+    _p[_start_at.y + 5 + 1][_start_at.x - 2]   = '<font color="yellow">'+ _got[3]  + "</font>"; // 卯
+    _p[_start_at.y + 0 + 1][_start_at.x - 2]   = '<font color="yellow">'+ _got[4]  + "</font>"; // 寅
+    _p[_start_at.y - 2][_start_at.x + 0 + 1]   = '<font color="yellow">'+ _got[5]  + "</font>"; // 巳
+    _p[_start_at.y - 2][_start_at.x + 5 + 1]   = '<font color="yellow">'+ _got[6]  + "</font>"; // 午
+    _p[_start_at.y - 2][_start_at.x + 10 + 1]  = '<font color="yellow">'+ _got[7]  + "</font>"; // 未
+    _p[_start_at.y + 0 + 1][_start_at.x + 15]  = '<font color="yellow">'+ _got[8]  + "</font>"; // 申
+    _p[_start_at.y + 5 + 1][_start_at.x + 15]  = '<font color="yellow">'+ _got[9]  + "</font>"; // 酉
+    _p[_start_at.y + 10 + 1][_start_at.x + 15] = '<font color="yellow">'+ _got[10] + "</font>"; // 戌
+    //日旬干
+    var chun_sau = "子丑寅卯辰巳午未申酉戌亥".indexOf(dcol0[1]) - "甲乙丙丁戊己庚辛壬癸".indexOf(tcol0[1]);
+    if(chun_sau < 0) chun_sau += 12;
+    var chun_gan = "甲乙丙丁戊己庚辛壬癸\uFF0A\uFF0A甲乙丙丁戊己庚辛壬癸\uFF0A\uFF0A".substr(12-chun_sau,12);
+    chun_gan = chun_gan.substr("子丑寅卯辰巳午未申酉戌亥".indexOf(luiyin.genOnTime[0])) +
+      chun_gan.substr(0,"子丑寅卯辰巳午未申酉戌亥".indexOf(luiyin.genOnTime[0]));
+    var _got = chun_gan;
+    _p[_start_at.y + 15][_start_at.x + 10 + 2] = '<font color="yellow">'+ _got[11] + "</font>"; // 亥
+    _p[_start_at.y + 15][_start_at.x + 5 + 2]  = '<font color="yellow">'+ _got[0]  + "</font>"; // 子
+    _p[_start_at.y + 15][_start_at.x + 0 + 2]  = '<font color="yellow">'+ _got[1]  + "</font>"; // 丑
+    _p[_start_at.y + 10 + 2][_start_at.x - 2]  = '<font color="yellow">'+ _got[2]  + "</font>"; // 寅
+    _p[_start_at.y + 5 + 2][_start_at.x - 2]   = '<font color="yellow">'+ _got[3]  + "</font>"; // 卯
+    _p[_start_at.y + 0 + 2][_start_at.x - 2]   = '<font color="yellow">'+ _got[4]  + "</font>"; // 寅
+    _p[_start_at.y - 2][_start_at.x + 0 + 2]   = '<font color="yellow">'+ _got[5]  + "</font>"; // 巳
+    _p[_start_at.y - 2][_start_at.x + 5 + 2]   = '<font color="yellow">'+ _got[6]  + "</font>"; // 午
+    _p[_start_at.y - 2][_start_at.x + 10 + 2]  = '<font color="yellow">'+ _got[7]  + "</font>"; // 未
+    _p[_start_at.y + 0 + 2][_start_at.x + 15]  = '<font color="yellow">'+ _got[8]  + "</font>"; // 申
+    _p[_start_at.y + 5 + 2][_start_at.x + 15]  = '<font color="yellow">'+ _got[9]  + "</font>"; // 酉
+    _p[_start_at.y + 10 + 2][_start_at.x + 15] = '<font color="yellow">'+ _got[10] + "</font>"; // 戌
     //時旬干
     var chun_sau = "子丑寅卯辰巳午未申酉戌亥".indexOf(dcol0[0]) - "甲乙丙丁戊己庚辛壬癸".indexOf(tcol0[0]);
     if(chun_sau < 0) chun_sau += 12;
-    var chun_gan = "甲乙丙丁戊己庚辛壬癸　　甲乙丙丁戊己庚辛壬癸　　".substr(12-chun_sau,12);
+    var chun_gan = "甲乙丙丁戊己庚辛壬癸\uFF0A\uFF0A甲乙丙丁戊己庚辛壬癸\uFF0A\uFF0A".substr(12-chun_sau,12);
+    //chun_gan = chun_gan.substr("子丑寅卯辰巳午未申酉戌亥".indexOf(luiyin.genOnTime[0])) +
+    //  chun_gan.substr(0,"子丑寅卯辰巳午未申酉戌亥".indexOf(luiyin.genOnTime[0]));
     var _got = chun_gan;
-    _p[17][16] = '<font color="blue">'+ _got[11] + "</font>"; // 亥
-    _p[17][11] = '<font color="blue">'+ _got[0]  + "</font>"; // 子
-    _p[17][6]  = '<font color="blue">'+ _got[1]  + "</font>"; // 丑
-    _p[16][2]  = '<font color="blue">'+ _got[2]  + "</font>"; // 寅
-    _p[11][2]  = '<font color="blue">'+ _got[3]  + "</font>"; // 卯
-    _p[6][2]   = '<font color="blue">'+ _got[4]  + "</font>"; // 寅
-    _p[2][6]   = '<font color="blue">'+ _got[5]  + "</font>"; // 巳
-    _p[2][11]  = '<font color="blue">'+ _got[6]  + "</font>"; // 午
-    _p[2][16]  = '<font color="blue">'+ _got[7]  + "</font>"; // 未
-    _p[6][17]  = '<font color="blue">'+ _got[8]  + "</font>"; // 申
-    _p[11][17] = '<font color="blue">'+ _got[9]  + "</font>"; // 酉
-    _p[16][17] = '<font color="blue">'+ _got[10] + "</font>"; // 戌
-  document.write("\r\n");
-  
+    _p[_start_at.y + 14][_start_at.x + 10 + 3] = '<font color="blue">'+ _got[11] + "</font>"; // 亥
+    _p[_start_at.y + 14][_start_at.x + 5 + 3]  = '<font color="blue">'+ _got[0]  + "</font>"; // 子
+    _p[_start_at.y + 14][_start_at.x + 0 + 3]  = '<font color="blue">'+ _got[1]  + "</font>"; // 丑
+    _p[_start_at.y + 10 + 3][_start_at.x - 1]  = '<font color="blue">'+ _got[2]  + "</font>"; // 寅
+    _p[_start_at.y + 5 + 3][_start_at.x - 1]   = '<font color="blue">'+ _got[3]  + "</font>"; // 卯
+    _p[_start_at.y + 0 + 3][_start_at.x - 1]   = '<font color="blue">'+ _got[4]  + "</font>"; // 寅
+    _p[_start_at.y - 1][_start_at.x + 0 + 3]   = '<font color="blue">'+ _got[5]  + "</font>"; // 巳
+    _p[_start_at.y - 1][_start_at.x + 5 + 3]   = '<font color="blue">'+ _got[6]  + "</font>"; // 午
+    _p[_start_at.y - 1][_start_at.x + 10 + 3]  = '<font color="blue">'+ _got[7]  + "</font>"; // 未
+    _p[_start_at.y + 0 + 3][_start_at.x + 14]  = '<font color="blue">'+ _got[8]  + "</font>"; // 申
+    _p[_start_at.y + 5 + 3][_start_at.x + 14]  = '<font color="blue">'+ _got[9]  + "</font>"; // 酉
+    _p[_start_at.y + 10 + 3][_start_at.x + 14] = '<font color="blue">'+ _got[10] + "</font>"; // 戌
   ////console.log("LuiYin.helpMan:",luiyin.helpMan);
   ////console.log("LuiYin.genOnTime:",luiyin.genOnTime);
   /** 畫井字 **/
-  for(var i = 2; i < 18; i++) {
-	_p[7][i] = "\uFF0D";
-	_p[12][i] = "\uFF0D";
-	_p[i][7] = "\uFF5C";
-	_p[i][12] = "\uFF5C";
+  for(var i = 0; i < 14; i++) {
+	_p[_start_at.y + 4][_start_at.x + i] = "\uFF0D";
+	_p[_start_at.y + 9][_start_at.x + i] = "\uFF0D";
+	_p[_start_at.y + i][_start_at.x + 4] = "\uFF5C";
+	_p[_start_at.y + i][_start_at.x + 9] = "\uFF5C";
   }
-  _p[7][7] = "\uFF0B";
-  _p[7][12] = "\uFF0B";
-  _p[12][7] = "\uFF0B";
-  _p[12][12] = "\uFF0B";
+  _p[_start_at.y + 4][_start_at.x + 4] = "\uFF0B";
+  _p[_start_at.y + 4][_start_at.x + 9] = "\uFF0B";
+  _p[_start_at.y + 9][_start_at.x + 4] = "\uFF0B";
+  _p[_start_at.y + 9][_start_at.x + 9] = "\uFF0B";
   /** 輸出印出栻盤 **/
   for(var i = 0; i < _size; i++) {//console.log(i,_p[i]);
     document.write(_p[i].join(""),"\r\n");
@@ -2738,7 +2797,7 @@ function _gui_cal() {
   $("#display_god_effect").html(_buffer); _buffer = "";
   //
   $("#display").html("");
-  $("#display").html($("#display_bazi").html());
+  $("#display").html($("#display_qimen").html());
   _buffer = "";
   
   document.write = o_doc_write;
@@ -2815,6 +2874,32 @@ function gui_check_input_date(id) {
   if(s < 0 || s > 59) return false;
   return true;
 }
+function gui_change_text_size() {
+  this.size = 4;
+  this.inc = function() {
+    this.size += 1;
+    $("#display").css("font-size",this.size+"mm");
+  }
+  this.dec = function() {
+    if(this.size <= 2) return;
+    this.size -= 1;
+    $("#display").css("font-size",this.size+"mm");
+  }
+}
+function gui_show_hide_menu() {
+  this.isShow = false;
+  this.switchOnOff = function() {
+    if(this.isShow) {
+      $("#nav2").css("display","none");
+      this.isShow = false;
+    } else {
+      $("#nav2").css("display","block");
+      this.isShow = true;
+    }
+  }
+}
+var _gui_display_text_resize =  new gui_change_text_size();
+var _gui_show_hide_menu = new gui_show_hide_menu();
 $(document).ready(_gui_cal);
 </script>
 <style type="text/css">
@@ -2852,12 +2937,17 @@ div.temp {
 <body style="background-color:#000000">
   <div id="display" style="font-size:4mm;color:#FFFFFF;background-color:#000000;"></div>
   <div id="nav">
-    <div id="logo" onclick="_gui_cal2()">入</div>
-    <div id="logo" onclick="_gui_cal()" >當</div>
-    <div onclick="$('#display').html($('#display_bazi').html())"    >八</div>
-    <div onclick="$('#display').html($('#display_qimen').html())"   >奇</div>
-    <div onclick="$('#display').html($('#display_firdaria').html())">法</div>
-    <div onclick="$('#display').html($('#display_god_effect').html())">神</div>
+    <div onclick="_gui_show_hide_menu.switchOnOff()">佛</div>
+    <div id="nav2" style="display:none">
+      <div id="logo" onclick="_gui_cal2()">輸入</div>
+      <div id="logo" onclick="_gui_cal()" >當下</div>
+      <div onclick="$('#display').html($('#display_bazi').html())"    >八字</div>
+      <div onclick="$('#display').html($('#display_qimen').html())"   >奇門</div>
+      <div onclick="$('#display').html($('#display_firdaria').html())">法達</div>
+      <div onclick="$('#display').html($('#display_god_effect').html())">神煞</div>
+      <div onclick="_gui_display_text_resize.inc()">字＋</div>
+      <div onclick="_gui_display_text_resize.dec()">減－</div>
+    </div>
   </div>
   <div id="display_bazi" class="temp"></div>
   <div id="display_qimen" class="temp"></div>
