@@ -24,6 +24,7 @@ function luiyin_720(day,i) {
   return t720[day][i];
 }
 </script>
+<script language="JavaScript" src="_js/lunar.js"></script>
 <script language="JavaScript">
 "use strict";
 function date_to_julian_day(y,m,d) {
@@ -306,7 +307,7 @@ function JiQi() {
     if(jtoday < jqTime[0]) {
       y = y - 1;
       this.GetPureJQsinceSpring2(y,0,0,0,jqTime);  // 計算上一年節氣(以立春日為新一年)
-      console.log("計算上一年節氣(以立春日為新一年)");
+      //console.log("計算上一年節氣(以立春日為新一年)");
     }
     // 四柱回傳
     var tin = "甲乙丙丁戊己庚辛壬癸甲乙丙丁戊己庚辛壬癸甲乙";
@@ -385,6 +386,7 @@ function BaZi(y,m,d,h,i,s,gender) {
     if(jtoday < jqTime[ii]) {
       //document.write(d, "\t",jiqi.Jtime(false,jtoday),"\r\n");
       document.write(jiqi.Jtime(false,jtoday),"\r\n");
+      document.write(QIMEN_STAR.Solar2Lunar(y,m,d,h,i,s),"\r\n");
       document.write("當前節氣: ",jiqi.jq0[ii-1],"\r\n");
       document.write(jiqi.Jtime(false,jqTime[ii-1]),"\r\n");
       document.write("\r\n");
@@ -625,6 +627,7 @@ function QiMen(y,m,d,h,i,s) {
     if(jtoday < jqTime[ii]) {
       //document.write(d, "\t",jiqi.Jtime(false,jtoday),"\r\n");
       document.write(jiqi.Jtime(false,jtoday),"\r\n");
+      document.write(QIMEN_STAR.Solar2Lunar(y,m,d,h,i,s),"\r\n");
       document.write("當前節氣: ",jiqi.jq0[ii-1],",", jiqi.Jtime(false,jqTime[ii-1]),"\r\n");
       jqpos = ii - 1;
       break;
@@ -845,7 +848,7 @@ function QiMen(y,m,d,h,i,s) {
   //document.write(dcol0.join(""),"\r\n");
   // 輸出四課三傳
   document.write("四課:　　　　　三傳:","\r\n");
-  console.log("tmp",_tmp);
+  //console.log("tmp",_tmp);
   var _tmp = "";
   for(var i = 0; i < 4; i++) {
     //document.write(luiyin.helpMan.charAt(luiyin.genOnTime.indexOf(luiyin.four[0][i])));
