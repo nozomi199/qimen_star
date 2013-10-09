@@ -651,6 +651,8 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
   };
   
   _e.astrology = function(y,m,d,h,i,s) {
+    console.log("_e.astrology","args:",y,m,d,h,i,s);
+    datacounter = 0;
     //var astro = new AHelper2();
     var ch = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
     var chinese_hour = ['卯','寅','丑','子','亥','戌','酉','申','未','午','巳','辰'];
@@ -658,7 +660,7 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
     var tmpOut = '';
     var _out = new Object;
     makechart2("ABC",d,m,y,h,i,"-8",false,
-      114,8,"true",22,12,"false","true","Hong Kong","China");
+      114,8,"true",22,12,"false","true","Hong Kong","China");console.log(planet);console.log(datacounter);
     var first_house = FNzodiac2(house[1]);
     var houses = zodiac.slice(0,12);
     while(first_house != houses[0]) {
@@ -670,6 +672,7 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
       //document.write(astro.planetname[i],"\t",astro.FNzodiac2(astro.planet[i]),"\t",astro.planet[i],"\r\n");
       //document.write(astro.planetname[i],"\t",astro.FNzodiac2(astro.planet[i]),"\r\n");
       var j = FNzodiac2(planet[i]);
+      console.log(planet[i], j);
       temp[j].push(planetname[i]);
       temp2.push([planetname[i],planet[i],0,0]);
     }

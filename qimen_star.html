@@ -609,8 +609,8 @@ function QiMen(y,m,d,h,i,s) {
   //
   var _odocwrite = document.write;
   document.write = function(){};
-  var luiyin = LuiYin(y,m,d,h,i,s);
-  var astro = QIMEN_STAR.astrology(y,m,d,h,i,s);//genResult(y,m,d,h,i,s);
+  var luiyin = LuiYin(y,m,d,h,i,0);
+  var astro = QIMEN_STAR.astrology(y,m,d,h,i,0);//genResult(y,m,d,h,i,s);
   document.write = _odocwrite;
   //
   var jiqi = new JiQi();
@@ -1969,6 +1969,7 @@ function _gui_cal2() {
   } else {
     return;
   }
+  console.log(d);
   BaZi(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds(),g);
   $("#display_bazi").html(_buffer); _buffer = "";
   //LuiYin(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
