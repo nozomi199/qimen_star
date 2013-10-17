@@ -1,0 +1,21 @@
+<html>
+<head>
+<meta charset="utf-8"/>
+<script language="JavaScript" src="_js/jquery.min.js"></script>
+<script language="JavaScript" src="_js/jiqi.js"></script>
+<script language="JavaScript" src="_js/purple_star.js"></script>
+<script language="JavaScript">
+var d=new Date();
+document.write("<pre>");
+document.write(QIMEN_STAR.purple_star.CalYear(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds()),"\r\n");
+document.write(QIMEN_STAR.purple_star.CalMonth(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds()),"\r\n");
+document.write(QIMEN_STAR.purple_star.CalDay(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds()),"\r\n");
+var day = 1;
+for(var i = 01; i < 13; i++)
+  document.write(i,":",QIMEN_STAR.GetBazi(2013,10,day,i*2,0,0).substr(4,4),"\t",QIMEN_STAR.purple_star.CalHour(2013,10,day,i*2,0,0),"\r\n");
+document.write("</pre>");
+</script>
+</head>
+<body>
+</body>
+</html>

@@ -290,7 +290,8 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
         break;
       }
     }
-    return jq0[dgz];
+    //return jq0[dgz];
+    return dgz;
   }
   /**
    * 四柱計算, 子初換日
@@ -361,6 +362,9 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
     return GetGZ(y,m,d,h,i,s);
   };
   _e.CalCurrentJiqi = function(y,m,d,h,i,s) {
+    return jq0[CalCurrentJiqi(y,m,d,h,i,s)];
+  };
+  _e.CalCurrentJiqiIdx = function(y,m,d,h,i,s) {
     return CalCurrentJiqi(y,m,d,h,i,s);
   };
 }(QIMEN_STAR || {}));

@@ -660,7 +660,7 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
     var tmpOut = '';
     var _out = new Object;
     makechart2("ABC",d,m,y,h,i,"-8",false,
-      114,8,"true",22,12,"false","true","Hong Kong","China");console.log(planet);console.log(datacounter);
+      114,8,"true",22,12,"false","true","Hong Kong","China");
     var first_house = FNzodiac2(house[1]);
     var houses = zodiac.slice(0,12);
     while(first_house != houses[0]) {
@@ -672,7 +672,6 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
       //document.write(astro.planetname[i],"\t",astro.FNzodiac2(astro.planet[i]),"\t",astro.planet[i],"\r\n");
       //document.write(astro.planetname[i],"\t",astro.FNzodiac2(astro.planet[i]),"\r\n");
       var j = FNzodiac2(planet[i]);
-      console.log(planet[i], j);
       temp[j].push(planetname[i]);
       temp2.push([planetname[i],planet[i],0,0]);
     }
