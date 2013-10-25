@@ -1,21 +1,67 @@
-<html>
+﻿<html>
 <head>
 <meta charset="utf-8"/>
 <script language="JavaScript" src="_js/jquery.min.js"></script>
 <script language="JavaScript" src="_js/jiqi.js"></script>
 <script language="JavaScript" src="_js/purple_star.js"></script>
+<script language="JavaScript" src="_js/qimen.js"></script>
+<script language="JavaScript" src="_js/qimen_special.js"></script>
 <script language="JavaScript">
-var d=new Date();
+$(document).ready(function(){
+  var d=new Date();
+  var j = QIMEN_STAR.jiqi.GetJiqiInfo(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
+  var table = $("<table border='0' bgcolor='gray' cellspacing='1'></table>");
+  var tr = $("<tr></tr>");
+  for(var i = 0; i < 9; i++)
+    $('<td bgcolor="white"></td>').appendTo(tr);
+  for(var i = 0; i < 9; i++)
+    tr.clone().appendTo(table);
+  table.clone().appendTo($("body"));
+  //
+  var _kk = [[4,9,2],[3,5,7],[8,1,6]];
+  var q = QIMEN_STAR.qimen.calc(j);
+  var q2 = new Array();
+  var _td = $("td").css("font-size",'6px');
+  
+  //
+  
+  //
+  for(var i = 0; i < 81; i++) {
+    //var j = i % 27;
+    //var k = (i - j) / 27;
+    var j = i % 9;
+    var k = (i - j) / 9;
+    j = j % 3; k = k % 3;
+    //var _i = k* 27 + (j * 9 + 4);
+    var m = _kk[k][j] - 1;
+    
+    if(m == 4) {
+      $(_td[i]).css("background-color","#FCC");
+      $(_td[i]).html("　　　<br />　　　<br />　　"+q.dei_pan[m]);
+      continue;
+    }
+    $(_td[i]).html(
+      q.house_door[m]+'　'+q.houses_god[m]+"<br />\n"+
+      '　'+q.houses_star[m]+q.tin_pan[m]+"<br />\n"+
+      '　　'+q.dei_pan[m]
+      
+    );
+  }
+  //console.log($("td"));
+});
+/*
 document.write("<pre>");
 document.write(QIMEN_STAR.purple_star.CalYear(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds()),"\r\n");
 document.write(QIMEN_STAR.purple_star.CalMonth(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds()),"\r\n");
 document.write(QIMEN_STAR.purple_star.CalDay(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds()),"\r\n");
 var day = 1;
 for(var i = 01; i < 13; i++)
-  document.write(i,":",QIMEN_STAR.GetBazi(2013,10,day,i*2,0,0).substr(4,4),"\t",QIMEN_STAR.purple_star.CalHour(2013,10,day,i*2,0,0),"\r\n");
+  document.write(i,":",QIMEN_STAR.jiqi.GetBazi(2013,10,day,i*2,0,0).substr(4,4),"\t",QIMEN_STAR.purple_star.CalHour(2013,10,day,i*2,0,0),"\r\n");
 document.write("</pre>");
+*/
 </script>
 </head>
-<body>
+<body style="font-size:6pt">
+
 </body>
 </html>

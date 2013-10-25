@@ -271,6 +271,18 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
     return dytm.trim();
   };
   /**
+   * 計算當年節氣
+   */
+  function CalJiqiByYear(y,m,d,h,i,s,_array) {
+    var jtoday = date_to_julian_day2(y,m,d) + 
+      date_to_julian_time(h,i,s);
+    GetPureJQsinceSpring2(y,0,0,0,_array);  // 計算當年節氣(以立春日為新一年)
+    if(jtoday < _array[0]) {
+      y = y - 1;
+      GetPureJQsinceSpring2(y,0,0,0,_array);  // 計算上一年節氣(以立春日為新一年)
+    }
+  }
+  /**
    * 計算當前節氣
    */
   function CalCurrentJiqi(y,m,d,h,i,s) {
@@ -358,13 +370,30 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
     
     return rtn_gz.join("");
   };
-  _e.GetBazi = function(y,m,d,h,i,s) {
+  _e.jiqi = new Object();
+  _e.jiqi.GetBazi = function(y,m,d,h,i,s) {
     return GetGZ(y,m,d,h,i,s);
   };
-  _e.CalCurrentJiqi = function(y,m,d,h,i,s) {
+  _e.jiqi.CalCurrentJiqi = function(y,m,d,h,i,s) {
     return jq0[CalCurrentJiqi(y,m,d,h,i,s)];
   };
-  _e.CalCurrentJiqiIdx = function(y,m,d,h,i,s) {
+  _e.jiqi.CalCurrentJiqiIdx = function(y,m,d,h,i,s) {
     return CalCurrentJiqi(y,m,d,h,i,s);
+  };
+  _e.jiqi.GetJulianToday = function(y,m,d,h,i,s) {
+    return date_to_julian_day2(y,m,d) + date_to_julian_time(h,i,s);
+  };
+  _e.jiqi.JTime = function(jtoday) {
+    return Jtime(false,jtoday);
+  };
+  _e.jiqi.GetJiqiInfo = function(y,m,d,h,i,s) {
+    var _out = new Array();
+    _out.julian = date_to_julian_day2(y,m,d) + date_to_julian_time(h,i,s);
+    _out.jiqi = jq0.slice();
+    _out.currentJiqiIdx = CalCurrentJiqi(y,m,d,h,i,s);
+    _out.bazi = GetGZ(y,m,d,h,i,s);
+    _out.wholeYear = new Array();
+    CalJiqiByYear(y,m,d,h,i,s,_out.wholeYear);
+    return _out;
   };
 }(QIMEN_STAR || {}));

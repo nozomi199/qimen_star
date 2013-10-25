@@ -673,7 +673,7 @@ function QiMen(y,m,d,h,i,s) {
       while(using_kook > 9) using_kook -= 9;
     }
   }
-  //console.log("using_kook",using_kook);
+  console.log("using_kook",using_kook);
   document.write("陰陽".charAt(dun_type),"遁"," 一二三四五六七八九".charAt(using_kook),"局","\r\n");
   /** 重計時旬首 **/
   //　時旬首
@@ -687,7 +687,7 @@ function QiMen(y,m,d,h,i,s) {
   } else { // 陰遁
     //var dei_pan = " 戊乙丙丁癸壬辛庚己戊乙丙丁癸壬辛庚己".substr(9-using_kook+1,9);
     var dei_pan = "戊乙丙丁癸壬辛庚己戊乙丙丁癸壬辛庚己".substr(9-using_kook+1,9);
-  }
+  }console.log(dei_pan);
   // 找值符
   var chun_sau = " 子戌申午辰寅".indexOf("子寅辰午申戌".charAt(parseInt(chun_sau/2)));
   var jik_fu_idx = 0;
