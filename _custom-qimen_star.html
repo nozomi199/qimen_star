@@ -673,7 +673,7 @@ function QiMen(y,m,d,h,i,s) {
       while(using_kook > 9) using_kook -= 9;
     }
   }
-  console.log("using_kook",using_kook);
+  //console.log("using_kook",using_kook);
   document.write("陰陽".charAt(dun_type),"遁"," 一二三四五六七八九".charAt(using_kook),"局","\r\n");
   /** 重計時旬首 **/
   //　時旬首
@@ -687,7 +687,7 @@ function QiMen(y,m,d,h,i,s) {
   } else { // 陰遁
     //var dei_pan = " 戊乙丙丁癸壬辛庚己戊乙丙丁癸壬辛庚己".substr(9-using_kook+1,9);
     var dei_pan = "戊乙丙丁癸壬辛庚己戊乙丙丁癸壬辛庚己".substr(9-using_kook+1,9);
-  }console.log(dei_pan);
+  }
   // 找值符
   var chun_sau = " 子戌申午辰寅".indexOf("子寅辰午申戌".charAt(parseInt(chun_sau/2)));
   var jik_fu_idx = 0;
@@ -1888,7 +1888,7 @@ function god_effect_output(yy,mm,dd,hh,ii,ss) {
     jiqi.GetPureJQsinceSpring2(yy-1,0,0,0,jqTime);  // 計算上一年節氣(以立春日為新一年)
   }
   var fcol = jiqi.GetGZ(yy,mm,dd,hh,ii,ss); // 排四柱
-  document.write("<pre>");
+  document.write("<pre style=''>");
   var _out = new Array();
   for(var i = 0; i < 12; i++) _out["子丑寅卯辰巳午未申酉戌亥".charAt(i)] = new Array();
   var _ge = _god_effect_year(fcol);
@@ -1909,7 +1909,7 @@ function god_effect_output(yy,mm,dd,hh,ii,ss) {
     document.write(i,"\r\n");
     for(var j in _out[i]) {
       document.write(_out[i][j].slice(0,2));
-      if(_counter % 5 == 0)
+      if(_counter % 15 == 0)
         document.write("\r\n");
       else
         document.write("　");
@@ -1941,14 +1941,24 @@ function _gui_cal() {
   $("#display_bazi").html(_buffer); _buffer = "";
   //LuiYin(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
   QiMen(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
-  $("#display_qimen").html(_buffer); _buffer = "";
+  var _buff = _buffer.split("\r\n");
+  var _b1 = "";
+  for(var i = 1; i < 38; i++) {
+    _b1 += _buff[i] + "\r\n";
+  }
+  var _b2 = "";
+  for(var i = 38; i < _buff.length - 1; i++) {
+    _b2 += _buff[i] + "\r\n";
+  }
+  $("#display_qimen").html("<table border='0'><tr><td><pre style='color:#FFFFFF'>"+_b1+"</pre></td><td valign='top'><pre style='color:#FFFFFF'>"+_b2+"</pre></td></tr></table>"); _buffer = "";
+  //$("#display_qimen").html(_buffer); _buffer = "";
   astro_firdaria(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
   $("#display_firdaria").html(_buffer); _buffer = "";
   god_effect_output(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
   $("#display_god_effect").html(_buffer); _buffer = "";
   //
-  $("#display").html("");
-  $("#display").html($("#display_bazi").html());
+  //$("#display").html("");
+  //$("#display").html($("#display_bazi").html());
   _buffer = "";
   
   document.write = o_doc_write;
@@ -1984,18 +1994,29 @@ function _gui_cal2() {
   } else {
     return;
   }
+  console.log(d);
   BaZi(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds(),g);
   $("#display_bazi").html(_buffer); _buffer = "";
   //LuiYin(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
   QiMen(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
-  $("#display_qimen").html(_buffer); _buffer = "";
+  var _buff = _buffer.split("\r\n");
+  var _b1 = "";
+  for(var i = 1; i < 38; i++) {
+    _b1 += _buff[i] + "\r\n";
+  }
+  var _b2 = "";
+  for(var i = 38; i < _buff.length - 1; i++) {
+    _b2 += _buff[i] + "\r\n";
+  }
+  $("#display_qimen").html("<table border='0'><tr><td><pre style='color:#FFFFFF'>"+_b1+"</pre></td><td valign='top'><pre style='color:#FFFFFF'>"+_b2+"</pre></td></tr></table>"); _buffer = "";
+  //
   astro_firdaria(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
   $("#display_firdaria").html(_buffer); _buffer = "";
   god_effect_output(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
   $("#display_god_effect").html(_buffer); _buffer = "";
   //
-  $("#display").html("");
-  $("#display").html($("#display_bazi").html());
+  //$("#display").html("");
+  //$("#display").html($("#display_bazi").html());
   _buffer = "";
   document.write = o_doc_write;
 };
@@ -2024,9 +2045,6 @@ function gui_check_input_date(id) {
   if(i < 0 || i > 59) return false;
   if(s < 0 || s > 59) return false;
   return true;
-}
-function gui_append_input(val) {
-  $("#txtDate").val($("#txtDate").val()+val);
 }
 function gui_change_text_size() {
   this.size = 4;
@@ -2062,7 +2080,6 @@ input { border: 2pt solid #CCC; margin: 5pt; padding: 5pt }
 #nav {
   position:fixed;right: 0; top: 0;background-color: #FCC;
   font-size: 1cm;
-  opacity:0.8;
   overflow: hidden;
   /** disable select **/
   -webkit-touch-callout: none;
@@ -2088,23 +2105,72 @@ div.temp {
 }
 </style>
 </head>
-<body style="background-color:#000000;margin:0;padding:0">
-  <div id="display" style="font-size:4mm;color:#FFFFFF;background-color:#000000;margin: 3px 3mm"></div>
+<body style="background-color:#000000;margin:0">
+  <div style="margin:0; padding:2pt;background-color:#FFCCCC;">
+     <span>奇門穿壬參星</span>
+  </div>
+  <div id="display2" style="font-size:8pt;color:#FFFFFF;background-color:#000000;clear:both;position:relative">
+      <div id="display_bazi" style="position:absolute;top:0;left:0;width:3in" ></div>
+      <div id="display_qimen" style="position:absolute;top:0;left:3in;width:3in;color:#FFFFFF"></div>
+  </div>
+  <div id="_yi" style="position:fixed;right:0;bottom:0;background-color:#CCCCCC;overflow:hidden;display:block;text-align:right">
+    <div id="_yi_img_blk">
+      <img id="imgYi1" width="" height="" /><br />
+      <img id="imgYi2" width="" height="" />
+      <img id="imgYi3" width="" height="" />
+    </div>
+    <div>
+    <script language="JavaScript">
+    function gui_show_yi(imgid) {
+      $('#'+imgid).attr('src',
+         '_yi/'+
+         $('#cboYi1').val()+
+         $('#cboYi2').val()+
+         '.gif');
+    }
+    </script>
+    <form onsubmit="return false;" style="margin:0;padding:0">
+      <select id="cboYi1">
+         <option value="6" selected>天</option>
+         <option value="2" >地</option>
+         <option value="1" >水</option>
+         <option value="9" >火</option>
+         <option value="4" >風</option>
+         <option value="3" >雷</option>
+         <option value="8" >山</option>
+         <option value="7" >澤</option>
+      </select>
+      <select id="cboYi2">
+         <option value="6" selected>天</option>
+         <option value="2" >地</option>
+         <option value="1" >水</option>
+         <option value="9" >火</option>
+         <option value="4" >風</option>
+         <option value="3" >雷</option>
+         <option value="8" >山</option>
+         <option value="7" >澤</option>
+      </select>
+      <input type="button" value="左卦" onclick="gui_show_yi('imgYi2')" />
+      <input type="button" value="上卦" onclick="gui_show_yi('imgYi1')" />
+      <input type="button" value="右卦" onclick="gui_show_yi('imgYi3')" />
+      <input type="button" value="顯" onclick="$('#_yi_img_blk').show()" />
+      <input type="button" value="隱" onclick="$('#_yi_img_blk').hide()" />
+      
+    </form>
+    </div>
+  </div>
+  <div id="display" style="position:fixed; left:0;top:0;right:0;bottom:0;background-color:#000000;color:#FFFFFF;overflow:scroll;display:none"></div>
+  
   <div id="nav">
     <div onclick="_gui_show_hide_menu.switchOnOff()">佛</div>
     <div id="nav2" style="display:none">
       <div id="logo" onclick="_gui_cal2()">輸入</div>
       <div id="logo" onclick="_gui_cal()" >當下</div>
-      <div onclick="$('#display').html($('#display_bazi').html())"    >八字</div>
-      <div onclick="$('#display').html($('#display_qimen').html())"   >奇門</div>
-      <div onclick="$('#display').html($('#display_firdaria').html())">法達</div>
-      <div onclick="$('#display').html($('#display_god_effect').html())">神煞</div>
-      <div onclick="_gui_display_text_resize.inc()">字＋</div>
-      <div onclick="_gui_display_text_resize.dec()">減－</div>
+      <div onclick="$('#display').html($('#display_firdaria').html()).show()">法達</div>
+      <div onclick="$('#display').html($('#display_god_effect').html()).show()">神煞</div>
+      <div onclick="$('#display').hide()">閉</div>
     </div>
   </div>
-  <div id="display_bazi" class="temp"></div>
-  <div id="display_qimen" class="temp"></div>
   <div id="display_firdaria" class="temp"></div>
   <div id="display_god_effect" class="temp"></div>
   
