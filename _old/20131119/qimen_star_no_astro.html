@@ -12,8 +12,6 @@
 <script language="javascript" src="_js/jquery.min.js"></script>
 <script language="javascript" src="_js/jiqi.js"></script>
 <script language="javascript" src="_js/purple_star.js"></script>
-<script language="javascript" src="_js/qimen_min.js"></script>
-
 <script language="JavaScript">
 function luiyin_720(day,i) {
   "use strict";
@@ -22,7 +20,6 @@ function luiyin_720(day,i) {
 }
 </script>
 <script language="JavaScript" src="_js/lunar.js"></script>
-<script language="JavaScript" src="_js/astro.js"></script>
 <script language="JavaScript">
 "use strict";
 function date_to_julian_day(y,m,d) {
@@ -305,7 +302,7 @@ function JiQi() {
     if(jtoday < jqTime[0]) {
       y = y - 1;
       this.GetPureJQsinceSpring2(y,0,0,0,jqTime);  // 計算上一年節氣(以立春日為新一年)
-      console.log("計算上一年節氣(以立春日為新一年)");
+      //console.log("計算上一年節氣(以立春日為新一年)");
     }
     // 四柱回傳
     var tin = "甲乙丙丁戊己庚辛壬癸甲乙丙丁戊己庚辛壬癸甲乙";
@@ -333,7 +330,7 @@ function JiQi() {
     var thes = ((jda - Math.floor(jda)) * 86400) + 3600;
     var dayjd = Math.floor(jda) + thes / 86400;
     dgz = (Math.floor(dayjd + 49) % 60 + 60) % 60;
-    // if(h >= 23) dgz--; // 子正換日處理, 測試用
+    if(h >= 23) dgz--; // 子正換日處理, 測試用
     rtn_gz.push(tin[dgz % 10]); // 日干
     rtn_gz.push(di[dgz % 12]);  // 日支
     // 計時柱
@@ -355,7 +352,6 @@ function JiQi() {
     var gan_idx = [0,2,4,6,8,0,2,4,6,8];
     rtn_gz.push(tin.substr(gan_idx[tin.indexOf(rtn_gz[8])],12).charAt(minhz)); // 分干
     rtn_gz.push(di[minhz % 12]);  // 分支
-    
     return rtn_gz.join("");
   };
 }
@@ -606,11 +602,8 @@ function QiMen(y,m,d,h,i,s) {
   //
   var _odocwrite = document.write;
   document.write = function(){};
-  var luiyin = LuiYin(y,m,d,h,i,0);
-  var astro = QIMEN_STAR.astrology(y,m,d,h,i,0);//genResult(y,m,d,h,i,s);
-  var _small_qimen = QIMEN_STAR.minQimen(h,i,s);
-  console.log(_small_qimen);
-  
+  var luiyin = LuiYin(y,m,d,h,i,s);
+  //var astro = genResult(y,m,d,h,i,s);return;
   document.write = _odocwrite;
   //
   var jiqi = new JiQi();
@@ -629,7 +622,7 @@ function QiMen(y,m,d,h,i,s) {
     if(jtoday < jqTime[ii]) {
       //document.write(d, "\t",jiqi.Jtime(false,jtoday),"\r\n");
       document.write(jiqi.Jtime(false,jtoday),"\r\n");
-      document.write(QIMEN_STAR.Solar2Lunar(y,m,d,h,i,s),"\r\n");      
+      document.write(QIMEN_STAR.Solar2Lunar(y,m,d,h,i,s),"\r\n");
       document.write("當前節氣: ",jiqi.jq0[ii-1],",", jiqi.Jtime(false,jqTime[ii-1]),"\r\n");
       jqpos = ii - 1;
       break;
@@ -690,7 +683,7 @@ function QiMen(y,m,d,h,i,s) {
   } else { // 陰遁
     //var dei_pan = " 戊乙丙丁癸壬辛庚己戊乙丙丁癸壬辛庚己".substr(9-using_kook+1,9);
     var dei_pan = "戊乙丙丁癸壬辛庚己戊乙丙丁癸壬辛庚己".substr(9-using_kook+1,9);
-  }//console.log(dei_pan);
+  }
   // 找值符
   var chun_sau = " 子戌申午辰寅".indexOf("子寅辰午申戌".charAt(parseInt(chun_sau/2)));
   var jik_fu_idx = 0;
@@ -729,11 +722,6 @@ function QiMen(y,m,d,h,i,s) {
   //console.log("jik_fu_mun:",jik_fu_mun);
   if(jik_fu_mun == 5) jik_fu_mun = 2; // 中宮寄坤二宮
   document.write("值使"," 休死傷杜中開驚生景".charAt(jik_fu_idx),"門落",jik_fu_mun,"宮","\r\n");
-  /**
-   * 輸出秒家奇門基本資料
-   */
-  document.write("秒家：干支:", _small_qimen['info']['干支'],', ',_small_qimen['info']['遁'],'遁',_small_qimen['info']['局'],'局',"\r\n");
-  
   // 計算星盤
   var houses_star_target = "18349276".indexOf(jik_fu_star);
   var houses_star_idx = "183492761834927618349276".substr(8-houses_star_target+1, 8);
@@ -817,19 +805,18 @@ function QiMen(y,m,d,h,i,s) {
       god_pan.push(houses_god["18349276".indexOf(i)]);
     }
   }
-  /**
+  
   // 輸出天盤
-  document.write("天盤：",tin_pan.join(""),"\r\n");
+  //document.write("天盤：",tin_pan.join(""),"\r\n");
   // 輸出地盤
-  document.write("地盤：",dei_pan,"\r\n");
+  //document.write("地盤：",dei_pan,"\r\n");
   // 輸出星盤
-  document.write("星盤：",houses_star.join(""),"\r\n");
+  //document.write("星盤：",houses_star.join(""),"\r\n");
   // 輸出門盤
-  document.write("門盤：",house_door.join(""),"\r\n");
+  //document.write("門盤：",house_door.join(""),"\r\n");
   // 輸出八神
-  document.write("神盤：",god_pan.join(""),"\r\n");
+  //document.write("神盤：",god_pan.join(""),"\r\n");
   // 完結
-  **/
   // 輸出八字
   document.write("八字:");
   for(var i = 0; i < 12; i += 2) document.write("　",fcol.substr(i, 2));
@@ -837,17 +824,17 @@ function QiMen(y,m,d,h,i,s) {
   // 計空亡
   document.write("空亡:");
   var _func = function() {
-	var _dcol0 = dcol0.slice(), _tcol0 = tcol0.slice();
-	_tcol0.unshift(fcol[8]);_dcol0.unshift(fcol[9]);
-	_tcol0.unshift(fcol[10]);_dcol0.unshift(fcol[11]);
-	//console.log(_tcol0,_dcol0);
-	for(var i = 0; i < 6; i++) {
-		var chun_sau = "子丑寅卯辰巳午未申酉戌亥".indexOf(_dcol0[5-i]) - "甲乙丙丁戊己庚辛壬癸".indexOf(_tcol0[5-i]);
-		if(chun_sau < 0) chun_sau += 12;
-		var hung_mon = chun_sau - 2;
-		if(hung_mon < 0) hung_mon += 12;
-		document.write("　","子丑寅卯辰巳午未申酉戌亥".substr(hung_mon, 2));
-	}
+    var _dcol0 = dcol0.slice(), _tcol0 = tcol0.slice();
+    _tcol0.unshift(fcol[8]);_dcol0.unshift(fcol[9]);
+    _tcol0.unshift(fcol[10]);_dcol0.unshift(fcol[11]);
+    //console.log(_tcol0,_dcol0);
+    for(var i = 0; i < 6; i++) {
+      var chun_sau = "子丑寅卯辰巳午未申酉戌亥".indexOf(_dcol0[5-i]) - "甲乙丙丁戊己庚辛壬癸".indexOf(_tcol0[5-i]);
+      if(chun_sau < 0) chun_sau += 12;
+      var hung_mon = chun_sau - 2;
+      if(hung_mon < 0) hung_mon += 12;
+      document.write("　","子丑寅卯辰巳午未申酉戌亥".substr(hung_mon, 2));
+    }
 	document.write("\r\n");
   };
   _func();
@@ -856,6 +843,7 @@ function QiMen(y,m,d,h,i,s) {
   //document.write(dcol0.join(""),"\r\n");
   // 輸出四課三傳
   document.write("四課:　　　　　三傳:","\r\n");
+  //console.log("tmp",_tmp);
   var _tmp = "";
   for(var i = 0; i < 4; i++) {
     //document.write(luiyin.helpMan.charAt(luiyin.genOnTime.indexOf(luiyin.four[0][i])));
@@ -879,23 +867,21 @@ function QiMen(y,m,d,h,i,s) {
   _output.three_relation = new Array;
   _output.three_helper = new Array;
   **/
-  //
-  // 計紫白飛星
-  var purple_star_y = QIMEN_STAR.purple_star.CalYear(y,m,d,h,i,0);
-  var purple_star_m = QIMEN_STAR.purple_star.CalMonth(y,m,d,h,i,0);
-  var purple_star_d = QIMEN_STAR.purple_star.CalDay(y,m,d,h,i,0);
-  var purple_star_h = QIMEN_STAR.purple_star.CalHour(y,m,d,h,i,0);
-  //console.log(purple_star_y);
-  //console.log(purple_star_m);
   // 
-  var _size = 24;
+  var _size = 18;
   var _p = new Array(_size);
   for(var i = 0; i < _size;i++)	_p[i] = new Array(_size);
   for(var i = 0; i < _size; i++)
     for(var j =0; j < _size; j++)
       _p[i][j] = '　';
+  // 計紫白飛星
+  var purple_star_y = QIMEN_STAR.purple_star.CalYear(y,m,d,h,i,0);
+  var purple_star_m = QIMEN_STAR.purple_star.CalMonth(y,m,d,h,i,0);
+  var purple_star_d = QIMEN_STAR.purple_star.CalDay(y,m,d,h,i,0);
+  var purple_star_h = QIMEN_STAR.purple_star.CalHour(y,m,d,h,i,0);
+  
   // 輸出栻盤
-  var _start_at = new Object; _start_at.x = 5; _start_at.y = 5;
+  var _start_at = new Object; _start_at.x = 2; _start_at.y = 2;
   var _sqbx = [[4,9,2],[3,5,7],[8,1,6]];
   for(var i = 0; i < 3; i+=1) {
     for(var j =0; j < 3; j+=1) {
@@ -905,9 +891,9 @@ function QiMen(y,m,d,h,i,s) {
         _p[_i+3][_j] = dei_pan[5-1];
         // 輸出妙派奇門流年紫白飛星
         _p[_start_at.y + 1 * 5 + 3][_start_at.x + 1 * 5 + 2]   = "<font color='purple'>"+purple_star_y[_sqbx[i][j]-1]+"</font>";
-        //_p[_start_at.y + 1 * 5 + 3][_start_at.x + 1 * 5 + 1]   = "<font color='purple'>"+purple_star_m[_sqbx[i][j]-1]+"</font>";
-        //_p[_start_at.y + 1 * 5 + 2][_start_at.x + 1 * 5 + 1]   = "<font color='purple'>"+purple_star_d[_sqbx[i][j]-1]+"</font>";
-        //_p[_start_at.y + 1 * 5 + 2][_start_at.x + 1 * 5 + 2]   = "<font color='purple'>"+purple_star_h[_sqbx[i][j]-1]+"</font>";
+        _p[_start_at.y + 1 * 5 + 3][_start_at.x + 1 * 5 + 1]   = "<font color='purple'>"+purple_star_m[_sqbx[i][j]-1]+"</font>";
+        _p[_start_at.y + 1 * 5 + 2][_start_at.x + 1 * 5 + 1]   = "<font color='purple'>"+purple_star_d[_sqbx[i][j]-1]+"</font>";
+        _p[_start_at.y + 1 * 5 + 2][_start_at.x + 1 * 5 + 2]   = "<font color='purple'>"+purple_star_h[_sqbx[i][j]-1]+"</font>";
         continue;
       }
       //var _i = _start_at.x + i * 4 + 1;
@@ -920,102 +906,18 @@ function QiMen(y,m,d,h,i,s) {
       _p[_i+1][_j+2] = houses_star[_sqbx[i][j]-1];
       _p[_i+2][_j+3] = tin_pan[_sqbx[i][j]-1];
       _p[_i+3][_j+3] = dei_pan[_sqbx[i][j]-1];
-      /**
-       *
-       */
+      //console.log(_sqbx[i][j],': ',houses_star[_sqbx[i][j]-1]);
       if(houses_star[_sqbx[i][j]-1] == '苪') {
         //_p[_i+2][_j+1] = houses_star[5-1];
-        _p[_i+1][_j] = tin_pan[5-1];
+        _p[_i+2][_j] = tin_pan[5-1];
       }
       // 輸出妙派奇門流年紫白飛星
       _p[_i+3][_j+2]   = "<font color='purple'>"+purple_star_y[_sqbx[i][j]-1]+"</font>";
-      //_p[_i+3][_j+1]   = "<font color='purple'>"+purple_star_m[_sqbx[i][j]-1]+"</font>";
-      //_p[_i+2][_j+1]   = "<font color='purple'>"+purple_star_d[_sqbx[i][j]-1]+"</font>";
-      //_p[_i+2][_j+2]   = "<font color='purple'>"+purple_star_h[_sqbx[i][j]-1]+"</font>";
-      /**
-       * 神刻奇門
-       */
-      _p[_i+3][_j+1] = '<font color="gray">'+_small_qimen['地'][_sqbx[i][j]]+'</font>';
-      _p[_i+2][_j+1] = '<font color="gray">'+_small_qimen['天'][_sqbx[i][j]]+'</font>';
-      _p[_i+0][_j+1] = '<font color="gray">'+_small_qimen['門'][_sqbx[i][j]]+'</font>';
-      _p[_i+2][_j+2] = '<font color="gray">'+_small_qimen['星'][_sqbx[i][j]]+'</font>';
-      _p[_i+0][_j+2] = '<font color="gray">'+_small_qimen['神'][_sqbx[i][j]]+'</font>';
-      //console.log(_sqbx[i][j],': ',houses_star[_sqbx[i][j]-1]);
-      if(_small_qimen['星'][_sqbx[i][j]] == '苪') {
-        //_p[_i+2][_j+1] = houses_star[5-1];
-        _p[_i+2][_j] = '<font color="gray">'+_small_qimen['天'][5-1]+'</font>';
-      }
+      _p[_i+3][_j+1]   = "<font color='purple'>"+purple_star_m[_sqbx[i][j]-1]+"</font>";
+      _p[_i+2][_j+1]   = "<font color='purple'>"+purple_star_d[_sqbx[i][j]-1]+"</font>";
+      _p[_i+2][_j+2]   = "<font color='purple'>"+purple_star_h[_sqbx[i][j]-1]+"</font>";
     }
   }
-  
-  // astro, 參星
-  for(var i in astro.zodiac) {
-    for(var j in astro.zodiac[i]) {
-      astro.zodiac[i][j] = '<font color="#00FF00">'+astro.zodiac[i][j]+'</font>';
-    }
-  }
-  var _g = luiyin.genOnTime;
-  var _got = astro.zodiac[_g[11]];if(_got.length) {
-    for(var i = 0; i < 4; i++) if(typeof _got[i] != 'undefined')   _p[_start_at.y + 16][_start_at.x + 10 + i] = _got[i];
-    for(var i = 0; i < 4; i++) if(typeof _got[i+4] != 'undefined') _p[_start_at.y + 17][_start_at.x + 10 + i] = _got[i+4];
-    for(var i = 0; i < 4; i++) if(typeof _got[i+8] != 'undefined') _p[_start_at.y + 18][_start_at.x + 10 + i] = _got[i+8];
-  }
-  var _got = astro.zodiac[_g[0]];if(_got.length) {
-    for(var i = 0; i < 4; i++) if(typeof _got[i] != 'undefined')   _p[_start_at.y + 16][_start_at.x + 5 + i] = _got[i];
-    for(var i = 0; i < 4; i++) if(typeof _got[i+4] != 'undefined') _p[_start_at.y + 17][_start_at.x + 5 + i] = _got[i+4];
-    for(var i = 0; i < 4; i++) if(typeof _got[i+8] != 'undefined') _p[_start_at.y + 18][_start_at.x + 5 + i] = _got[i+8];
-  }
-  var _got = astro.zodiac[_g[1]];if(_got.length) {
-    for(var i = 0; i < 4; i++) if(typeof _got[i] != 'undefined')   _p[_start_at.y + 16][_start_at.x + i] = _got[i];
-    for(var i = 0; i < 4; i++) if(typeof _got[i+4] != 'undefined') _p[_start_at.y + 17][_start_at.x + i] = _got[i+4];
-    for(var i = 0; i < 4; i++) if(typeof _got[i+8] != 'undefined') _p[_start_at.y + 18][_start_at.x + i] = _got[i+8];
-  }
-  var _got = astro.zodiac[_g[2]];if(_got.length) {
-    for(var i = 0; i < 4; i++) if(typeof _got[i] != 'undefined')   _p[_start_at.y + 10 + i][_start_at.x - 3] = _got[i];
-    for(var i = 0; i < 4; i++) if(typeof _got[i+4] != 'undefined') _p[_start_at.y + 10 + i][_start_at.x - 4 ] = _got[i+4];
-    for(var i = 0; i < 4; i++) if(typeof _got[i+8] != 'undefined') _p[_start_at.y + 10 + i][_start_at.x - 5 ] = _got[i+8];
-  }
-  var _got = astro.zodiac[_g[3]];if(_got.length) {
-    for(var i = 0; i < 4; i++) if(typeof _got[i] != 'undefined')   _p[_start_at.y + 5 + i][_start_at.x - 3] = _got[i];
-    for(var i = 0; i < 4; i++) if(typeof _got[i+4] != 'undefined') _p[_start_at.y + 5 + i][_start_at.x - 4 ] = _got[i+4];
-    for(var i = 0; i < 4; i++) if(typeof _got[i+8] != 'undefined') _p[_start_at.y + 5 + i][_start_at.x - 5 ] = _got[i+8];
-  }
-  var _got = astro.zodiac[_g[4]];if(_got.length) {
-    for(var i = 0; i < 4; i++) if(typeof _got[i] != 'undefined')   _p[_start_at.y + i][_start_at.x - 3] = _got[i];
-    for(var i = 0; i < 4; i++) if(typeof _got[i+4] != 'undefined') _p[_start_at.y + i][_start_at.x - 4 ] = _got[i+4];
-    for(var i = 0; i < 4; i++) if(typeof _got[i+8] != 'undefined') _p[_start_at.y + i][_start_at.x - 5 ] = _got[i+8];
-  }
-  var _got = astro.zodiac[_g[5]];if(_got.length) {
-    for(var i = 0; i < 4; i++) if(typeof _got[i] != 'undefined')   _p[_start_at.y - 3][_start_at.x + i] = _got[i];
-    for(var i = 0; i < 4; i++) if(typeof _got[i+4] != 'undefined') _p[_start_at.y - 4][_start_at.x + i] = _got[i+4];
-    for(var i = 0; i < 4; i++) if(typeof _got[i+8] != 'undefined') _p[_start_at.y - 5][_start_at.x + i] = _got[i+8];
-  }
-  var _got = astro.zodiac[_g[6]];if(_got.length) {
-    for(var i = 0; i < 4; i++) if(typeof _got[i] != 'undefined')   _p[_start_at.y - 3][_start_at.x + 5 + i] = _got[i];
-    for(var i = 0; i < 4; i++) if(typeof _got[i+4] != 'undefined') _p[_start_at.y - 4][_start_at.x + 5 + i] = _got[i+4];
-    for(var i = 0; i < 4; i++) if(typeof _got[i+8] != 'undefined') _p[_start_at.y - 5][_start_at.x + 5 + i] = _got[i+8];
-  }
-  var _got = astro.zodiac[_g[7]];if(_got.length) {
-    for(var i = 0; i < 4; i++) if(typeof _got[i] != 'undefined')   _p[_start_at.y - 3][_start_at.x + 10 + i] = _got[i];
-    for(var i = 0; i < 4; i++) if(typeof _got[i+4] != 'undefined') _p[_start_at.y - 4][_start_at.x + 10 + i] = _got[i+4];
-    for(var i = 0; i < 4; i++) if(typeof _got[i+8] != 'undefined') _p[_start_at.y - 5][_start_at.x + 10 + i] = _got[i+8];
-  }
-  var _got = astro.zodiac[_g[8]];if(_got.length) {
-    for(var i = 0; i < 4; i++) if(typeof _got[i] != 'undefined')   _p[_start_at.y + i][_start_at.x + 16] = _got[i];
-    for(var i = 0; i < 4; i++) if(typeof _got[i+4] != 'undefined') _p[_start_at.y + i][_start_at.x + 17] = _got[i+4];
-    for(var i = 0; i < 4; i++) if(typeof _got[i+8] != 'undefined') _p[_start_at.y + i][_start_at.x + 18] = _got[i+8];
-  }
-  var _got = astro.zodiac[_g[9]];if(_got.length) {
-    for(var i = 0; i < 4; i++) if(typeof _got[i] != 'undefined')   _p[_start_at.y + 5 + i][_start_at.x + 16] = _got[i];
-    for(var i = 0; i < 4; i++) if(typeof _got[i+4] != 'undefined') _p[_start_at.y + 5 + i][_start_at.x + 17] = _got[i+4];
-    for(var i = 0; i < 4; i++) if(typeof _got[i+8] != 'undefined') _p[_start_at.y + 5 + i][_start_at.x + 18] = _got[i+8];
-  }
-  var _got = astro.zodiac[_g[10]];if(_got.length) {
-    for(var i = 0; i < 4; i++) if(typeof _got[i] != 'undefined')   _p[_start_at.y + 10 + i][_start_at.x + 16] = _got[i];
-    for(var i = 0; i < 4; i++) if(typeof _got[i+4] != 'undefined') _p[_start_at.y + 10 + i][_start_at.x + 17] = _got[i+4];
-    for(var i = 0; i < 4; i++) if(typeof _got[i+8] != 'undefined') _p[_start_at.y + 10 + i][_start_at.x + 18] = _got[i+8];
-  }
-  
   // luiyin.genOnTime
   var _got = luiyin.genOnTime;
   _p[_start_at.y + 14][_start_at.x + 10 + 1] = '<font color="red">'+ _got[11] + "</font>"; // 亥
@@ -1159,18 +1061,6 @@ function QiMen(y,m,d,h,i,s) {
   //dump_qimen_type_group(tin,dei,star,door,_god);
   dump_qimen_type_group(tin_pan,dei_pan,houses_star,house_door,god_pan);
   document.write("\r\n");
-  document.write("\r\n");
-  /** 行星位置 **/
-  var _line = astro.relation.length / 4 + 1;
-  for(var i = 0; i < _line; i++) {
-    document.write(astro.relation.slice(i*4,i*4+4).join("　"),"\r\n");
-  }
-  /** 行星相位 **/
-  var _line = astro.position.length / 4 + 1;
-  for(var i = 0; i < _line; i++) {
-    document.write(astro.position.slice(i*4,i*4+4).join("　"),"\r\n");
-  }
-  document.write("\r\n");
   document.write("</pre>","\r\n");
   return _p;
 }
@@ -1196,7 +1086,6 @@ function LuiYin(y,m,d,h,i,s) {
     if(jtoday < jqTime[ii]) {
       //document.write(d, "\t",jiqi.Jtime(false,jtoday),"\r\n");
       document.write(jiqi.Jtime(false,jtoday),"\r\n");
-      document.write(QIMEN_STAR.Solar2Lunar(y,m,d,h,i,s),"\r\n");
       document.write("當前節氣: ",jiqi.jq0[ii-1],"\r\n");
       document.write(jiqi.Jtime(false,jqTime[ii-1]),"\r\n");
       document.write("\r\n");
@@ -1370,6 +1259,7 @@ function LuiYin(y,m,d,h,i,s) {
   document.write("</pre>","\r\n");
   return _output;
 }
+
 /** 奇門九遁及其他格局計算 **/
 function dump_qimen_type_group(tin,dei,star,_door,_god) {
   "use strict";
@@ -1553,37 +1443,6 @@ function qimen_gan_relation(tin,dei) {
 /** 十二長生 **/
 function twelev_life(fcol) {
   // to be coded
-}
-/** 計算法達星限 **/
-function astro_firdaria(yy,mm,dd,hh,ii,ss) {
-  "use strict";
-  document.write("<pre>","\r\n");
-  var jq = new JiQi();
-  var jtoday = date_to_julian_day2(yy,mm,dd) + date_to_julian_time(hh,ii,ss);
-  var period = {'日':10,'金':8,'水':13,'月':9,'土':11,'木':12,'火':7};
-  if(hh >=5 && hh <= 17) {
-    var period_start = ['日','金','水','月','土','木','火'];
-  } else {
-    var period_start = ['月','土','木','火','日','金','水'];
-  }
-  document.write("法達星限計算：","\r\n");
-  var _current_day = jtoday;
-  var current_period = period_start.slice(0);
-  for(var i = 0; i < 7; i++) {
-    var active_day  = period[current_period[0]] * 365.25;
-    var average_day = active_day/7;
-    document.write("大期: ",current_period[0],"\r\n");
-    for(var j = 0; j < 7; j++) {
-      document.write(current_period[0],':',current_period[j],"\t",jq.Jtime(false,_current_day),"\r\n");
-      _current_day += average_day;
-    }
-    current_period.push(current_period.shift());
-  }
-  document.write("大期: 羅喉(北交點)",jq.Jtime(false,_current_day),"\r\n");
-  _current_day += 365.25 * 3;
-  document.write("大期: 計都(南交點)",jq.Jtime(false,_current_day),"\r\n");
-  _current_day += 365.25 * 2;
-  document.write("</pre>","\r\n");
 }
 /** 神煞計算 - 神煞三百全套 **/
 function _god_effect(fcol) {
@@ -1965,9 +1824,7 @@ function _gui_cal() {
   //LuiYin(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
   QiMen(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
   $("#display_qimen").html(_buffer); _buffer = "";
-  astro_firdaria(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
-  $("#display_firdaria").html(_buffer); _buffer = "";
-  god_effect_output(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
+  god_effect_output(1,1,1,0,0,0);
   $("#display_god_effect").html(_buffer); _buffer = "";
   //
   $("#display").html("");
@@ -1987,45 +1844,47 @@ function _gui_cal2() {
   //
   var d = new Date();
   var g = 1;
-  var id = prompt('yyyymmdd-hhiiss-g');
+  var id = prompt('d');
   if(id) {
-    if(!gui_check_input_date(id)) {
+    if(id.length == 14) {
+      var id2 = id.slice(1);
+    } else {
+      var id2 = id.slice();
+    }
+    if(!gui_check_input_date(id2)) {
       alert('error format');
       return;
     }
-    // input date
-    d = new Date(
-      (id.substr(0,4)), 
-      (id.substr(4,2)-1), 
-      (id.substr(6,2)), 
-      (id.substr(9,2)), 
-      (id.substr(11,2)),
-      (id.substr(13,2)));
-    if(!d) {
-      alert('format error');return;
-    }
-    g = id.substr(16,1);
+    var yy = (id2.substr(0,4))*1;
+    var mm = (id2.substr(4,2))*1;
+    var dd = (id2.substr(6,2))*1;
+    var hh = (id2.substr(8,2))*1;
+    var ii = (id2.substr(10,2))*1;
+    var gg = (id2.substr(12,2))*1;
   } else {
     return;
   }
-  BaZi(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds(),g);
+  if(id.length == 14) yy *= -1;
+  //
+  //
+  //BaZi(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds(),g);
+  BaZi(yy,mm,dd,hh,ii,0,gg);
   $("#display_bazi").html(_buffer); _buffer = "";
   //LuiYin(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
-  QiMen(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
+  //QiMen(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
+  QiMen(yy,mm,dd,hh,ii,0);
   $("#display_qimen").html(_buffer); _buffer = "";
-  astro_firdaria(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
-  $("#display_firdaria").html(_buffer); _buffer = "";
-  god_effect_output(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
+  god_effect_output(yy,mm,dd,hh,ii,0);
   $("#display_god_effect").html(_buffer); _buffer = "";
   //
   $("#display").html("");
-  $("#display").html($("#display_qimen").html());
+  $("#display").html($("#display_bazi").html());
   _buffer = "";
   document.write = o_doc_write;
 };
 function gui_check_input_date(id) {
   "use strict";
-  var patt1=/^[0-9]{4}[0-9]{2}[0-9]{2}-[0-9]{2}[0-9]{2}[0-9]{2}-[01]$/i;
+  var patt1=/^[0-9]{4}[0-9]{2}[0-9]{2}[0-9]{2}[0-9]{2}[01]$/i;
   if(!id.match(patt1)) {
     return false;
   }
@@ -2038,7 +1897,6 @@ function gui_check_input_date(id) {
   var h = (id.substr(8,2))*1;
   var i = (id.substr(10,2))*1;
   var s = (id.substr(12,2))*1;
-  var g = (id.substr(14,2))*1;
   //console.log(y,m,d,h,i,s);
   if ( (!(y % 4) && y % 100) || !(y % 400)) {
     daysInMonth[2] = 29;
@@ -2049,9 +1907,6 @@ function gui_check_input_date(id) {
   if(i < 0 || i > 59) return false;
   if(s < 0 || s > 59) return false;
   return true;
-}
-function gui_append_input(val) {
-  $("#txtDate").val($("#txtDate").val()+val);
 }
 function gui_change_text_size() {
   this.size = 4;
@@ -2113,8 +1968,8 @@ div.temp {
 }
 </style>
 </head>
-<body style="background-color:#000000;margin:0;padding:0">
-  <div id="display" style="font-size:4mm;color:#FFFFFF;background-color:#000000;margin: 3px 3mm"></div>
+<body style="background-color:#000000">
+  <div id="display" style="font-size:4mm;color:#FFFFFF;background-color:#000000;"></div>
   <div id="nav">
     <div onclick="_gui_show_hide_menu.switchOnOff()">佛</div>
     <div id="nav2" style="display:none">
@@ -2122,7 +1977,6 @@ div.temp {
       <div id="logo" onclick="_gui_cal()" >當下</div>
       <div onclick="$('#display').html($('#display_bazi').html())"    >八字</div>
       <div onclick="$('#display').html($('#display_qimen').html())"   >奇門</div>
-      <div onclick="$('#display').html($('#display_firdaria').html())">法達</div>
       <div onclick="$('#display').html($('#display_god_effect').html())">神煞</div>
       <div onclick="_gui_display_text_resize.inc()">字＋</div>
       <div onclick="_gui_display_text_resize.dec()">減－</div>
@@ -2132,6 +1986,5 @@ div.temp {
   <div id="display_qimen" class="temp"></div>
   <div id="display_firdaria" class="temp"></div>
   <div id="display_god_effect" class="temp"></div>
-  
 </body>
 </html>
