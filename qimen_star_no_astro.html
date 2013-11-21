@@ -608,8 +608,8 @@ function QiMen(y,m,d,h,i,s) {
   document.write = function(){};
   var luiyin = LuiYin(y,m,d,h,i,0);
   //var astro = QIMEN_STAR.astrology(y,m,d,h,i,0);//genResult(y,m,d,h,i,s);
-  var _small_qimen = QIMEN_STAR.minQimen(h,i,s);
-  
+  var _small_qimen = QIMEN_STAR.minQimen(h,i,s);console.log(_small_qimen);
+  //return;
   document.write = _odocwrite;
   //
   var jiqi = new JiQi();
@@ -731,7 +731,7 @@ function QiMen(y,m,d,h,i,s) {
   /**
    * 輸出秒家奇門基本資料
    */
-  document.write("秒家：干支:", _small_qimen['info']['干支'],', ',_small_qimen['info']['遁'],'遁',_small_qimen['info']['局'],'局',"\r\n");
+  document.write("秒家：干支:", _small_qimen['info']['干支'],', ',_small_qimen['info']['遁'],'遁',_small_qimen['info']['局'],'局',', 值符：',_small_qimen['info']['符'],"\r\n");
   // 計算星盤
   var houses_star_target = "18349276".indexOf(jik_fu_star);
   var houses_star_idx = "183492761834927618349276".substr(8-houses_star_target+1, 8);
@@ -941,7 +941,7 @@ function QiMen(y,m,d,h,i,s) {
       //console.log(_sqbx[i][j],': ',houses_star[_sqbx[i][j]-1]);
       if(_small_qimen['星'][_sqbx[i][j]] == '苪') {
         //_p[_i+2][_j+1] = houses_star[5-1];
-        _p[_i+2][_j] = '<font color="gray">'+_small_qimen['天'][5-1]+'</font>';
+        _p[_i+2][_j] = '<font color="gray">'+_small_qimen['天'][5]+'</font>';
       }
     }
   }
