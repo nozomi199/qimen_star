@@ -1956,10 +1956,10 @@ function gui_check_input_date(id) {
   var y = (id.substr(0,4))*1;
   var m = (id.substr(4,2))*1;
   var d = (id.substr(6,2))*1;
-  var h = (id.substr(8,2))*1;
-  var i = (id.substr(10,2))*1;
-  var s = (id.substr(12,2))*1;
-  var g = (id.substr(14,2))*1;
+  var h = (id.substr(9,2))*1;
+  var i = (id.substr(11,2))*1;
+  var s = (id.substr(13,2))*1;
+  var g = (id.substr(16,2))*1;
   //console.log(y,m,d,h,i,s);
   if ( (!(y % 4) && y % 100) || !(y % 400)) {
     daysInMonth[2] = 29;
