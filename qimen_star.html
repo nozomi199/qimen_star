@@ -882,9 +882,9 @@ function QiMen(y,m,d,h,i,s) {
   //
   // 計紫白飛星
   var purple_star_y = QIMEN_STAR.purple_star.CalYear(y,m,d,h,i,0);
-  var purple_star_m = QIMEN_STAR.purple_star.CalMonth(y,m,d,h,i,0);
-  var purple_star_d = QIMEN_STAR.purple_star.CalDay(y,m,d,h,i,0);
-  var purple_star_h = QIMEN_STAR.purple_star.CalHour(y,m,d,h,i,0);
+  //var purple_star_m = QIMEN_STAR.purple_star.CalMonth(y,m,d,h,i,0);
+  //var purple_star_d = QIMEN_STAR.purple_star.CalDay(y,m,d,h,i,0);
+  //var purple_star_h = QIMEN_STAR.purple_star.CalHour(y,m,d,h,i,0);
   //console.log(purple_star_y);
   //console.log(purple_star_m);
   // 
@@ -943,7 +943,7 @@ function QiMen(y,m,d,h,i,s) {
       //console.log(_sqbx[i][j],': ',houses_star[_sqbx[i][j]-1]);
       if(_small_qimen['星'][_sqbx[i][j]] == '苪') {
         //_p[_i+2][_j+1] = houses_star[5-1];
-        _p[_i+2][_j] = '<font color="gray">'+_small_qimen['天'][5-1]+'</font>';
+        _p[_i+2][_j] = '<font color="gray">'+_small_qimen['天'][5]+'</font>';
       }
     }
   }
