@@ -27,8 +27,10 @@
     // 計算當前局數
     // 計陰陽遁
     var dun_type = 2; // 0為陰遁, 1為陽遁, 其餘為錯誤
-    var kook = [8,9,1,3,4,5,4,5,6,9,8,7,2,1,9,7,6,5,6,5,4,1,2,3]; // 局數
-    var using_kook = kook[(_in.currentJiqiIdx+1)%24];  //局數
+    var kook = [8,9,1,3,4,5,4,5,6,9,8,7,
+                2,1,9,7,6,5,6,5,4,1,2,3]; // 局數
+    var using_kook = kook[(_in.currentJiqiIdx-1)%24];  //局數
+    console.log(_in.currentJiqiIdx);
     //console.log(jtoday, jqTime[21], jqTime[9]);
     if( _in.julian > _in.wholeYear[9] && _in.julian < _in.wholeYear[21]) {
       // 陰遁

@@ -900,9 +900,10 @@ function QiMen(y,m,d,h,i,s) {
       if(_sqbx[i][j] == 5) {
         var _i = _start_at.y;
         var _j = _start_at.x + 2 * 5;
-        _p[_i+3][_j] = dei_pan[5-1];
+        //_p[_i+3][_j] = dei_pan[5-1];
+        _p[_start_at.y + 1 * 5 + 3][_start_at.x + 1 * 5 + 1] = dei_pan[5-1];
         // 輸出妙派奇門流年紫白飛星
-        _p[_start_at.y + 1 * 5 + 3][_start_at.x + 1 * 5 + 2]   = "<font color='purple'>"+purple_star_y[_sqbx[i][j]-1]+"</font>";
+        _p[_start_at.y + 1 * 5 + 3][_start_at.x + 1 * 5 + 0]   = "<font color='purple'>"+purple_star_y[_sqbx[i][j]-1]+"</font>";
         //_p[_start_at.y + 1 * 5 + 3][_start_at.x + 1 * 5 + 1]   = "<font color='purple'>"+purple_star_m[_sqbx[i][j]-1]+"</font>";
         //_p[_start_at.y + 1 * 5 + 2][_start_at.x + 1 * 5 + 1]   = "<font color='purple'>"+purple_star_d[_sqbx[i][j]-1]+"</font>";
         //_p[_start_at.y + 1 * 5 + 2][_start_at.x + 1 * 5 + 2]   = "<font color='purple'>"+purple_star_h[_sqbx[i][j]-1]+"</font>";
@@ -912,12 +913,12 @@ function QiMen(y,m,d,h,i,s) {
       //var _j = _start_at.y + j * 4 + 1;
       var _i = _start_at.y + i * 5;
       var _j = _start_at.x + j * 5;
-      _p[_i][_j]   = house_door[_sqbx[i][j]-1];
-      _p[_i][_j+3] = god_pan[_sqbx[i][j]-1];
-      _p[_i+1][_j+1] = '天';
-      _p[_i+1][_j+2] = houses_star[_sqbx[i][j]-1];
-      _p[_i+2][_j+3] = tin_pan[_sqbx[i][j]-1];
-      _p[_i+3][_j+3] = dei_pan[_sqbx[i][j]-1];
+      _p[_i][_j]   = house_door[_sqbx[i][j]-1];    //門盤
+      _p[_i][_j+1] = god_pan[_sqbx[i][j]-1];       //神盤
+      _p[_i][_j+2] = tin_pan[_sqbx[i][j]-1];       //天盤
+      //_p[_i+1][_j+1] = '天';
+      _p[_i+1][_j+1] = houses_star[_sqbx[i][j]-1]; //星盤
+      _p[_i+1][_j+2] = dei_pan[_sqbx[i][j]-1];     //地盤
       /**
        *
        */
@@ -926,22 +927,23 @@ function QiMen(y,m,d,h,i,s) {
         _p[_i+1][_j] = tin_pan[5-1];
       }
       // 輸出妙派奇門流年紫白飛星
-      _p[_i+3][_j+2]   = "<font color='purple'>"+purple_star_y[_sqbx[i][j]-1]+"</font>";
+      _p[_i+3][_j]   = "<font color='purple'>"+purple_star_y[_sqbx[i][j]-1]+"</font>";
       //_p[_i+3][_j+1]   = "<font color='purple'>"+purple_star_m[_sqbx[i][j]-1]+"</font>";
       //_p[_i+2][_j+1]   = "<font color='purple'>"+purple_star_d[_sqbx[i][j]-1]+"</font>";
       //_p[_i+2][_j+2]   = "<font color='purple'>"+purple_star_h[_sqbx[i][j]-1]+"</font>";
       /**
        * 神刻奇門
        */
-      _p[_i+3][_j+1] = '<font color="gray">'+_small_qimen['地'][_sqbx[i][j]]+'</font>';
-      _p[_i+2][_j+1] = '<font color="gray">'+_small_qimen['天'][_sqbx[i][j]]+'</font>';
-      _p[_i+0][_j+1] = '<font color="gray">'+_small_qimen['門'][_sqbx[i][j]]+'</font>';
-      _p[_i+2][_j+2] = '<font color="gray">'+_small_qimen['星'][_sqbx[i][j]]+'</font>';
-      _p[_i+0][_j+2] = '<font color="gray">'+_small_qimen['神'][_sqbx[i][j]]+'</font>';
+      _p[_i+2][_j+1] = '<font color="gray">'+_small_qimen['門'][_sqbx[i][j]]+'</font>';
+      _p[_i+2][_j+2] = '<font color="gray">'+_small_qimen['神'][_sqbx[i][j]]+'</font>';
+      _p[_i+2][_j+3] = '<font color="gray">'+_small_qimen['天'][_sqbx[i][j]]+'</font>';
+      //
+      _p[_i+3][_j+2] = '<font color="gray">'+_small_qimen['星'][_sqbx[i][j]]+'</font>';
+      _p[_i+3][_j+3] = '<font color="gray">'+_small_qimen['地'][_sqbx[i][j]]+'</font>';
       //console.log(_sqbx[i][j],': ',houses_star[_sqbx[i][j]-1]);
       if(_small_qimen['星'][_sqbx[i][j]] == '苪') {
         //_p[_i+2][_j+1] = houses_star[5-1];
-        _p[_i+2][_j] = '<font color="gray">'+_small_qimen['天'][5]+'</font>';
+        _p[_i+3][_j+1] = '<font color="gray">'+_small_qimen['天'][5]+'</font>';
       }
     }
   }
