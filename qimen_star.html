@@ -2089,10 +2089,9 @@ var _gui_show_hide_menu = new gui_show_hide_menu();
 $(document).ready(_gui_cal);
 </script>
 <style type="text/css">
-body { margin-top: 5mm;}
-input { border: 2pt solid #CCC; margin: 5pt; padding: 5pt }
+body { margin-top: 15mm;}
 #bottomNav {
-  position:fixed;right: 0; left: 0; bottom: 0;height: 10mm;
+  position:fixed;right: 0; left: 0; top: 0;height: 1cm;
   background-color: #FCC;
   opacity:0.8;
   overflow: hidden;
@@ -2105,8 +2104,8 @@ input { border: 2pt solid #CCC; margin: 5pt; padding: 5pt }
   user-select: none;
 }
 #bottomNav * {
-  position:relative;height:auto;width:auto;resize:none;
-  margin: 0; padding: 0;
+  position:relative;height:100%;width:auto;
+  margin: 0; padding: 0; border: 0;
 }
 #logo {
   background-color: #FCC;
@@ -2124,9 +2123,9 @@ div.temp {
 }
 </style>
 </head>
-<body style="background-color:#000000;margin:0;padding:0;margin-bottom:10mm">
+<body style="background-color:#000000;margin:0;padding:0;margin-top:12mm">
   <div id="display" style="font-size:4mm;color:#FFFFFF;background-color:#000000;margin: 3px 3mm"></div>
-  <div id="bottomNav" style="height:auto;resize:none">
+  <div id="bottomNav" style="">
     <form method="POST" onsubmit="return false">
       <input type="button" value="輸入" onmousedown="_gui_cal2()" />
       <input type="button" value="當下" onmousedown="_gui_cal()" />
