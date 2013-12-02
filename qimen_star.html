@@ -13,6 +13,7 @@
 <script language="javascript" src="_js/jiqi.js"></script>
 <script language="javascript" src="_js/purple_star.js"></script>
 <script language="javascript" src="_js/qimen_min.js"></script>
+<script language="javascript" src="_js/sprintf.js"></script>
 
 <script language="JavaScript">
 function luiyin_720(day,i) {
@@ -606,8 +607,8 @@ function QiMen(y,m,d,h,i,s) {
   //
   var _odocwrite = document.write;
   document.write = function(){};
-  var luiyin = LuiYin(y,m,d,h,i,0);
-  var astro = QIMEN_STAR.astrology(y,m,d,h,i,0);//genResult(y,m,d,h,i,s);
+  var luiyin = LuiYin(y,m,d,h,i,s);
+  var astro = QIMEN_STAR.astrology(y,m,d,h,i,s);//genResult(y,m,d,h,i,s);
   var _small_qimen = QIMEN_STAR.minQimen(h,i,s);
   console.log(_small_qimen);
   
@@ -1978,7 +1979,7 @@ function _gui_cal() {
   
   document.write = o_doc_write;
 };
-function _gui_cal2() {
+function _gui_cal2(id) {
   // redirect document write
   var _buffer = "";
   var o_doc_write = document.write;
@@ -1989,7 +1990,9 @@ function _gui_cal2() {
   //
   var d = new Date();
   var g = 1;
-  var id = prompt('yyyymmdd-hhiiss-g');
+  if(typeof(id) === 'undefined') {
+    var id = prompt('yyyymmdd-hhiiss-g');
+  }
   if(id) {
     if(!gui_check_input_date(id)) {
       alert('error format');
@@ -2011,6 +2014,7 @@ function _gui_cal2() {
   } else {
     return;
   }
+  //
   BaZi(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds(),g);
   $("#display_bazi").html(_buffer); _buffer = "";
   //LuiYin(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
@@ -2087,9 +2091,9 @@ $(document).ready(_gui_cal);
 <style type="text/css">
 body { margin-top: 5mm;}
 input { border: 2pt solid #CCC; margin: 5pt; padding: 5pt }
-#nav {
-  position:fixed;right: 0; top: 0;background-color: #FCC;
-  font-size: 1cm;
+#bottomNav {
+  position:fixed;right: 0; left: 0; bottom: 0;height: 10mm;
+  background-color: #FCC;
   opacity:0.8;
   overflow: hidden;
   /** disable select **/
@@ -2099,6 +2103,10 @@ input { border: 2pt solid #CCC; margin: 5pt; padding: 5pt }
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+#bottomNav * {
+  position:relative;height:auto;width:auto;resize:none;
+  margin: 0; padding: 0;
 }
 #logo {
   background-color: #FCC;
@@ -2116,21 +2124,21 @@ div.temp {
 }
 </style>
 </head>
-<body style="background-color:#000000;margin:0;padding:0">
+<body style="background-color:#000000;margin:0;padding:0;margin-bottom:10mm">
   <div id="display" style="font-size:4mm;color:#FFFFFF;background-color:#000000;margin: 3px 3mm"></div>
-  <div id="nav">
-    <div onclick="_gui_show_hide_menu.switchOnOff()">佛</div>
-    <div id="nav2" style="display:none">
-      <div id="logo" onclick="_gui_cal2()">輸入</div>
-      <div id="logo" onclick="_gui_cal()" >當下</div>
-      <div onclick="$('#display').html($('#display_bazi').html())"    >八字</div>
-      <div onclick="$('#display').html($('#display_qimen').html())"   >奇門</div>
-      <div onclick="$('#display').html($('#display_firdaria').html())">法達</div>
-      <div onclick="$('#display').html($('#display_god_effect').html())">神煞</div>
-      <div onclick="_gui_display_text_resize.inc()">字＋</div>
-      <div onclick="_gui_display_text_resize.dec()">減－</div>
-    </div>
+  <div id="bottomNav" style="height:auto;resize:none">
+    <form method="POST" onsubmit="return false">
+      <input type="button" value="輸入" onmousedown="_gui_cal2()" />
+      <input type="button" value="當下" onmousedown="_gui_cal()" />
+      <input type="button" value="八字" onmousedown="$('#display').html($('#display_bazi').html())" />
+      <input type="button" value="奇門" onmousedown="$('#display').html($('#display_qimen').html())" />
+      <input type="button" value="法達" onmousedown="$('#display').html($('#display_firdaria').html())" />
+      <input type="button" value="神煞" onmousedown="$('#display').html($('#display_god_effect').html())" />
+      <input type="button" value="字＋" onmousedown="_gui_display_text_resize.inc()" />
+      <input type="button" value="字－" onmousedown="_gui_display_text_resize.dec()" />
+    </form>
   </div>
+  <!-- no display -->
   <div id="display_bazi" class="temp"></div>
   <div id="display_qimen" class="temp"></div>
   <div id="display_firdaria" class="temp"></div>

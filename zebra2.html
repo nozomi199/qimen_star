@@ -1,0 +1,108 @@
+<html>
+<head>
+<style type="text/css">
+body,form,table,tr,td,div,p,span,input,textarea { margin:0; padding:0; font-size: 10pt; border:0;position:relative; overflow: auto;height:auto;resize:none}
+td {position:relative}
+input, textarea { border: 1pt dotted #000000; width: 100%; height: 100%; }
+</style>
+<script language="JavaScript" src="_js/jquery.min.js"></script>
+<script language="JavaScript">
+"use strict";
+var d = new Date();
+
+function lblNumber_AppendText(text) {
+  $('input#lblNumber').attr('value',$.trim($('input#lblNumber').attr('value'))+text);
+}
+function lblNumber_clean() {
+  $('input#lblNumber').attr('value','');
+}
+function btnTimeInput_down(label) {
+  $('input[type="text"]#'+label).attr('value',$('input#lblNumber').attr('value'));
+  lblNumber_clean();
+}
+function btnTimeInc_down(label) {
+  var input = parseInt($('input[type="text"]#'+label).attr('value'))+1;
+  $('input[type="text"]#'+label).attr('value',input);
+  lblNumber_clean();
+}
+function btnTimeDec_down(label) {
+  var input = parseInt($('input[type="text"]#'+label).attr('value'))-1;
+  $('input[type="text"]#'+label).attr('value',input);
+  lblNumber_clean();
+}
+$(document).ready(function(){
+  //
+  $(window).resize(function() {
+    $('div#outSquare').height($('div#outSquare').width());
+  });
+  // init
+  $('div#outSquare').height($('div#outSquare').width());
+  // set time into label
+  $('input[type="text"]#lblYear').attr('value', d.getFullYear());
+  $('input[type="text"]#lblMont').attr('value', d.getMonth()+1);
+  $('input[type="text"]#lblDayy').attr('value', d.getDate());
+  $('input[type="text"]#lblHour').attr('value', d.getHours());
+  $('input[type="text"]#lblMinu').attr('value', d.getMinutes());
+  $('input[type="text"]#lblSeco').attr('value', d.getSeconds());
+});
+</script>
+
+</head>
+<body>
+<form name="app" onsubmit="return false">
+<div style="height:100%;width:100%">
+  <div style="height:auto;padding:1mm;background-color:#FFCCCC">奇門穿壬參星</div>
+  <table border="0" cellpadding="0" cellspacing="1" bgcolor="#000000" width="100%">
+    <tr>
+      <td><input id="btnYear" type="button" style="border:0;width:100%" value="+" onmousedown="btnTimeInc_down('lblYear')"></td> 
+      <td><input id="btnMont" type="button" style="border:0;width:100%" value="+" onmousedown="btnTimeInc_down('lblMont')"></td>
+      <td><input id="btnDayy" type="button" style="border:0;width:100%" value="+" onmousedown="btnTimeInc_down('lblDayy')"></td>
+      <td><input id="btnHour" type="button" style="border:0;width:100%" value="+" onmousedown="btnTimeInc_down('lblHour')"></td>
+      <td><input id="btnMinu" type="button" style="border:0;width:100%" value="+" onmousedown="btnTimeInc_down('lblMinu')"></td>
+      <td><input id="btnSeco" type="button" style="border:0;width:100%" value="+" onmousedown="btnTimeInc_down('lblSeco')"></td>
+    </tr>
+    <tr>
+      <td><input id="lblYear" type="text" style="border:0;width:100%;text-align:center" value="0" onmousedown="btnTimeInput_down('lblYear')" disabled/></td>
+      <td><input id="lblMont" type="text" style="border:0;width:100%;text-align:center" value="0" disabled/></td>
+      <td><input id="lblDayy" type="text" style="border:0;width:100%;text-align:center" value="0" disabled/></td>
+      <td><input id="lblHour" type="text" style="border:0;width:100%;text-align:center" value="0" disabled/></td>
+      <td><input id="lblMinu" type="text" style="border:0;width:100%;text-align:center" value="0" disabled/></td>
+      <td><input id="lblSeco" type="text" style="border:0;width:100%;text-align:center" value="0" disabled/></td>
+    </tr>
+    <tr>
+      <td><input id="btnYear" type="button" style="border:0;width:100%" value="-" onmousedown="btnTimeDec_down('lblYear')"></td>
+      <td><input id="btnMont" type="button" style="border:0;width:100%" value="-" onmousedown="btnTimeDec_down('lblMont')"></td>
+      <td><input id="btnDayy" type="button" style="border:0;width:100%" value="-" onmousedown="btnTimeDec_down('lblDayy')"></td>
+      <td><input id="btnHour" type="button" style="border:0;width:100%" value="-" onmousedown="btnTimeDec_down('lblHour')"></td>
+      <td><input id="btnMinu" type="button" style="border:0;width:100%" value="-" onmousedown="btnTimeDec_down('lblMinu')"></td>
+      <td><input id="btnSeco" type="button" style="border:0;width:100%" value="-" onmousedown="btnTimeDec_down('lblSeco')"></td>
+    </tr>
+    <tr>
+      <td colspan="6"><input id="lblNumber" type="text" style="border:0;width:100%" disabled/></td>
+    </tr>
+    <tr style="height:10mm">
+      <td rowspan="2"><input type="button" style="border:0;width:100%" value="清除" onmousedown="lblNumber_clean()"></td>
+      <td><input type="button" style="border:0;width:100%" value="1" onmousedown="lblNumber_AppendText(1)"></td>
+      <td><input type="button" style="border:0;width:100%" value="2" onmousedown="lblNumber_AppendText(2)"></td>
+      <td><input type="button" style="border:0;width:100%" value="3" onmousedown="lblNumber_AppendText(3)"></td>
+      <td><input type="button" style="border:0;width:100%" value="4" onmousedown="lblNumber_AppendText(4)"></td>
+      <td><input type="button" style="border:0;width:100%" value="5" onmousedown="lblNumber_AppendText(5)"></td>
+    </tr>
+    <tr style="height:10mm">
+      <!-- td -->
+      <td><input type="button" style="border:0;width:100%" value="6" onmousedown="lblNumber_AppendText(6)"></td>
+      <td><input type="button" style="border:0;width:100%" value="7" onmousedown="lblNumber_AppendText(7)"></td>
+      <td><input type="button" style="border:0;width:100%" value="8" onmousedown="lblNumber_AppendText(8)"></td>
+      <td><input type="button" style="border:0;width:100%" value="9" onmousedown="lblNumber_AppendText(9)"></td>
+      <td><input type="button" style="border:0;width:100%" value="0" onmousedown="lblNumber_AppendText(0)"></td>
+    </tr>
+  </table>
+  <div style="height:10mm">
+    <input type="button" value="計算" onmousedown="console.log('tst')" />
+  </div>
+  <div id="outSquare" style="border: 2pt solid #000;height:auto" onresize="console.log(this);">
+  </div>
+</div>
+</form>
+</body>
+</html>

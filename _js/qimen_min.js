@@ -5,7 +5,47 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
    var _CHI = "　子丑寅卯辰巳午未申酉戌亥";
    var _QIYI = " 戊己庚辛壬癸丁丙乙";
    var _CHUN = "　戊丑癸卯壬巳辛未庚酉己亥";
-   
+   function cal_kook(y,m,d,h,i,s)
+   {
+     var jiqi = _e.jiqi.GetJiqiInfo(y,m,d,h,i,s);
+     var jqpos = jiqi.currentJiqiIdx - 1;
+     // 排四柱
+     var tcol0 = new Array;
+     var dcol0 = new Array;
+     for(var i = 6; i > -1 ; i -= 2) tcol0.push(jiqi.bazi[i]);
+     for(var i = 7; i > -1 ; i -= 2) dcol0.push(jiqi.bazi[i]);
+     // 計時家奇門三元
+     var idx1 =  "甲乙丙丁戊己庚辛壬癸".indexOf(jiqi.bazi[4]);
+     var idx2 = "子丑寅卯辰巳午未申酉戌亥".indexOf(jiqi.bazi[5]);
+     idx2 = idx2 - idx1 % 5;
+     if(idx2 < 0) idx2 += 12;
+     // idx2: 三元, 0:上, 1:中, 2:下
+     idx2 = idx2 % 3;
+     if(idx2 > 0) {
+       idx2 = (idx2 == 1)? 2 : 1;
+     }
+     // 計算當前局數
+     // 計陰陽遁
+     var dun_type = 2; // 0為陰遁, 1為陽遁, 其餘為錯誤
+     var kook = [8,9,1,3,4,5,4,5,6,9,8,7,2,1,9,7,6,5,6,5,4,1,2,3]; // 局數
+     var using_kook = kook[jqpos];  //局數
+     if( jiqi.julian > jiqi.wholeYear[9] && jiqi.julian < jiqi.wholeYear[21]) {
+     // 陰遁
+       dun_type = 0;
+       for(var i = 0; i < idx2; i++) {
+         using_kook -= 6;
+         while(using_kook < 1) using_kook += 9;
+       }
+     } else {
+        // 陽遁
+        dun_type = 1;
+        for(var i = 0; i < idx2; i++) {
+          using_kook += 6;
+          while(using_kook > 9) using_kook -= 9;
+        }
+     }
+     return {'jiqi':jiqi,'元':idx2,'遁':dun_type,'局':using_kook};
+   }
    function minQimen(h,i,s)
    {
       var _dun = h < 12 ? 1 : 0;
@@ -191,6 +231,7 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
     god_pan.unshift("");    
     return {'info':{'干支':gan_chi,'遁':_dun?'陽':'陰','局':_kook,'符':" 蓬苪沖輔禽心柱任英".charAt(jik_fu_idx) },'星':houses_star, '天':tin_pan, '地':dei_pan, '門':house_door, '神':god_pan};
   }
-   console.log(minQimen(13,5,21));
+   console.log(cal_kook(2013,11,28,14,20,0));
    _e.minQimen = minQimen;
+   _e.qimen_calc = calc;
 })(QIMEN_STAR);
