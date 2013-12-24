@@ -291,13 +291,12 @@ function JiQi() {
     dytm+= ((hh < 10) ? "0" : "") + hh+"時";
     dytm+= ((mmt < 10) ? "0" : "") + mmt+"分";
     dytm+= ((ss < 10) ? "0" : "") + ss+"秒";
-    dytm+= ", 星期"+"日一二三四五六".charAt((jd+1.5)%7);
     return dytm.trim();
   };
   /**
    * 四柱計算, 子初換日
    */
-  this.GetGZ = function(y,m,d,h,i,s,ms) {
+  this.GetGZ = function(y,m,d,h,i,s) {
     var jtoday = date_to_julian_day2(y,m,d) + 
       date_to_julian_time(h,i,s);
     var jqTime=new Array;
@@ -356,30 +355,7 @@ function JiQi() {
     var gan_idx = [0,2,4,6,8,0,2,4,6,8];
     rtn_gz.push(tin.substr(gan_idx[tin.indexOf(rtn_gz[8])],12).charAt(minhz)); // 分干
     rtn_gz.push(di[minhz % 12]);  // 分支
-    /**
-     * 如有毫秒輸入, 計算毫秒柱, 無極, 究竟
-     */
-    if(ms) {
-      var minhz = i; if(h%2 == 0) minhz += 60; minhz = minhz * 60 + s; minhz = minhz * 1000;
-      var minhz1 = Math.floor(minhz/600000); //分柱
-      var minhz2 = Math.floor(minhz%600000/50000); //秒柱
-      var minhz3 = Math.floor(minhz%50000/(50000/12.0)); //毫秒柱
-      var minhz4 = Math.floor(minhz%(50000/12.0)/(50000/12.0/12.0)); //無極柱
-      var minhz5 = Math.floor(minhz%(50000/12.0/12.0)/(50000/12.0/12.0/12.0)); //究竟柱
-      var minhz6 = Math.floor(minhz%(50000/12.0/12.0/12.0)/(50000/12.0/12.0/12.0/12.0)); //破限柱
-      //
-      //console.log(minhz1,minhz2,minhz3,minhz4,minhz5,minhz6);
-      var gan_idx = [0,2,4,6,8,0,2,4,6,8];
-      rtn_gz.push(tin.substr(gan_idx[tin.indexOf(rtn_gz[10])],12).charAt(minhz3)); // 毫秒柱
-      rtn_gz.push(di[minhz3 % 12]);  // 
-      rtn_gz.push(tin.substr(gan_idx[tin.indexOf(rtn_gz[12])],12).charAt(minhz4)); // 無極柱
-      rtn_gz.push(di[minhz4 % 12]);  // 
-      rtn_gz.push(tin.substr(gan_idx[tin.indexOf(rtn_gz[14])],12).charAt(minhz5)); // 究竟柱
-      rtn_gz.push(di[minhz5 % 12]);  // 
-      rtn_gz.push(tin.substr(gan_idx[tin.indexOf(rtn_gz[16])],12).charAt(minhz6)); // 究竟柱
-      rtn_gz.push(di[minhz6 % 12]);  // 
-      
-    };
+    
     return rtn_gz.join("");
   };
 }
@@ -625,18 +601,13 @@ function BaZi(y,m,d,h,i,s,gender) {
 /**
  * 奇門遁甲計算
  */
-function QiMen(y,m,d,h,i,s,ms) {
+function QiMen(y,m,d,h,i,s) {
   //var d = new Date(); //當下
   //
   var _odocwrite = document.write;
   document.write = function(){};
   var luiyin = LuiYin(y,m,d,h,i,s);
-  try {
-   var astro = QIMEN_STAR.astrology(y,m,d,h,i,s);//genResult(y,m,d,h,i,s);
-  } catch(err) {
-  }
   var _small_qimen = QIMEN_STAR.minQimen(h,i,s);
-  //console.log(_small_qimen);
   
   document.write = _odocwrite;
   //
@@ -664,7 +635,7 @@ function QiMen(y,m,d,h,i,s,ms) {
   }
   // 起四柱
   //var fcol = jiqi.GetGZ(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(), d.getMinutes(), d.getSeconds());
-  var fcol = jiqi.GetGZ(y,m,d,h,i,s,ms);
+  var fcol = jiqi.GetGZ(y,m,d,h,i,s);
   // 排四柱
   var tcol0 = new Array;
   var dcol0 = new Array;
@@ -857,25 +828,19 @@ function QiMen(y,m,d,h,i,s,ms) {
   document.write("神盤：",god_pan.join(""),"\r\n");
   // 完結
   **/
-  // 輸出柱名
-  document.write("　　　");
-  for(var i = 0; i < fcol.length; i+=2) {
-    document.write("　","　年　月　日　時　分　秒毫秒不知未明疑問".substr(i,2));
-  }
-  document.write("\r\n");
   // 輸出八字
-  document.write("八字：");
-  for(var i = 0; i < fcol.length; i += 2) document.write("　",fcol.substr(i, 2));
+  document.write("八字:");
+  for(var i = 0; i < 12; i += 2) document.write("　",fcol.substr(i, 2));
   document.write("\r\n");
   // 計空亡
-  document.write("空亡：");
+  document.write("空亡:");
   var _func = function() {
-	//var _dcol0 = dcol0.slice(), _tcol0 = tcol0.slice();
-	//_tcol0.unshift(fcol[8]);_dcol0.unshift(fcol[9]);
-	//_tcol0.unshift(fcol[10]);_dcol0.unshift(fcol[11]);
+	var _dcol0 = dcol0.slice(), _tcol0 = tcol0.slice();
+	_tcol0.unshift(fcol[8]);_dcol0.unshift(fcol[9]);
+	_tcol0.unshift(fcol[10]);_dcol0.unshift(fcol[11]);
 	//console.log(_tcol0,_dcol0);
-	for(var i = 0; i < fcol.length; i+=2) {
-		var chun_sau = "子丑寅卯辰巳午未申酉戌亥".indexOf(fcol[i+1]) - "甲乙丙丁戊己庚辛壬癸".indexOf(fcol[i]);
+	for(var i = 0; i < 6; i++) {
+		var chun_sau = "子丑寅卯辰巳午未申酉戌亥".indexOf(_dcol0[5-i]) - "甲乙丙丁戊己庚辛壬癸".indexOf(_tcol0[5-i]);
 		if(chun_sau < 0) chun_sau += 12;
 		var hung_mon = chun_sau - 2;
 		if(hung_mon < 0) hung_mon += 12;
@@ -888,7 +853,7 @@ function QiMen(y,m,d,h,i,s,ms) {
   //document.write(tcol0.join(""),"\r\n");
   //document.write(dcol0.join(""),"\r\n");
   // 輸出四課三傳
-  document.write("四課：　　　　　三傳：","\r\n");
+  document.write("四課:　　　　　三傳:","\r\n");
   var _tmp = "";
   for(var i = 0; i < 4; i++) {
     //document.write(luiyin.helpMan.charAt(luiyin.genOnTime.indexOf(luiyin.four[0][i])));
@@ -915,24 +880,20 @@ function QiMen(y,m,d,h,i,s,ms) {
   //
   // 計紫白飛星
   var purple_star_y = QIMEN_STAR.purple_star.CalYear(y,m,d,h,i,0);
-  var purple_star_m = QIMEN_STAR.purple_star.CalMonth(y,m,d,h,i,0);
-  var purple_star_d = QIMEN_STAR.purple_star.CalDay(y,m,d,h,i,0);
-  var purple_star_h = QIMEN_STAR.purple_star.CalHour(y,m,d,h,i,0);
-  var purple_star_y = "１２３４５６７８９１２３４５６７８９".substr("一二三四五六七八九".indexOf(purple_star_y[0]),9);
-  var purple_star_m = "１２３４５６７８９１２３４５６７８９".substr("一二三四五六七八九".indexOf(purple_star_m[0]),9);
-  var purple_star_d = "１２３４５６７８９１２３４５６７８９".substr("一二三四五六七八九".indexOf(purple_star_d[0]),9);
-  var purple_star_h = "１２３４５６７８９１２３４５６７８９".substr("一二三四五六七八九".indexOf(purple_star_h[0]),9);
+  //var purple_star_m = QIMEN_STAR.purple_star.CalMonth(y,m,d,h,i,0);
+  //var purple_star_d = QIMEN_STAR.purple_star.CalDay(y,m,d,h,i,0);
+  //var purple_star_h = QIMEN_STAR.purple_star.CalHour(y,m,d,h,i,0);
   //console.log(purple_star_y);
   //console.log(purple_star_m);
   // 
-  var _size = 24;
+  var _size = 18;
   var _p = new Array(_size);
   for(var i = 0; i < _size;i++)	_p[i] = new Array(_size);
   for(var i = 0; i < _size; i++)
     for(var j =0; j < _size; j++)
       _p[i][j] = '　';
   // 輸出栻盤
-  var _start_at = new Object; _start_at.x = 5; _start_at.y = 5;
+  var _start_at = new Object; _start_at.x = 2; _start_at.y = 2;
   var _sqbx = [[4,9,2],[3,5,7],[8,1,6]];
   for(var i = 0; i < 3; i+=1) {
     for(var j =0; j < 3; j+=1) {
@@ -943,33 +904,33 @@ function QiMen(y,m,d,h,i,s,ms) {
         _p[_start_at.y + 1 * 5 + 3][_start_at.x + 1 * 5 + 1] = dei_pan[5-1];
         // 輸出妙派奇門流年紫白飛星
         _p[_start_at.y + 1 * 5 + 3][_start_at.x + 1 * 5 + 0]   = "<font color='purple'>"+purple_star_y[_sqbx[i][j]-1]+"</font>";
-        _p[_start_at.y + 1 * 5 + 2][_start_at.x + 1 * 5 + 0]   = "<font color='purple'>"+purple_star_m[_sqbx[i][j]-1]+"</font>";
-        _p[_start_at.y + 1 * 5 + 1][_start_at.x + 1 * 5 + 0]   = "<font color='purple'>"+purple_star_d[_sqbx[i][j]-1]+"</font>";
-        _p[_start_at.y + 1 * 5 + 0][_start_at.x + 1 * 5 + 0]   = "<font color='purple'>"+purple_star_h[_sqbx[i][j]-1]+"</font>";
+        //_p[_start_at.y + 1 * 5 + 3][_start_at.x + 1 * 5 + 1]   = "<font color='purple'>"+purple_star_m[_sqbx[i][j]-1]+"</font>";
+        //_p[_start_at.y + 1 * 5 + 2][_start_at.x + 1 * 5 + 1]   = "<font color='purple'>"+purple_star_d[_sqbx[i][j]-1]+"</font>";
+        //_p[_start_at.y + 1 * 5 + 2][_start_at.x + 1 * 5 + 2]   = "<font color='purple'>"+purple_star_h[_sqbx[i][j]-1]+"</font>";
         continue;
       }
       //var _i = _start_at.x + i * 4 + 1;
       //var _j = _start_at.y + j * 4 + 1;
       var _i = _start_at.y + i * 5;
       var _j = _start_at.x + j * 5;
-      _p[_i][_j+1]   = house_door[_sqbx[i][j]-1];    //門盤
-      _p[_i][_j+2] = god_pan[_sqbx[i][j]-1];       //神盤
-      _p[_i][_j+3] = tin_pan[_sqbx[i][j]-1];       //天盤
+      _p[_i][_j]   = house_door[_sqbx[i][j]-1];    //門盤
+      _p[_i][_j+1] = god_pan[_sqbx[i][j]-1];       //神盤
+      _p[_i][_j+2] = tin_pan[_sqbx[i][j]-1];       //天盤
       //_p[_i+1][_j+1] = '天';
-      _p[_i+1][_j+2] = houses_star[_sqbx[i][j]-1]; //星盤
-      _p[_i+1][_j+3] = dei_pan[_sqbx[i][j]-1];     //地盤
+      _p[_i+1][_j+1] = houses_star[_sqbx[i][j]-1]; //星盤
+      _p[_i+1][_j+2] = dei_pan[_sqbx[i][j]-1];     //地盤
       /**
        *
        */
       if(houses_star[_sqbx[i][j]-1] == '苪') {
         //_p[_i+2][_j+1] = houses_star[5-1];
-        _p[_i+1][_j+1] = tin_pan[5-1];
+        _p[_i+1][_j] = tin_pan[5-1];
       }
       // 輸出妙派奇門流年紫白飛星
       _p[_i+3][_j]   = "<font color='purple'>"+purple_star_y[_sqbx[i][j]-1]+"</font>";
-      _p[_i+2][_j]   = "<font color='purple'>"+purple_star_m[_sqbx[i][j]-1]+"</font>";
-      _p[_i+1][_j]   = "<font color='purple'>"+purple_star_d[_sqbx[i][j]-1]+"</font>";
-      _p[_i+0][_j]   = "<font color='purple'>"+purple_star_h[_sqbx[i][j]-1]+"</font>";
+      //_p[_i+3][_j+1]   = "<font color='purple'>"+purple_star_m[_sqbx[i][j]-1]+"</font>";
+      //_p[_i+2][_j+1]   = "<font color='purple'>"+purple_star_d[_sqbx[i][j]-1]+"</font>";
+      //_p[_i+2][_j+2]   = "<font color='purple'>"+purple_star_h[_sqbx[i][j]-1]+"</font>";
       /**
        * 神刻奇門
        */
@@ -987,75 +948,7 @@ function QiMen(y,m,d,h,i,s,ms) {
     }
   }
   
-  // astro, 參星
-  if(typeof(astro) != 'undefined') {
-     for(var i in astro.zodiac) {
-       for(var j in astro.zodiac[i]) {
-         astro.zodiac[i][j] = '<font color="#00FF00">'+astro.zodiac[i][j]+'</font>';
-       }
-     }
-     var _g = luiyin.genOnTime;
-     var _got = astro.zodiac[_g[11]];if(_got.length) {
-       for(var i = 0; i < 4; i++) if(typeof _got[i] != 'undefined')   _p[_start_at.y + 16][_start_at.x + 10 + i] = _got[i];
-       for(var i = 0; i < 4; i++) if(typeof _got[i+4] != 'undefined') _p[_start_at.y + 17][_start_at.x + 10 + i] = _got[i+4];
-       for(var i = 0; i < 4; i++) if(typeof _got[i+8] != 'undefined') _p[_start_at.y + 18][_start_at.x + 10 + i] = _got[i+8];
-     }
-     var _got = astro.zodiac[_g[0]];if(_got.length) {
-       for(var i = 0; i < 4; i++) if(typeof _got[i] != 'undefined')   _p[_start_at.y + 16][_start_at.x + 5 + i] = _got[i];
-       for(var i = 0; i < 4; i++) if(typeof _got[i+4] != 'undefined') _p[_start_at.y + 17][_start_at.x + 5 + i] = _got[i+4];
-       for(var i = 0; i < 4; i++) if(typeof _got[i+8] != 'undefined') _p[_start_at.y + 18][_start_at.x + 5 + i] = _got[i+8];
-     }
-     var _got = astro.zodiac[_g[1]];if(_got.length) {
-       for(var i = 0; i < 4; i++) if(typeof _got[i] != 'undefined')   _p[_start_at.y + 16][_start_at.x + i] = _got[i];
-       for(var i = 0; i < 4; i++) if(typeof _got[i+4] != 'undefined') _p[_start_at.y + 17][_start_at.x + i] = _got[i+4];
-       for(var i = 0; i < 4; i++) if(typeof _got[i+8] != 'undefined') _p[_start_at.y + 18][_start_at.x + i] = _got[i+8];
-     }
-     var _got = astro.zodiac[_g[2]];if(_got.length) {
-       for(var i = 0; i < 4; i++) if(typeof _got[i] != 'undefined')   _p[_start_at.y + 10 + i][_start_at.x - 3] = _got[i];
-       for(var i = 0; i < 4; i++) if(typeof _got[i+4] != 'undefined') _p[_start_at.y + 10 + i][_start_at.x - 4 ] = _got[i+4];
-       for(var i = 0; i < 4; i++) if(typeof _got[i+8] != 'undefined') _p[_start_at.y + 10 + i][_start_at.x - 5 ] = _got[i+8];
-     }
-     var _got = astro.zodiac[_g[3]];if(_got.length) {
-       for(var i = 0; i < 4; i++) if(typeof _got[i] != 'undefined')   _p[_start_at.y + 5 + i][_start_at.x - 3] = _got[i];
-       for(var i = 0; i < 4; i++) if(typeof _got[i+4] != 'undefined') _p[_start_at.y + 5 + i][_start_at.x - 4 ] = _got[i+4];
-       for(var i = 0; i < 4; i++) if(typeof _got[i+8] != 'undefined') _p[_start_at.y + 5 + i][_start_at.x - 5 ] = _got[i+8];
-     }
-     var _got = astro.zodiac[_g[4]];if(_got.length) {
-       for(var i = 0; i < 4; i++) if(typeof _got[i] != 'undefined')   _p[_start_at.y + i][_start_at.x - 3] = _got[i];
-       for(var i = 0; i < 4; i++) if(typeof _got[i+4] != 'undefined') _p[_start_at.y + i][_start_at.x - 4 ] = _got[i+4];
-       for(var i = 0; i < 4; i++) if(typeof _got[i+8] != 'undefined') _p[_start_at.y + i][_start_at.x - 5 ] = _got[i+8];
-     }
-     var _got = astro.zodiac[_g[5]];if(_got.length) {
-       for(var i = 0; i < 4; i++) if(typeof _got[i] != 'undefined')   _p[_start_at.y - 3][_start_at.x + i] = _got[i];
-       for(var i = 0; i < 4; i++) if(typeof _got[i+4] != 'undefined') _p[_start_at.y - 4][_start_at.x + i] = _got[i+4];
-       for(var i = 0; i < 4; i++) if(typeof _got[i+8] != 'undefined') _p[_start_at.y - 5][_start_at.x + i] = _got[i+8];
-     }
-     var _got = astro.zodiac[_g[6]];if(_got.length) {
-       for(var i = 0; i < 4; i++) if(typeof _got[i] != 'undefined')   _p[_start_at.y - 3][_start_at.x + 5 + i] = _got[i];
-       for(var i = 0; i < 4; i++) if(typeof _got[i+4] != 'undefined') _p[_start_at.y - 4][_start_at.x + 5 + i] = _got[i+4];
-       for(var i = 0; i < 4; i++) if(typeof _got[i+8] != 'undefined') _p[_start_at.y - 5][_start_at.x + 5 + i] = _got[i+8];
-     }
-     var _got = astro.zodiac[_g[7]];if(_got.length) {
-       for(var i = 0; i < 4; i++) if(typeof _got[i] != 'undefined')   _p[_start_at.y - 3][_start_at.x + 10 + i] = _got[i];
-       for(var i = 0; i < 4; i++) if(typeof _got[i+4] != 'undefined') _p[_start_at.y - 4][_start_at.x + 10 + i] = _got[i+4];
-       for(var i = 0; i < 4; i++) if(typeof _got[i+8] != 'undefined') _p[_start_at.y - 5][_start_at.x + 10 + i] = _got[i+8];
-     }
-     var _got = astro.zodiac[_g[8]];if(_got.length) {
-       for(var i = 0; i < 4; i++) if(typeof _got[i] != 'undefined')   _p[_start_at.y + i][_start_at.x + 16] = _got[i];
-       for(var i = 0; i < 4; i++) if(typeof _got[i+4] != 'undefined') _p[_start_at.y + i][_start_at.x + 17] = _got[i+4];
-       for(var i = 0; i < 4; i++) if(typeof _got[i+8] != 'undefined') _p[_start_at.y + i][_start_at.x + 18] = _got[i+8];
-     }
-     var _got = astro.zodiac[_g[9]];if(_got.length) {
-       for(var i = 0; i < 4; i++) if(typeof _got[i] != 'undefined')   _p[_start_at.y + 5 + i][_start_at.x + 16] = _got[i];
-       for(var i = 0; i < 4; i++) if(typeof _got[i+4] != 'undefined') _p[_start_at.y + 5 + i][_start_at.x + 17] = _got[i+4];
-       for(var i = 0; i < 4; i++) if(typeof _got[i+8] != 'undefined') _p[_start_at.y + 5 + i][_start_at.x + 18] = _got[i+8];
-     }
-     var _got = astro.zodiac[_g[10]];if(_got.length) {
-       for(var i = 0; i < 4; i++) if(typeof _got[i] != 'undefined')   _p[_start_at.y + 10 + i][_start_at.x + 16] = _got[i];
-       for(var i = 0; i < 4; i++) if(typeof _got[i+4] != 'undefined') _p[_start_at.y + 10 + i][_start_at.x + 17] = _got[i+4];
-       for(var i = 0; i < 4; i++) if(typeof _got[i+8] != 'undefined') _p[_start_at.y + 10 + i][_start_at.x + 18] = _got[i+8];
-     }
-  }
+  
   // luiyin.genOnTime
   var _got = luiyin.genOnTime;
   _p[_start_at.y + 14][_start_at.x + 10 + 1] = '<font color="red">'+ _got[11] + "</font>"; // 亥
@@ -1200,24 +1093,8 @@ function QiMen(y,m,d,h,i,s,ms) {
   dump_qimen_type_group(tin_pan,dei_pan,houses_star,house_door,god_pan);
   document.write("\r\n");
   document.write("\r\n");
-  if(typeof(astro) != 'undefined') {
-     /**  行星相位 **/
-     var _line = astro.relation.length / 4 + 1;
-     for(var i = 0; i < _line; i++) {
-       document.write(astro.relation.slice(i*4,i*4+4).join("　"),"\r\n");
-     }
-     /** 行星位置 - 星座 **/
-     var _line = astro.position.length / 4 + 1;
-     for(var i = 0; i < _line; i++) {
-       document.write(astro.position.slice(i*4,i*4+4).join("　"),"\r\n");
-     }
-     /** 行星位置 - 演禽 **/
-     var _line = astro.position.length / 4 + 1;
-     for(var i = 0; i < _line; i++) {
-       document.write(astro.animal.slice(i*4,i*4+4).join("　"),"\r\n");
-     }
-     document.write("\r\n");
-  }
+  
+  document.write("\r\n");
   document.write("</pre>","\r\n");
   return _p;
 }
@@ -2010,7 +1887,7 @@ function _gui_cal() {
   BaZi(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds(),g);
   $("#display_bazi").html(_buffer); _buffer = "";
   //LuiYin(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
-  QiMen(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds(),d.getMilliseconds());
+  QiMen(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
   $("#display_qimen").html(_buffer); _buffer = "";
   astro_firdaria(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
   $("#display_firdaria").html(_buffer); _buffer = "";
@@ -2128,29 +2005,127 @@ function gui_show_hide_menu() {
     }
   }
 }
+
+/**
+ *
+ */
 var _gui_display_text_resize =  new gui_change_text_size();
 var _gui_show_hide_menu = new gui_show_hide_menu();
-$(document).ready(_gui_cal);
+$(document).ready(function(){
+  _gui_cal();
+  /**
+   *
+   */
+  (function() {
+    "use strict";
+    /**
+     * function
+     */
+    function lblNumber_clean() {
+      $('input#lblNumber').attr('value','');
+    }
+    /**
+     * event
+     */
+    var d = new Date();
+    // set time into label
+    $('input[type="text"]#lblYear').attr('value', ((d.getFullYear()) < 1000 ? '0' : '')+((d.getFullYear()) < 100 ? '0' : '')+((d.getFullYear()) < 10 ? '0' : '')+d.getFullYear());
+    $('input[type="text"]#lblMont').attr('value', ((d.getMonth()+1) < 10 ? '0' : '')+(d.getMonth()+1));
+    $('input[type="text"]#lblDayy').attr('value', ((d.getDate()) < 10 ? '0' : '')+d.getDate());
+    $('input[type="text"]#lblHour').attr('value', ((d.getHours()) < 10 ? '0' : '')+d.getHours());
+    $('input[type="text"]#lblMinu').attr('value', ((d.getMinutes()) < 10 ? '0' : '')+d.getMinutes());
+    $('input[type="text"]#lblSeco').attr('value', ((d.getSeconds()) < 10 ? '0' : '')+d.getSeconds());
+    var _tmp = ["btn1","btn2","btn3","btn4","btn5","btn6","btn7","btn8","btn9","btn0"];
+    for(var i in _tmp)
+    {
+      $('input[type="button"]#'+_tmp[i]).mousedown(function() {
+        $('input[type="text"]#lblNumber').attr('value',$.trim($('input#lblNumber').attr('value'))+$(this).attr('value'));
+        });
+    }
+    //var _tmp = {"btnYear":"lblYear","btnMont":"lblMont","btnDayy":"lblDayy","btnHour":"lblHour","btnMinu":"lblMint","btnSeco":"lblSeco"};
+    $('input[type="button"]#btnYear').mousedown(function() {
+      var val = $('input[type="text"]#lblNumber').attr('value');
+      if(val < 1000) val = '0'+val;
+      if(val < 100) val = '0'+val;
+      if(val < 10) val = '0'+val;
+      $('input[type="text"]#lblYear').attr('value',val);
+      lblNumber_clean();
+      });
+    $('input[type="button"]#btnMont').mousedown(function() {
+      var val = $('input[type="text"]#lblNumber').attr('value');
+      if(val < 10) val = '0'+val;
+      $('input[type="text"]#lblMont').attr('value',val);
+      lblNumber_clean();
+      });
+    $('input[type="button"]#btnDayy').mousedown(function() {
+      var val = $('input[type="text"]#lblNumber').attr('value');
+      if(val < 10) val = '0'+val;
+      $('input[type="text"]#lblDayy').attr('value',val);
+      lblNumber_clean();
+      });
+    $('input[type="button"]#btnHour').mousedown(function() {
+      var val = $('input[type="text"]#lblNumber').attr('value');
+      if(val < 10) val = '0'+val;
+      $('input[type="text"]#lblHour').attr('value',val);
+      lblNumber_clean();
+      });
+    $('input[type="button"]#btnMinu').mousedown(function() {
+      var val = $('input[type="text"]#lblNumber').attr('value');
+      if(val < 10) val = '0'+val;
+      $('input[type="text"]#lblMinu').attr('value',val);
+      lblNumber_clean();
+      });
+    $('input[type="button"]#btnSeco').mousedown(function() {
+      var val = $('input[type="text"]#lblNumber').attr('value');
+      if(val < 10) val = '0'+val;
+      $('input[type="text"]#lblSeco').attr('value',val);
+      lblNumber_clean();
+      });
+    $('input[type="button"]#btnSex').mousedown(function() {
+      var val = $('input[type="text"]#lblNumber').attr('value');
+      val = val % 2;
+      $('input[type="text"]#lblSex').attr('value',val);
+      lblNumber_clean();
+      });
+    $('input[type="button"]#btnSetNow').mousedown(function() {
+      var d = new Date();
+      // set time into label
+      $('input[type="text"]#lblYear').attr('value', ((d.getFullYear()) < 1000 ? '0' : '')+((d.getFullYear()) < 100 ? '0' : '')+((d.getFullYear()) < 10 ? '0' : '')+d.getFullYear());
+      $('input[type="text"]#lblMont').attr('value', ((d.getMonth()+1) < 10 ? '0' : '')+(d.getMonth()+1));
+      $('input[type="text"]#lblDayy').attr('value', ((d.getDate()) < 10 ? '0' : '')+d.getDate());
+      $('input[type="text"]#lblHour').attr('value', ((d.getHours()) < 10 ? '0' : '')+d.getHours());
+      $('input[type="text"]#lblMinu').attr('value', ((d.getMinutes()) < 10 ? '0' : '')+d.getMinutes());
+      $('input[type="text"]#lblSeco').attr('value', ((d.getSeconds()) < 10 ? '0' : '')+d.getSeconds());
+      lblNumber_clean();
+      _gui_cal();
+      });
+    $('input[type="button"]#btnCalc').mousedown(function() {
+      var d = $('input[type="text"]#lblYear').attr('value')+
+        $('input[type="text"]#lblMont').attr('value')+
+        $('input[type="text"]#lblDayy').attr('value')+ '-' +
+        $('input[type="text"]#lblHour').attr('value')+
+        $('input[type="text"]#lblMinu').attr('value')+
+        $('input[type="text"]#lblSeco').attr('value')+ '-' +
+        $('input[type="text"]#lblSex').attr('value');
+      _gui_cal2(d);
+      });
+    
+    /**
+     *
+     */
+    $("table#date_input").hide();
+    $('input[type="button"]#btnOpenClose').mousedown(function() {
+        if($("table#date_input").is(":visible")) {
+          $("table#date_input").hide();
+        } else {
+          $("table#date_input").show();
+        }
+      });
+  })();
+});
 </script>
 <style type="text/css">
 body { margin-top: 15mm;}
-#bottomNav {
-  position:relative; height: 10mm;
-  background-color: #FCC;
-  opacity:0.8;
-  overflow: hidden;
-  /** disable select **/
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-#bottomNav * {
-  position:relative;width:auto; height: 100%;
-  margin: 0; padding: 0; border: 0;
-}
 #logo {
   background-color: #FCC;
   font-size: 1cm;
@@ -2165,27 +2140,87 @@ div.temp {
 .nav2 {
   -webkit-writing-mode:vertical-rl; writing-mode: tb-rl;
 }
+body,form,table,tr,td,div,p,span,input,textarea { margin:0; padding:0; font-size: 10pt; border:0;position:relative; overflow: auto;height:auto;resize:none}
+td {position:relative}
+input, textarea { border: 1pt dotted #000000; width: 100%; height: 100%; }
 </style>
 </head>
 <body style="background-color:#000000;margin:0;padding:0;">
+  <div id="display" style="font-size:4mm;color:#FFFFFF;background-color:#000000;margin: 3px 3mm"></div>
+  <!--
   <div id="bottomNav" style="">
     <form method="POST" onsubmit="return false">
-      <input type="button" value="輸入" onclick="_gui_cal2()" />
-      <input type="button" value="當下" onclick="_gui_cal()" />
-      <input type="button" value="八字" onclick="$('#display').html($('#display_bazi').html())" />
-      <input type="button" value="奇門" onclick="$('#display').html($('#display_qimen').html())" />
-      <input type="button" value="法達" onclick="$('#display').html($('#display_firdaria').html())" />
-      <input type="button" value="神煞" onclick="$('#display').html($('#display_god_effect').html())" />
-      <input type="button" value="字＋" onclick="_gui_display_text_resize.inc()" />
-      <input type="button" value="字－" onclick="_gui_display_text_resize.dec()" />
+      <input type="button" value="輸入" onmousedown="_gui_cal2()" />
+      <input type="button" value="當下" onmousedown="_gui_cal()" />
+      <input type="button" value="八字" onmousedown="$('#display').html($('#display_bazi').html())" />
+      <input type="button" value="奇門" onmousedown="$('#display').html($('#display_qimen').html())" />
+      <input type="button" value="法達" onmousedown="$('#display').html($('#display_firdaria').html())" />
+      <input type="button" value="神煞" onmousedown="$('#display').html($('#display_god_effect').html())" />
+      <input type="button" value="字＋" onmousedown="_gui_display_text_resize.inc()" />
+      <input type="button" value="字－" onmousedown="_gui_display_text_resize.dec()" />
     </form>
   </div>
-  <div id="display" style="font-size:4mm;color:#FFFFFF;background-color:#000000;margin: 3px 3mm"></div>
-  <div>
-   <p>奇門穿壬參星 by summer~@hkgolden</p>
-   <form onsubmit="return false">
-      <input type="button" value="回到最上" onclick='location.replace("#top")' />
-   </form>
+  -->
+  <div id="inputPanel" style="position:fixed;width:100%; height:auto; bottom:0;background-color:#FFF">
+    <form name="app" onsubmit="return false">
+    <div style="height:100%;width:100%;position:relative">
+      <table id="date_input" border="0" cellpadding="0" cellspacing="1" bgcolor="#000000" width="100%">
+        <tr>
+          <td><input id="lblYear" type="text" style="border:0;width:100%;text-align:center" value="0" onmousedown="btnTimeInput_down('lblYear')" disabled/></td>
+          <td><input id="lblMont" type="text" style="border:0;width:100%;text-align:center" value="0" disabled /></td>
+          <td><input id="lblDayy" type="text" style="border:0;width:100%;text-align:center" value="0" disabled /></td>
+          <td><input id="lblHour" type="text" style="border:0;width:100%;text-align:center" value="0" disabled /></td>
+          <td><input id="lblMinu" type="text" style="border:0;width:100%;text-align:center" value="0" disabled /></td>
+          <td><input id="lblSeco" type="text" style="border:0;width:100%;text-align:center" value="0" disabled /></td>
+          <td><input id="lblSex"  type="text" style="border:0;width:100%;text-align:center" value="0" disabled /></td>
+        </tr>
+        <tr>
+          <td><input id="btnYear" type="button" style="border:0;width:100%" value="年" /></td>
+          <td><input id="btnMont" type="button" style="border:0;width:100%" value="月" /></td>
+          <td><input id="btnDayy" type="button" style="border:0;width:100%" value="日" /></td>
+          <td><input id="btnHour" type="button" style="border:0;width:100%" value="時" /></td>
+          <td><input id="btnMinu" type="button" style="border:0;width:100%" value="分" /></td>
+          <td><input id="btnSeco" type="button" style="border:0;width:100%" value="秒" /></td>
+          <td><input id="btnSex"  type="button" style="border:0;width:100%" value="性" /></td>
+        </tr>
+        <tr>
+          <td colspan="7"><input id="lblNumber" type="text" style="border:0;width:100%" /></td>
+        </tr>
+        <tr style="height:10mm">
+          <td rowspan="2"><input type="button" style="border:0;width:100%" value="清除" onmousedown="lblNumber_clean()"></td>
+          <td><input id="btn1" type="button" style="border:0;width:100%" value="1" /></td>
+          <td><input id="btn2" type="button" style="border:0;width:100%" value="2" /></td>
+          <td><input id="btn3" type="button" style="border:0;width:100%" value="3" /></td>
+          <td><input id="btn4" type="button" style="border:0;width:100%" value="4" /></td>
+          <td><input id="btn5" type="button" style="border:0;width:100%" value="5" /></td>
+          <td rowspan="2"><input id="btnCalc" type="button" style="border:0;width:100%" value="計算" /></td>
+        </tr>
+        <tr style="height:10mm">
+          <!-- td -->
+          <td><input id="btn6" type="button" style="border:0;width:100%" value="6" /></td>
+          <td><input id="btn7" type="button" style="border:0;width:100%" value="7" /></td>
+          <td><input id="btn8" type="button" style="border:0;width:100%" value="8" /></td>
+          <td><input id="btn9" type="button" style="border:0;width:100%" value="9" /></td>
+          <td><input id="btn0" type="button" style="border:0;width:100%" value="0" /></td>
+        </tr>
+        <!-- control -->
+      </table>
+      <div style="height:10mm">
+        <table id="" border="0" cellpadding="0" cellspacing="1" bgcolor="#000000" style="width:100%;height:100%">
+          <tr>
+            <td><input id="btnOpenClose"  type="button" style="border:0;width:100%" value="開關" ></td>
+            <td><input id="btnSetNow" type="button" style="border:0;width:100%" value="當下"></td>
+            <td><input id="" type="button" style="border:0;width:100%" value="八字" onmousedown="$('#display').html($('#display_bazi').html())" ></td>
+            <td><input id="" type="button" style="border:0;width:100%" value="奇門" onmousedown="$('#display').html($('#display_qimen').html())" ></td>
+            <td><input id="" type="button" style="border:0;width:100%" value="法達" onmousedown="$('#display').html($('#display_firdaria').html())" ></td>
+            <td><input id="" type="button" style="border:0;width:100%" value="神煞" onmousedown="$('#display').html($('#display_god_effect').html())" ></td>
+            <td><input id="" type="button" style="border:0;width:100%" value="字＋" onmousedown="_gui_display_text_resize.inc()" ></td>
+            <td><input id=""  type="button" style="border:0;width:100%" value="字－" onmousedown="_gui_display_text_resize.dec()" ></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    </form>
   </div>
   <!-- no display -->
   <div id="display_bazi" class="temp"></div>

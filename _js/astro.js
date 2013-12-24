@@ -512,6 +512,20 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
 		if (c == 0 || c == 13) {c=1};
 		return signs[c];
 	};
+	function FNzodiac3 (l) {
+      /*
+		var c;
+		if (l<30) {c=1} else {c=(l-(l%30))/30+1};
+		if (c == 0 || c == 13) {c=1};
+		return signs[c];
+      */
+      //
+      var deg  = [9,22,33,46,59,68,83,84,96,126,131,148,156,174,191,204,215,226,243,248,256,272,281,306,312,324,334,354];
+      var name = '壁奎婁胃昴畢觜參井鬼柳星張翼軫角亢氐房心尾箕斗牛女虛危室';
+      if(l < deg[0] || l > deg[27]) return '室';
+      for(var i=1; i < 28; i++) if(l < deg[i]) return name[i-1];
+      return '無';
+	};
 
 	function tohms (ol,delimiter1,delimiter2) {
 		var h, m, nl, hs, ms;
@@ -651,7 +665,7 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
   };
   
   _e.astrology = function(y,m,d,h,i,s) {
-    console.log("_e.astrology","args:",y,m,d,h,i,s);
+    //console.log("_e.astrology","args:",y,m,d,h,i,s);
     datacounter = 0;
     //var astro = new AHelper2();
     var ch = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
@@ -676,11 +690,15 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
       temp2.push([planetname[i],planet[i],0,0]);
     }
     //temp2.sort(function(a,b) { return a[1] < b[1]; });
+    _out.animal = new Array();
     for(var _e in temp2) {
       var entry = temp2[_e];
       var degree = parseInt(entry[1]%30)
       temp3.push(entry[0] + FNzodiac2(entry[1]) + (degree < 10?'0':'') + degree);
+      _out.animal.push(entry[0]+FNzodiac3(entry[1]));
     };
+    
+    //
     _out.zodiac = temp;
     _out.relation = calcRelation();
     _out.position = temp3;
