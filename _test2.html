@@ -1,5 +1,6 @@
 ﻿<html>
 <head>
+<title>大奇門遁甲(Original/founded by Goran FU Chi Leung)</title>
 <meta charset="utf-8"/>
 <script language="JavaScript" src="_js/jquery.min.js"></script>
 <script language="JavaScript" src="_js/jiqi.js"></script>
@@ -8,8 +9,30 @@
 <script language="JavaScript" src="_js/qimen_special.js"></script>
 <script language="JavaScript">
 $(document).ready(function(){
+  document.write('<p>大奇門遁甲(Original/founded by Goran FU Chi Leung)</p>'+"\r\n");
+  //
+  var d = new Date();
+  var g = 1;
+  var id = prompt('d');
+  if(id) {
+    // input date
+    d = new Date(
+      (id.substr(0,4)), 
+      (id.substr(4,2)-1), 
+      (id.substr(6,2)), 
+      (id.substr(8,2)), 
+      (id.substr(10,2)));
+    if(!d) {
+      alert('format error');return;
+    }
+    g = id.substr(12,1);
+  }
+  /** **/
+  var jiqi = QIMEN_STAR.jiqi.GetJiqiInfo(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
+  /*
   var d=new Date();
   var jiqi = QIMEN_STAR.jiqi.GetJiqiInfo(2013,11,26,8,9,15);
+  */
   var table = $("<table border='0' bgcolor='gray' cellspacing='1'></table>");
   var tr = $("<tr></tr>");
   var _size = 27;
