@@ -423,10 +423,19 @@ function BaZi(y,m,d,h,i,s,gender) {
   var fcol = jiqi.GetGZ(y,m,d,h,i,s); // 排四柱
   var tcol0 = new Array;
   var dcol0 = new Array;
+  //十神
+  var ten_god = "甲乙丙丁戊己庚辛壬癸".indexOf(fcol[4]);
+  if(ten_god % 2 == 0) {
+      var ten_god = "比劫食傷才財殺官梟印比劫食傷才財殺官梟印".substr(10-ten_god,10);
+  } else {
+      var ten_god = "劫比傷食財才官殺印梟劫比傷食財才官殺印梟".substr(10-(ten_god-1),10);
+  }
   //四柱
   //for(var i = 6; i > -1 ; i -= 2) tcol0.push(fcol[i]);
   //for(var i = 7; i > -1 ; i -= 2) dcol0.push(fcol[i]);
-  for(var i = 10; i > -1 ; i -= 2) tcol0.push(fcol[i]);
+  // --(del 20140212) //for(var i = 10; i > -1 ; i -= 2) tcol0.push(fcol[i]);
+  // --(del 20140212) //for(var i = 11; i > -1 ; i -= 2) dcol0.push(fcol[i]);
+  for(var i = 10; i > -1 ; i -= 2) tcol0.push(fcol[i]+'<font color="#999999">'+ten_god["甲乙丙丁戊己庚辛壬癸".indexOf(fcol[i])]+'</font>');
   for(var i = 11; i > -1 ; i -= 2) dcol0.push(fcol[i]);
   //四柱含分柱
   //tcol0.push(fcol[8]);
@@ -434,7 +443,7 @@ function BaZi(y,m,d,h,i,s,gender) {
   document.write("四柱:","\r\n");
   document.write("　　　　　　　　時　　　　　　　月　　　年","\r\n");
   document.write("\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D","\r\n");
-  document.write(tcol0.join("　　　"),"\r\n");
+  document.write(tcol0.join("　　"),"\r\n");
   document.write(dcol0.join("　　　"),"\r\n");
   document.write("\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D","\r\n");
   // 起地支藏干
@@ -444,12 +453,19 @@ function BaZi(y,m,d,h,i,s,gender) {
     for(var j = 0; j < 6; j++) {
       var _t_dei_idx = "子丑寅卯辰巳午未申酉戌亥".indexOf(dcol0[j]);
       if(dei_hidden[_t_dei_idx][i] == ' ') {
-        _t_d_h.push("　");
+        _t_d_h.push("　　");
       } else {
-        _t_d_h.push("甲乙丙丁戊己庚辛壬癸".charAt(dei_hidden[_t_dei_idx][i]));
+        //_t_d_h.push("甲乙丙丁戊己庚辛壬癸".charAt(dei_hidden[_t_dei_idx][i]));
+        _t_d_h.push((function(){
+            "use strict";
+            var a = "甲乙丙丁戊己庚辛壬癸".charAt(dei_hidden[_t_dei_idx][i]);
+            var b = '<font color="#999999">'+ten_god["甲乙丙丁戊己庚辛壬癸".indexOf(a)]+'</font>'
+            return a+b;
+         })()
+        );
       }
     }
-    document.write(_t_d_h.join("　　　"),"\r\n");
+    document.write(_t_d_h.join("　　"),"\r\n");
   }
   document.write("\uFF0D\uFF0D空亡\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D","\r\n");
   for(var i = 0; i < 6; i++) {
