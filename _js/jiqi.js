@@ -364,6 +364,7 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
     rtn_gz.push(tin.substr(gan_idx[tin.indexOf(rtn_gz[6])],12).charAt(minhz)); // 分干
     rtn_gz.push(di[minhz % 12]);  // 分支
     // 計秒柱
+<<<<<<< HEAD
     var minhz = i; if(h%2 == 0) minhz += 60; minhz = Math.floor((minhz * 60 % 600+s) / 50);
     var gan_idx = [0,2,4,6,8,0,2,4,6,8];
     rtn_gz.push(tin.substr(gan_idx[tin.indexOf(rtn_gz[8])],12).charAt(minhz)); // 秒干
@@ -393,6 +394,13 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
       rtn_gz.push(tin.substr(gan_idx[tin.indexOf(rtn_gz[16])],12).charAt(minhz6)); // 究竟柱
       rtn_gz.push(di[minhz6 % 12]);  // 
     };
+=======
+    //var minhz = i; if(h%2 == 0) minhz += 60; minhz = Math.floor(minhz * 60 % 600 / 50);
+    var minhz = i; if(h%2 == 0) minhz += 60; minhz = minhz * 60 % 600 + s; minhz = Math.floor(minhz / 50);
+    var gan_idx = [0,2,4,6,8,0,2,4,6,8];
+    rtn_gz.push(tin.substr(gan_idx[tin.indexOf(rtn_gz[8])],12).charAt(minhz)); // 秒干
+    rtn_gz.push(di[minhz % 12]);  // 秒支
+>>>>>>> 8a1dcceffe04722613a9222d50d95982eab3ef44
     
     return rtn_gz.join("");
   };
