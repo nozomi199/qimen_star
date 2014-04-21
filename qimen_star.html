@@ -1,19 +1,19 @@
-<html>
+<html manifest="qimen_star.manifest">
 <head>
 <meta charset="utf-8"/>
+<meta name="apple-mobile-web-app-capable" content="no" />
+<link rel="apple-touch-icon" href="/qimen_icon.jpg">
+<link rel="apple-touch-icon-precomposed" href="/qimen_icon.jpg">
 <meta
      name="viewport"
      content="
-             initial-scale=1,
-             maximum-scale=1,
-             minimum-scale=1,
-             user-scalable=no"
+             width=device-width,
+             initial-scale=1"
     />
 <script language="javascript" src="_js/jquery.min.js"></script>
 <script language="javascript" src="_js/jiqi.js"></script>
 <script language="javascript" src="_js/purple_star.js"></script>
 <script language="javascript" src="_js/qimen_min.js"></script>
-<script language="javascript" src="_js/sprintf.js"></script>
 
 <script language="JavaScript">
 function luiyin_720(day,i) {
@@ -307,7 +307,7 @@ function JiQi() {
     if(jtoday < jqTime[0]) {
       y = y - 1;
       this.GetPureJQsinceSpring2(y,0,0,0,jqTime);  // 計算上一年節氣(以立春日為新一年)
-      console.log("計算上一年節氣(以立春日為新一年)");
+      //console.log("計算上一年節氣(以立春日為新一年)");
     }
     // 四柱回傳
     var tin = "甲乙丙丁戊己庚辛壬癸甲乙丙丁戊己庚辛壬癸甲乙";
@@ -352,16 +352,16 @@ function JiQi() {
     var gan_idx = [0,2,4,6,8,0,2,4,6,8];
     rtn_gz.push(tin.substr(gan_idx[tin.indexOf(rtn_gz[6])],12).charAt(minhz)); // 分干
     rtn_gz.push(di[minhz % 12]);  // 分支
-    // 計分柱2
-    var minhz = i; if(h%2 == 0) minhz += 60; minhz = Math.floor(minhz * 60 % 600 / 50);
+    // 計秒柱
+    var minhz = i; if(h%2 == 0) minhz += 60; minhz = Math.floor((minhz * 60 % 600 + s)/ 50);
     var gan_idx = [0,2,4,6,8,0,2,4,6,8];
-    rtn_gz.push(tin.substr(gan_idx[tin.indexOf(rtn_gz[8])],12).charAt(minhz)); // 分干
-    rtn_gz.push(di[minhz % 12]);  // 分支
+    rtn_gz.push(tin.substr(gan_idx[tin.indexOf(rtn_gz[8])],12).charAt(minhz)); // 秒干
+    rtn_gz.push(di[minhz % 12]);  // 秒支
     /**
-     * 如有毫秒輸入, 計算毫秒柱, 無極, 究竟
+     * 如有毫秒輸入, 計算毫秒柱, 無極, 混元, 究竟
      */
-    if(ms) {
-      var minhz = i; if(h%2 == 0) minhz += 60; minhz = minhz * 60 + s; minhz = minhz * 1000;
+    if(1) {
+      var minhz = i; if(h%2 == 0) minhz += 60; minhz = minhz * 60 + s; minhz = minhz * 1000 + ms;
       var minhz1 = Math.floor(minhz/600000); //分柱
       var minhz2 = Math.floor(minhz%600000/50000); //秒柱
       var minhz3 = Math.floor(minhz%50000/(50000/12.0)); //毫秒柱
@@ -379,7 +379,6 @@ function JiQi() {
       rtn_gz.push(di[minhz5 % 12]);  // 
       rtn_gz.push(tin.substr(gan_idx[tin.indexOf(rtn_gz[16])],12).charAt(minhz6)); // 究竟柱
       rtn_gz.push(di[minhz6 % 12]);  // 
-      
     };
     return rtn_gz.join("");
   };
@@ -430,11 +429,10 @@ function BaZi(y,m,d,h,i,s,gender) {
   } else {
       var ten_god = "劫比傷食財才官殺印梟劫比傷食財才官殺印梟".substr(10-(ten_god-1),10);
   }
+  
   //四柱
   //for(var i = 6; i > -1 ; i -= 2) tcol0.push(fcol[i]);
   //for(var i = 7; i > -1 ; i -= 2) dcol0.push(fcol[i]);
-  // --(del 20140212) //for(var i = 10; i > -1 ; i -= 2) tcol0.push(fcol[i]);
-  // --(del 20140212) //for(var i = 11; i > -1 ; i -= 2) dcol0.push(fcol[i]);
   for(var i = 10; i > -1 ; i -= 2) tcol0.push(fcol[i]+'<font color="#999999">'+ten_god["甲乙丙丁戊己庚辛壬癸".indexOf(fcol[i])]+'</font>');
   for(var i = 11; i > -1 ; i -= 2) dcol0.push(fcol[i]);
   //四柱含分柱
@@ -455,7 +453,6 @@ function BaZi(y,m,d,h,i,s,gender) {
       if(dei_hidden[_t_dei_idx][i] == ' ') {
         _t_d_h.push("　　");
       } else {
-        //_t_d_h.push("甲乙丙丁戊己庚辛壬癸".charAt(dei_hidden[_t_dei_idx][i]));
         _t_d_h.push((function(){
             "use strict";
             var a = "甲乙丙丁戊己庚辛壬癸".charAt(dei_hidden[_t_dei_idx][i]);
@@ -468,12 +465,19 @@ function BaZi(y,m,d,h,i,s,gender) {
     document.write(_t_d_h.join("　　"),"\r\n");
   }
   document.write("\uFF0D\uFF0D空亡\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D","\r\n");
-  for(var i = 0; i < 6; i++) {
+  for(var i = 11; i > 0; i-=2) {
+    /**
     var chun_sau = "子丑寅卯辰巳午未申酉戌亥".indexOf(dcol0[i]) - "甲乙丙丁戊己庚辛壬癸".indexOf(tcol0[i]);
     if(chun_sau < 0) chun_sau += 12;
-    var hung_mon = chun_sau - 2;
+    var hung_mon = chun_sau - 2;console.log(chun_sau,hung_mon);
     if(hung_mon < 0) hung_mon += 12;
     document.write("子丑寅卯辰巳午未申酉戌亥".substr(hung_mon, 2),"　　");
+    */
+		var chun_sau = "子丑寅卯辰巳午未申酉戌亥".indexOf(fcol[i]) - "甲乙丙丁戊己庚辛壬癸".indexOf(fcol[i-1]);
+		if(chun_sau < 0) chun_sau += 12;
+		var hung_mon = chun_sau - 2;
+		if(hung_mon < 0) hung_mon += 12;
+		document.write("子丑寅卯辰巳午未申酉戌亥".substr(hung_mon, 2),"　　");
   }
   document.write("\r\n");
   var _cb = $.Callbacks();
@@ -614,9 +618,9 @@ function BaZi(y,m,d,h,i,s,gender) {
   document.write(dcol.join(""),"\r\n");
   */
   for(var i = 0; i < 12; i++) {
-    //document.write(tcol[i],dcol[i],":",jiqi.Jtime(false,start_time + 3652.5 * i), "\r\n");
-    document.write(tcol[i],dcol[i],'　');
-    if((i+1)%4 == 0) document.write("\r\n");
+    document.write(tcol[i],dcol[i],":",jiqi.Jtime(false,start_time + 3652.5 * i), "\r\n");
+    //document.write(tcol[i],dcol[i],'　');
+    //if((i+1)%4 == 0) document.write("\r\n");
   }
   document.write("\r\n");
   /**
@@ -672,7 +676,9 @@ function QiMen(y,m,d,h,i,s,ms) {
   for(var ii = 1; ii < 25; ii++) {
     if(jtoday < jqTime[ii]) {
       //document.write(d, "\t",jiqi.Jtime(false,jtoday),"\r\n");
-      document.write(jiqi.Jtime(false,jtoday),"\r\n");
+      document.write(jiqi.Jtime(false,jtoday).substr(0,20),
+        (ms < 100 ? '0':''),(ms < 10 ? '0':''),ms,
+        jiqi.Jtime(false,jtoday).substr(20),"\r\n");
       document.write(QIMEN_STAR.Solar2Lunar(y,m,d,h,i,s),"\r\n");      
       document.write("當前節氣: ",jiqi.jq0[ii-1],",", jiqi.Jtime(false,jqTime[ii-1]),"\r\n");
       jqpos = ii - 1;
@@ -1286,9 +1292,8 @@ function LuiYin(y,m,d,h,i,s) {
   for(var i = 2; i < 25; i+=2) {
     _arrGen.push(jqTime[i-1]);
   }
-  //var _gen = 0; 
-  var _gen = 11; 
-  
+  //var _gen = 0;
+  var _gen = 11;
   for(var i = 0; i < 12; i++) {
     ////console.log(jiqi.jq0[(11-i)*2+1]);
     if(jtoday > _arrGen[11 - i]) {
@@ -2067,12 +2072,13 @@ function _gui_cal2(id) {
       (id.substr(6,2)), 
       (id.substr(9,2)), 
       (id.substr(11,2)),
-      (id.substr(13,2)));
+      (id.substr(13,2)),
+      (id.substr(16,3)));
       
     if(!d) {
       alert('format error');return;
     }
-    g = id.substr(16,1);
+    g = id.substr(20,1);
   } else {
     return;
   }
@@ -2080,7 +2086,7 @@ function _gui_cal2(id) {
   BaZi(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds(),g);
   $("#display_bazi").html(_buffer); _buffer = "";
   //LuiYin(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
-  QiMen(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
+  QiMen(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds(),d.getMilliseconds());
   $("#display_qimen").html(_buffer); _buffer = "";
   astro_firdaria(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
   $("#display_firdaria").html(_buffer); _buffer = "";
@@ -2094,8 +2100,18 @@ function _gui_cal2(id) {
 };
 function gui_check_input_date(id) {
   "use strict";
-  var patt1=/^[0-9]{4}[0-9]{2}[0-9]{2}-[0-9]{2}[0-9]{2}[0-9]{2}-[01]$/i;
-  if(!id.match(patt1)) {
+  var patt1=/^[0-9]{4}[0-9]{2}[0-9]{2}-[0-9]{2}[0-9]{2}[0-9]{2}$/i;
+  var patt2=/^[0-9]{4}[0-9]{2}[0-9]{2}-[0-9]{2}[0-9]{2}[0-9]{2}\.[0-9]{3}$/i;
+  var patt3=/^[0-9]{4}[0-9]{2}[0-9]{2}-[0-9]{2}[0-9]{2}[0-9]{2}-[01]$/i;
+  var patt4=/^[0-9]{4}[0-9]{2}[0-9]{2}-[0-9]{2}[0-9]{2}[0-9]{2}\.[0-9]{3}-[01]$/i;
+  if(id.match(patt1)) {
+    id = id + '.000-1';
+  } else if(id.match(patt2)) {
+    id = id + '-1';
+  } else if(id.match(patt3)) {
+    id = id.substr(0,15) +'.000-'+ id.substr(16,2)
+  } else if(id.match(patt4)) {  
+  } else {
     return false;
   }
   var daysInMonth = [0,31,28,31,30,31,30,31,31,30,31,30,31];
@@ -2107,7 +2123,7 @@ function gui_check_input_date(id) {
   var h = (id.substr(9,2))*1;
   var i = (id.substr(11,2))*1;
   var s = (id.substr(13,2))*1;
-  var g = (id.substr(16,2))*1;
+  var g = (id.substr(20,1))*1;
   //console.log(y,m,d,h,i,s);
   if ( (!(y % 4) && y % 100) || !(y % 400)) {
     daysInMonth[2] = 29;
