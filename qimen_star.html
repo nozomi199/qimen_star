@@ -419,7 +419,7 @@ function BaZi(y,m,d,h,i,s,gender) {
   }
   // 起四柱
   //var fcol = jiqi.GetGZ(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(), d.getMinutes(), d.getSeconds()); // 排四柱
-  var fcol = jiqi.GetGZ(y,m,d,h,i,s); // 排四柱
+  var fcol = jiqi.GetGZ(y,m,d,h,i,s,0); // 排四柱
   var tcol0 = new Array;
   var dcol0 = new Array;
   //十神
@@ -2109,7 +2109,7 @@ function gui_check_input_date(id) {
   } else if(id.match(patt2)) {
     id = id + '-1';
   } else if(id.match(patt3)) {
-    id = id.substr(0,15) +'.000-'+ id.substr(16,2)
+    id = id.substr(0,15) +'.000-'+ id.substr(16,2);
   } else if(id.match(patt4)) {  
   } else {
     return false;
