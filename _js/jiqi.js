@@ -413,12 +413,12 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
   _e.jiqi.JTime = function(jtoday) {
     return Jtime(false,jtoday);
   };
-  _e.jiqi.GetJiqiInfo = function(y,m,d,h,i,s) {
+  _e.jiqi.GetJiqiInfo = function(y,m,d,h,i,s,ms) {
     var _out = new Array();
     _out.julian = date_to_julian_day2(y,m,d) + date_to_julian_time(h,i,s);
     _out.jiqi = jq0.slice();
     _out.currentJiqiIdx = CalCurrentJiqi(y,m,d,h,i,s);
-    _out.bazi = GetGZ(y,m,d,h,i,s);
+    _out.bazi = GetGZ(y,m,d,h,i,s,ms);
     _out.wholeYear = new Array();
     CalJiqiByYear(y,m,d,h,i,s,_out.wholeYear);
     return _out;
