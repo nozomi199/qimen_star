@@ -480,8 +480,9 @@ function BaZi(y,m,d,h,i,s,gender) {
 		document.write("子丑寅卯辰巳午未申酉戌亥".substr(hung_mon, 2),"　　");
   }
   document.write("\r\n");
-  var _cb = $.Callbacks();
-  _cb.add(function(value) {
+  //var _cb = $.Callbacks();
+  //_cb.add(function(value) {
+  (function() {
     "use strict";
     document.write("\uFF0D\uFF0D神煞\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D\uFF0D","\r\n");
     var _hh = new Array,
@@ -547,8 +548,8 @@ function BaZi(y,m,d,h,i,s,gender) {
       var t3 = _yy[i] ? _yy[i] : '　　　';
       document.write('　　　　','　　　　',t0,'　',t1,'　',t2,'　',t3,"\r\n");
     }
-  });
-  _cb.fire("fire");
+  })();
+  //_cb.fire("fire");
   document.write("\r\n");
   // 起大運
   var posneg = ("甲乙丙丁戊己庚辛壬癸".indexOf(fcol[0])+1) % 2; // 陰陽年: 陰年0, 陽年1
@@ -2061,7 +2062,8 @@ function _gui_cal2(id) {
     var id = prompt('yyyymmdd-hhiiss-g');
   }
   if(id) {
-    if(!gui_check_input_date(id)) {
+    id = gui_check_input_date(id);
+    if(!id) {
       alert('error format');
       return;
     }
@@ -2133,7 +2135,7 @@ function gui_check_input_date(id) {
   if(h < 0 || h > 23) return false;
   if(i < 0 || i > 59) return false;
   if(s < 0 || s > 59) return false;
-  return true;
+  return id;
 }
 function gui_append_input(val) {
   $("#txtDate").val($("#txtDate").val()+val);
