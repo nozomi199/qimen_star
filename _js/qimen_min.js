@@ -24,7 +24,23 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
       return calc(_dun, kook, tin_gan+dei_zhi);
    }
    
-   function calc(_dun, _kook, gan_chi) {
+   function minQimen_info(h,i,s)
+   {
+      var _dun = h < 12 ? 1 : 0;
+      var kooks = "174285396852963174396417528417528639936825714258147936714693582693582471";
+      var _yuen  = kooks.substr(h*3,3);
+      var sec = i * 60 + s;
+      var kook = 0;
+      if(sec > 2399) kook = _yuen[2];
+      else if (sec> 1199) kook = _yuen[1];
+      else kook = _yuen[0];
+      var fa_kap = sec % 1200;
+      fa_kap = (fa_kap - fa_kap % 20)/20;//console.log(fa_kap);
+      var tin_gan = "甲乙丙丁戊己庚辛壬癸".charAt(fa_kap % 10);
+      var dei_zhi = "子丑寅卯辰巳午未申酉戌亥".charAt(fa_kap % 12);
+      return {'gz': tin_gan+dei_zhi,'dun':_dun,'kook':kook};
+    }
+   function calc(_dun, _kook, gan_chi,_chun_sau) {
     "use strict";
     //var d = new Date(); //當下
     //
@@ -37,6 +53,12 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
     /** 重計時旬首 **/
     //　時旬首
     var chun_sau = "子丑寅卯辰巳午未申酉戌亥".indexOf(dcol0[0]) - "甲乙丙丁戊己庚辛壬癸".indexOf(tcol0[0]);
+    var chun_sau_org = chun_sau;
+    //if(_chun_sau) chun_sau = _chun_sau;
+    //console.log(_chun_sau);
+    if(_chun_sau && _chun_sau.match(/^[0-9]+$/i)) {
+      if(_chun_sau < 12 && (_chun_sau%2) == 0) chun_sau = parseInt(_chun_sau);
+    }
     if(chun_sau < 0) chun_sau += 12;
     // 建地盤
     var dei_pan = ""; // 建地盤
@@ -49,6 +71,11 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
     }//console.log(dei_pan);
     // 找值符
     var chun_sau = " 子戌申午辰寅".indexOf("子寅辰午申戌".charAt(parseInt(chun_sau/2)));
+    var chun_sau_org = " 子戌申午辰寅".indexOf("子寅辰午申戌".charAt(parseInt(chun_sau_org/2)));
+    var chun_sau_org = " 戊己庚辛壬癸".charAt(chun_sau_org);//console.log(chun_sau_org);
+    var chun_sau_org = dei_pan.indexOf(chun_sau_org)+1;//console.log(chun_sau_org);
+    if(chun_sau_org == 5) chun_sau_org = 2;
+    // step 2
     var jik_fu_idx = 0;
     var jik_fu_star = 0;
     var _tmp = tcol0[0];
@@ -57,9 +84,10 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
       while(jik_fu_idx > 9) jik_fu_idx -= 9;
       while(jik_fu_idx < 1) jik_fu_idx += 9;
       if(_tmp == '甲') _tmp = " 戊己庚辛壬癸".charAt(chun_sau);
+      //if(_tmp == '甲') _tmp = " 戊己庚辛壬癸".charAt(chun_sau_org);
       jik_fu_star = " 戊己庚辛壬癸丁丙乙".indexOf(_tmp) + using_kook - 1;
       while(jik_fu_star > 9) jik_fu_star -= 9;
-      while(jik_fu_star < 1) jik_fu_star += 9;
+      while(jik_fu_star < 1) jik_fu_star += 9;      
     } else {
       var jik_fu_idx = 1 + using_kook - chun_sau;
       while(jik_fu_idx > 9) jik_fu_idx -= 9;
@@ -84,14 +112,20 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
     //console.log("jik_fu_mun:",jik_fu_mun);
     if(jik_fu_mun == 5) jik_fu_mun = 2; // 中宮寄坤二宮
     // 計算星盤
+    //var houses_star_target = "18349276".indexOf(jik_fu_star);console.log(jik_fu_star,'houses_star_target',houses_star_target);
+    
     var houses_star_target = "18349276".indexOf(jik_fu_star);
-    var houses_star_idx = "183492761834927618349276".substr(8-houses_star_target+1, 8);
+    if(tcol0[0] == '甲') houses_star_target = "18349276".indexOf(chun_sau_org);
+    //var houses_star_target = "18349276".indexOf(chun_sau_org+1);
+    //var houses_star_idx = "183492761834927618349276".substr(8-houses_star_target+1, 8);
     //console.log("houses_star_idx1:",houses_star_idx);
     var houses_star_idx  = [1,8,3,4,9,2,7,6]; var _jfi = (jik_fu_idx == 5 ? 2 : jik_fu_idx);
-    //console.log('exit');return;
+    
+    console.log('exit1',houses_star_target,chun_sau_org);;
     while(houses_star_idx[houses_star_target] != _jfi) {
       houses_star_idx.unshift(houses_star_idx.pop());
     }
+    console.log('exit2');;
     var star_pan = new Array; //星盤
     for(var i = 1; i < 10; i++)
     {
@@ -124,9 +158,11 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
     
     // 計算八門
     var houses_door_target = "18349276".indexOf(jik_fu_mun);
+    //if(tcol0[0] == '甲') houses_door_target = "18349276".indexOf(chun_sau_org);
     var houses_door_idx  = [1,8,3,4,9,2,7,6];
     //console.log("houses_door_target: ",houses_door_target);
     //return;
+    //var _jfi = (jik_fu_idx == 5 ? 2 : jik_fu_idx);
     var _jfi = (jik_fu_idx == 5 ? 2 : jik_fu_idx);
     while(houses_door_idx[houses_door_target] != _jfi) {
       houses_door_idx.unshift(houses_door_idx.pop());
@@ -149,12 +185,15 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
     var houses_god;
     if(dun_type == 1) { // 陽遁-順排
       var houses_god_target = "18349276".indexOf(jik_fu_star);
+      if(tcol0[0] == '甲') houses_god_target = "18349276".indexOf(chun_sau_org);
+      //var houses_god_target = "18349276".indexOf(chun_sau_org+1);
       houses_god = ['符','蛇','陰','合','白','玄','地','天'];
       while(houses_god[houses_god_target] != '符') {
         houses_god.unshift(houses_god.pop());
       }
     } else {
       var houses_god_target = "18349276".indexOf(jik_fu_star);
+      if(tcol0[0] == '甲') houses_god_target = "18349276".indexOf(chun_sau_org);
       houses_god = ['符','天','地','玄','白','合','陰','蛇'];
       while(houses_god[houses_god_target] != '符') {
         houses_god.unshift(houses_god.pop());
@@ -187,9 +226,11 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
     tin_pan.unshift("");
     dei_pan = " " + dei_pan;
     house_door.unshift("");
-    god_pan.unshift("");    
+    god_pan.unshift("");
     return {'info':{'干支':gan_chi,'遁':_dun?'陽':'陰','局':_kook,'符':" 蓬苪沖輔禽心柱任英".charAt(jik_fu_idx) },'星':houses_star, '天':tin_pan, '地':dei_pan, '門':house_door, '神':god_pan};
   }
    //console.log(minQimen(13,5,21));
-   _e.minQimen = minQimen;
+   _e.minQimen  = minQimen;
+   _e.qimenCalc = calc;
+   _e.minQimen_info = minQimen_info;
 })(QIMEN_STAR);
