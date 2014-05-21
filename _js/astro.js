@@ -694,8 +694,8 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
     for(var _e in temp2) {
       var entry = temp2[_e];
       var degree = parseInt(entry[1]%30);
-      var minute = parseInt(((entry[1]%30) - degree) * 100);
-      temp3.push(entry[0] + FNzodiac2(entry[1]) + (degree < 10?'0':'') + degree + ':' + (minute < 10?'0':'') + minute);
+      var min    = parseInt((entry[1]%30 - degree) * 100);
+      temp3.push(entry[0] + FNzodiac2(entry[1]) + (degree < 10?'0':'') + degree + ':' + (min < 10?'0':'') + min );
       _out.animal.push(entry[0]+FNzodiac3(entry[1]));
     };
     

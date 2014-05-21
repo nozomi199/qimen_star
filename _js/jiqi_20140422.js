@@ -308,7 +308,7 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
   /**
    * 四柱計算, 子初換日
    */
-  function GetGZ(y,m,d,h,i,s,ms) {
+  function GetGZ(y,m,d,h,i,s) {
     var jtoday = date_to_julian_day2(y,m,d) + 
       date_to_julian_time(h,i,s);
     var jqTime=new Array;
@@ -357,49 +357,22 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
     if((Math.ceil(h/2)%12) != (hgz%12)) hgz++;
     rtn_gz.push(tin[hgz % 10]); // 時干
     rtn_gz.push(di[hgz % 12]);  // 時支
-    
     // 計分柱
     var minhz = i; if(h%2 == 0) minhz += 60; minhz = Math.floor(minhz * 60 / 600);
     var gan_idx = [0,2,4,6,8,0,2,4,6,8];
     rtn_gz.push(tin.substr(gan_idx[tin.indexOf(rtn_gz[6])],12).charAt(minhz)); // 分干
     rtn_gz.push(di[minhz % 12]);  // 分支
     // 計秒柱
-    var minhz = i; if(h%2 == 0) minhz += 60; minhz = Math.floor((minhz * 60 % 600+s) / 50);
+    var minhz = i; if(h%2 == 0) minhz += 60; minhz = Math.floor((minhz * 60 % 600 + s) / 50);
     var gan_idx = [0,2,4,6,8,0,2,4,6,8];
     rtn_gz.push(tin.substr(gan_idx[tin.indexOf(rtn_gz[8])],12).charAt(minhz)); // 秒干
     rtn_gz.push(di[minhz % 12]);  // 秒支
     
-    
-    /**
-     * 如有毫秒輸入, 計算毫秒柱, 無極, 混元, 究竟
-     */
-    if(1) {
-      var minhz = i; if(h%2 == 0) minhz += 60; minhz = minhz * 60 + s; minhz = minhz * 1000 + ms;
-      var minhz1 = Math.floor(minhz/600000); //分柱
-      var minhz2 = Math.floor(minhz%600000/50000); //秒柱
-      var minhz3 = Math.floor(minhz%50000/(50000/12.0)); //毫秒柱
-      var minhz4 = Math.floor(minhz%(50000/12.0)/(50000/12.0/12.0)); //無極柱
-      var minhz5 = Math.floor(minhz%(50000/12.0/12.0)/(50000/12.0/12.0/12.0)); //究竟柱
-      var minhz6 = Math.floor(minhz%(50000/12.0/12.0/12.0)/(50000/12.0/12.0/12.0/12.0)); //破限柱
-      //
-      //console.log(minhz1,minhz2,minhz3,minhz4,minhz5,minhz6);
-      var gan_idx = [0,2,4,6,8,0,2,4,6,8];
-      rtn_gz.push(tin.substr(gan_idx[tin.indexOf(rtn_gz[10])],12).charAt(minhz3)); // 毫秒柱
-      rtn_gz.push(di[minhz3 % 12]);  // 
-      rtn_gz.push(tin.substr(gan_idx[tin.indexOf(rtn_gz[12])],12).charAt(minhz4)); // 無極柱
-      rtn_gz.push(di[minhz4 % 12]);  // 
-      rtn_gz.push(tin.substr(gan_idx[tin.indexOf(rtn_gz[14])],12).charAt(minhz5)); // 究竟柱
-      rtn_gz.push(di[minhz5 % 12]);  // 
-      rtn_gz.push(tin.substr(gan_idx[tin.indexOf(rtn_gz[16])],12).charAt(minhz6)); // 究竟柱
-      rtn_gz.push(di[minhz6 % 12]);  // 
-    };
-    
     return rtn_gz.join("");
   };
   _e.jiqi = new Object();
-  _e.jiqi.GetBazi = function(y,m,d,h,i,s,ms) {
-    if(!ms) ms = 0;
-    return GetGZ(y,m,d,h,i,s,ms);
+  _e.jiqi.GetBazi = function(y,m,d,h,i,s) {
+    return GetGZ(y,m,d,h,i,s);
   };
   _e.jiqi.CalCurrentJiqi = function(y,m,d,h,i,s) {
     return jq0[CalCurrentJiqi(y,m,d,h,i,s)];
@@ -413,15 +386,12 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
   _e.jiqi.JTime = function(jtoday) {
     return Jtime(false,jtoday);
   };
-  _e.jiqi.CalJiqiByYear = function(y,m,d,h,i,s,_arr) {
-    CalJiqiByYear(y,m,d,h,i,s,_arr);
-  };
-  _e.jiqi.GetJiqiInfo = function(y,m,d,h,i,s,ms) {
+  _e.jiqi.GetJiqiInfo = function(y,m,d,h,i,s) {
     var _out = new Array();
     _out.julian = date_to_julian_day2(y,m,d) + date_to_julian_time(h,i,s);
     _out.jiqi = jq0.slice();
     _out.currentJiqiIdx = CalCurrentJiqi(y,m,d,h,i,s);
-    _out.bazi = GetGZ(y,m,d,h,i,s,ms);
+    _out.bazi = GetGZ(y,m,d,h,i,s);
     _out.wholeYear = new Array();
     CalJiqiByYear(y,m,d,h,i,s,_out.wholeYear);
     return _out;
