@@ -2176,7 +2176,14 @@ function gui_show_hide_menu() {
 var _gui_display_text_resize =  new gui_change_text_size();
 var _gui_show_hide_menu = new gui_show_hide_menu();
 $(document).ready(function() {
-  _gui_cal();
+  // add input from query string
+  "use strict";
+  var id = window.location.search.substr(1);
+  if(id && (id = gui_check_input_date(id))) {
+    _gui_cal2(id);
+  } else {
+    _gui_cal();
+  }
 });
 </script>
 <style type="text/css">
