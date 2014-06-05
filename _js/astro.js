@@ -366,7 +366,7 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
 		l=l+0.64* FNsin(ll-4*de)+0.56* FNsin(el-de)+0.76* FNsin(ll-2*el+2*de);
 		l=l+0.58* FNsin(2*ff-de)-0.55* FNsin(3*ll+el)+0.68* FNsin(3*ll-el);
 		l=(l+0.557* FNsin(2*ll+2*ff-2*de)+0.538* FNsin(2*ll-2*ff-2*de))/3600;
-		return ml+l+nu;
+		return (ml+l+nu+360)%360;
 	};
 
 	function planets_aa1(ct) {
