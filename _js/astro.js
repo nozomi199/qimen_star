@@ -663,8 +663,14 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
 		}
     return _rtn;
   };
-  
   _e.astrology = function(y,m,d,h,i,s) {
+    return this.astrology2(y,m,d,h,i,s,114,8,"true",22,12,"false","-8");
+  }
+  _e.astrology3 = function(y,m,d,h,i,s,gmt) {
+    console.log(y,m,d,h,i,s,114,8,"true",22,12,"false",gmt);
+    return this.astrology2(y,m,d,h,i,s,114,8,"true",22,12,"false",gmt);
+  }
+  _e.astrology2 = function(y,m,d,h,i,s,e1,e2,ee,n1,n2,nn,gmt) {
     //console.log("_e.astrology","args:",y,m,d,h,i,s);
     datacounter = 0;
     //var astro = new AHelper2();
@@ -673,8 +679,8 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
     var zodiac = ['戌','酉','申','未','午','巳','辰','卯','寅','丑','子','亥'];
     var tmpOut = '';
     var _out = new Object;
-    makechart2("ABC",d,m,y,h,i,"-8",false,
-      114,8,"true",22,12,"false","true","Hong Kong","China");
+    //makechart2("ABC",d,m,y,h,i,"-8",false,114,8,"true",22,12,"false","true","Hong Kong","China");
+    makechart2("ABC",d,m,y,h,i,gmt,false,e1,e2,ee,n1,n2,nn,"true","Hong Kong","China");
     var first_house = FNzodiac2(house[1]);
     var houses = zodiac.slice(0,12);
     while(first_house != houses[0]) {
@@ -696,6 +702,7 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
       var degree = parseInt(entry[1]%30);
       var min    = parseInt((entry[1]%30 - degree) * 100);
       temp3.push(entry[0] + FNzodiac2(entry[1]) + (degree < 10?'0':'') + degree + ':' + (min < 10?'0':'') + min );
+      //console.log(entry[0],entry[1]);
       _out.animal.push(entry[0]+FNzodiac3(entry[1]));
     };
     

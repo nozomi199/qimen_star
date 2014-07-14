@@ -226,7 +226,7 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
     dei_pan = " " + dei_pan;
     house_door.unshift("");
     god_pan.unshift("");
-    return {'info':{'干支':gan_chi,'遁':_dun?'陽':'陰','局':_kook,'符':" 蓬苪沖輔禽心柱任英".charAt(jik_fu_idx) },'星':houses_star, '天':tin_pan, '地':dei_pan, '門':house_door, '神':god_pan};
+    return {'info':{'干支':gan_chi,'遁':_dun?'陽':'陰','局':_kook,'符':" 蓬苪沖輔禽心柱任英".charAt(jik_fu_idx),'使':" 休死傷杜死開驚生景" },'星':houses_star, '天':tin_pan, '地':dei_pan, '門':house_door, '神':god_pan};
   }
    //console.log(minQimen(13,5,21));
    _e.minQimen  = minQimen;
