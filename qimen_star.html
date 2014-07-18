@@ -902,18 +902,18 @@ function QiMen(y,m,d,h,i,s,ms) {
   // 計空亡
   document.write("空亡：");
   var _func = function() {
-	//var _dcol0 = dcol0.slice(), _tcol0 = tcol0.slice();
-	//_tcol0.unshift(fcol[8]);_dcol0.unshift(fcol[9]);
-	//_tcol0.unshift(fcol[10]);_dcol0.unshift(fcol[11]);
-	//console.log(_tcol0,_dcol0);
-	for(var i = 0; i < fcol.length; i+=2) {
-		var chun_sau = "子丑寅卯辰巳午未申酉戌亥".indexOf(fcol[i+1]) - "甲乙丙丁戊己庚辛壬癸".indexOf(fcol[i]);
-		if(chun_sau < 0) chun_sau += 12;
-		var hung_mon = chun_sau - 2;
-		if(hung_mon < 0) hung_mon += 12;
-		document.write("　","子丑寅卯辰巳午未申酉戌亥".substr(hung_mon, 2));
-	}
-	document.write("\r\n");
+    //var _dcol0 = dcol0.slice(), _tcol0 = tcol0.slice();
+    //_tcol0.unshift(fcol[8]);_dcol0.unshift(fcol[9]);
+    //_tcol0.unshift(fcol[10]);_dcol0.unshift(fcol[11]);
+    //console.log(_tcol0,_dcol0);
+    for(var i = 0; i < fcol.length; i+=2) {
+      var chun_sau = "子丑寅卯辰巳午未申酉戌亥".indexOf(fcol[i+1]) - "甲乙丙丁戊己庚辛壬癸".indexOf(fcol[i]);
+      if(chun_sau < 0) chun_sau += 12;
+      var hung_mon = chun_sau - 2;
+      if(hung_mon < 0) hung_mon += 12;
+      document.write("　","子丑寅卯辰巳午未申酉戌亥".substr(hung_mon, 2));
+    }
+    document.write("\r\n");
   };
   _func();
   _func = null;

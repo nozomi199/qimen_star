@@ -201,7 +201,8 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
         var ptb= Perturbation(jdez[i]);	//取得受perturbation影響所需微調
         var dt= DeltaT(yy,Math.floor(i/2)+3);	//修正dynamical time to Universal time
         jdjq[i]= jdez[i]+ptb-dt/60/24;	//加上攝動調整值ptb，減去對應的Delta T值(分鐘轉換為日)
-        jdjq[i]=jdjq[i]+1/3;	//因中國時間比格林威治時間先行8小時，即1/3日
+        //jdjq[i]=jdjq[i]+1/3;	//因中國時間比格林威治時間先行8小時，即1/3日
+        jdjq[i]=jdjq[i]+_e.jiqi.timezone;	//因中國時間比格林威治時間先行8小時，即1/3日
       }
     }
   }
@@ -386,16 +387,30 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
       var gan_idx = [0,2,4,6,8,0,2,4,6,8];
       rtn_gz.push(tin.substr(gan_idx[tin.indexOf(rtn_gz[10])],12).charAt(minhz3)); // 毫秒柱
       rtn_gz.push(di[minhz3 % 12]);  // 
-      rtn_gz.push(tin.substr(gan_idx[tin.indexOf(rtn_gz[12])],12).charAt(minhz4)); // 無極柱
+      rtn_gz.push(tin.substr(gan_idx[tin.indexOf(rtn_gz[12])],12).charAt(minhz4)); // 混元柱
       rtn_gz.push(di[minhz4 % 12]);  // 
-      rtn_gz.push(tin.substr(gan_idx[tin.indexOf(rtn_gz[14])],12).charAt(minhz5)); // 究竟柱
+      rtn_gz.push(tin.substr(gan_idx[tin.indexOf(rtn_gz[14])],12).charAt(minhz5)); // 無極柱
       rtn_gz.push(di[minhz5 % 12]);  // 
       rtn_gz.push(tin.substr(gan_idx[tin.indexOf(rtn_gz[16])],12).charAt(minhz6)); // 究竟柱
       rtn_gz.push(di[minhz6 % 12]);  // 
     };
-    
     return rtn_gz.join("");
   };
+  /**
+   * 計算刻分
+   */
+  function calc_hak_fun(gz,h,i) {
+    var tin = "甲乙丙丁戊己庚辛壬癸甲乙丙丁戊己庚辛壬癸甲乙";
+    var di  = "子丑寅卯辰巳午未申酉戌亥子丑寅卯辰巳午未申酉戌亥";
+    var g = tin.indexOf(gz[0]);
+    var z = di.indexOf(gz[1]);
+    var c = di[(z - g + 12)%12];
+    var c2 = "子戌申午辰寅".indexOf(c) * 10 + g;
+    //var c3 = c2 * 8 + (h%2 == 1 ? 4:0) + (Math.floor(i/15);
+    var c3 = c2 * 8 + (h%2 == 0 ? 4:0) + Math.floor(i/15);
+    console.log(gz, c, c2, c3,c3%10, c3%12, tin[c3%10]+di[c3%12]);
+    return tin[c3%10]+di[c3%12];
+  }
   _e.jiqi = new Object();
   _e.jiqi.GetBazi = function(y,m,d,h,i,s,ms) {
     if(!ms) ms = 0;
@@ -422,8 +437,10 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
     _out.jiqi = jq0.slice();
     _out.currentJiqiIdx = CalCurrentJiqi(y,m,d,h,i,s);
     _out.bazi = GetGZ(y,m,d,h,i,s,ms);
+    _out.bazi_hak_fun = calc_hak_fun(_out.bazi.substr(6,2), h, i);
     _out.wholeYear = new Array();
     CalJiqiByYear(y,m,d,h,i,s,_out.wholeYear);
     return _out;
   };
+  _e.jiqi.timezone = 8/24;
 }(QIMEN_STAR || {}));
