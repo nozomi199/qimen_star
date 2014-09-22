@@ -180,6 +180,26 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
     for(var i = 0; i < 9; i++) {
       house_door.push("，休死傷杜　開驚生景".charAt(door_pan[i]));
     }
+    // 透過八門計算隱干
+    /**
+    var _yin_gan = (function() {
+      var houses_door_idx  = [1,8,3,4,9,2,7,6];
+      var tp = new Array();
+      houses_door_idx.forEach(function(f) { tp.push(tin_pan[f-1]) });
+      var jsi = " 休死傷杜死開驚生景".charAt(jik_fu_idx);
+      var hd = house_door.join('').indexOf(jsi)+1;
+      var hd = "18349276".indexOf(hd);
+      while(tp[hd] != gan_chi[0])
+        tp.unshift(tp.pop());
+      var tp2 = new Array;
+      for(var i = 1; i < 10; i++) {
+        if(i == 5) tp2.push("　");
+        else
+          tp2.push(tp["18349276".indexOf(i)]);
+      }
+      return tp2;
+    })();
+    **/
     // 計算八神
     var houses_god;
     if(dun_type == 1) { // 陽遁-順排
@@ -226,7 +246,7 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
     dei_pan = " " + dei_pan;
     house_door.unshift("");
     god_pan.unshift("");
-    return {'info':{'干支':gan_chi,'遁':_dun?'陽':'陰','局':_kook,'符':" 蓬苪沖輔禽心柱任英".charAt(jik_fu_idx),'使':" 休死傷杜死開驚生景" },'星':houses_star, '天':tin_pan, '地':dei_pan, '門':house_door, '神':god_pan};
+    return {'info':{'干支':gan_chi,'遁':_dun?'陽':'陰','局':_kook,'符':" 蓬苪沖輔禽心柱任英".charAt(jik_fu_idx),'使':" 休死傷杜死開驚生景".charAt(jik_fu_idx) },'星':houses_star, '天':tin_pan, '地':dei_pan, '門':house_door, '神':god_pan,};
   }
    //console.log(minQimen(13,5,21));
    _e.minQimen  = minQimen;

@@ -408,7 +408,7 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
     var c2 = "子戌申午辰寅".indexOf(c) * 10 + g;
     //var c3 = c2 * 8 + (h%2 == 1 ? 4:0) + (Math.floor(i/15);
     var c3 = c2 * 8 + (h%2 == 0 ? 4:0) + Math.floor(i/15);
-    console.log(gz, c, c2, c3,c3%10, c3%12, tin[c3%10]+di[c3%12]);
+   // console.log(gz, c, c2, c3,c3%10, c3%12, tin[c3%10]+di[c3%12]);
     return tin[c3%10]+di[c3%12];
   }
   _e.jiqi = new Object();

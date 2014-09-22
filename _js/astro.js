@@ -1,4 +1,5 @@
 if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
+if(typeof(QIMEN_STAR.CONFIG) == "undefined") QIMEN_STAR.CONFIG = {};
 (function(_e) {
   "use strict";
 	// these routines are copyright Kai Nicolai Priddy 1998
@@ -624,7 +625,7 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
 		return FNdeg(lo);
 	};
   
-  function calcRelation() {
+  function calcRelation(mode) {
     var angle=0;
 		var asp="";
 		var countr=-3;
@@ -649,11 +650,20 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
 					//if (p >=(120-7) && p<=(120+7)) {asp="拱";angle=120;type=2;anch="#The Trines"}
 					//if (p >=(90-6) && p<=(90+6)) {asp="相刑";angle=90;type=3;anch="#The Squares"}
 					//if (p >=(60-5) && p<=(60+5)) {asp="六分";angle=60;type=2;anch="#The Sextiles"}
-          if (p < 9) {asp="合";}
-					if (p >(171) && p<(189)) {asp="沖";}
-					if (p >(112) && p<(128)) {asp="拱";}
-					if (p >(83) && p<(97)) {asp="刑";}
-					if (p >(54) && p<(66)) {asp="六";}
+					if(mode == 0) {
+            if (p < 9) {asp="合";}
+            if (p >(171) && p<(189)) {asp="沖";}
+            if (p >(112) && p<(128)) {asp="拱";}
+            if (p >(83) && p<(97)) {asp="刑";}
+            if (p >(54) && p<(66)) {asp="六";}
+          } else {
+            // 緊相位
+            if (p < 4) {asp="合";}
+            if (p >(177) && p<(184)) {asp="沖";}
+            if (p >(116) && p<(124)) {asp="拱";}
+            if (p >(87) && p<(93)) {asp="刑";}
+            if (p >(57) && p<(66)) {asp="六";}
+          }
 					if (asp.length > 0) {
             var _tmp1 =  planetname[x]+"/"+ planetname[y]+asp;
 						_rtn.push(_tmp1);
@@ -667,8 +677,18 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
     return this.astrology2(y,m,d,h,i,s,114,8,"true",22,12,"false","-8");
   }
   _e.astrology3 = function(y,m,d,h,i,s,gmt) {
-    console.log(y,m,d,h,i,s,114,8,"true",22,12,"false",gmt);
+    //console.log(y,m,d,h,i,s,114,8,"true",22,12,"false",gmt);
     return this.astrology2(y,m,d,h,i,s,114,8,"true",22,12,"false",gmt);
+  }
+  /**
+   * 2014/09/11
+   * 此功能跟原有的astrology3一樣
+   * 分別在於這個是嚴格相位容許度, 原來的用托密肋的相位容許度
+   * 雖然功能上大致相同, 不過有重覆程式碼
+   */
+   _e.astrology3v2 = function(y,m,d,h,i,s,gmt) {
+    //console.log(y,m,d,h,i,s,114,8,"true",22,12,"false",gmt);
+    return this.astrology2v2(y,m,d,h,i,s,114,8,"true",22,12,"false",gmt);
   }
   _e.astrology2 = function(y,m,d,h,i,s,e1,e2,ee,n1,n2,nn,gmt) {
     //console.log("_e.astrology","args:",y,m,d,h,i,s);
@@ -708,7 +728,55 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
     
     //
     _out.zodiac = temp;
-    _out.relation = calcRelation();
+    _out.relation = calcRelation(0);
+    _out.position = temp3;
+    return _out;
+  };
+  /**
+   * 2014/09/11
+   * 此功能跟原有的astrology2一樣
+   * 分別在於這個是嚴格相位容許度, 原來的用托密肋的相位容許度
+   * 雖然功能上大致相同, 不過有重覆程式碼
+   */
+  _e.astrology2v2 = function(y,m,d,h,i,s,e1,e2,ee,n1,n2,nn,gmt) {
+    //console.log("_e.astrology","args:",y,m,d,h,i,s);
+    datacounter = 0;
+    //var astro = new AHelper2();
+    var ch = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
+    var chinese_hour = ['卯','寅','丑','子','亥','戌','酉','申','未','午','巳','辰'];
+    var zodiac = ['戌','酉','申','未','午','巳','辰','卯','寅','丑','子','亥'];
+    var tmpOut = '';
+    var _out = new Object;
+    //makechart2("ABC",d,m,y,h,i,"-8",false,114,8,"true",22,12,"false","true","Hong Kong","China");
+    makechart2("ABC",d,m,y,h,i,gmt,false,e1,e2,ee,n1,n2,nn,"true","Hong Kong","China");
+    var first_house = FNzodiac2(house[1]);
+    var houses = zodiac.slice(0,12);
+    while(first_house != houses[0]) {
+      houses.push(houses.shift());
+    }
+    var temp = new Array(); for(var i = 0; i < 12; i++) temp[ch[i]]=new Array();
+    var temp2 = new Array();var _sunshine_pt = zodiac.indexOf(first_house) * 30;var temp3 = new Array;
+    for(var i = 1; i < 11; i++) {
+      //document.write(astro.planetname[i],"\t",astro.FNzodiac2(astro.planet[i]),"\t",astro.planet[i],"\r\n");
+      //document.write(astro.planetname[i],"\t",astro.FNzodiac2(astro.planet[i]),"\r\n");
+      var j = FNzodiac2(planet[i]);
+      temp[j].push(planetname[i]);
+      temp2.push([planetname[i],planet[i],0,0]);
+    }
+    //temp2.sort(function(a,b) { return a[1] < b[1]; });
+    _out.animal = new Array();
+    for(var _e in temp2) {
+      var entry = temp2[_e];
+      var degree = parseInt(entry[1]%30);
+      var min    = parseInt((entry[1]%30 - degree) * 100);
+      temp3.push(entry[0] + FNzodiac2(entry[1]) + (degree < 10?'0':'') + degree + ':' + (min < 10?'0':'') + min );
+      //console.log(entry[0],entry[1]);
+      _out.animal.push(entry[0]+FNzodiac3(entry[1]));
+    };
+    
+    //
+    _out.zodiac = temp;
+    _out.relation = calcRelation(1);
     _out.position = temp3;
     return _out;
   };

@@ -7,10 +7,10 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
     return 0;
   }
   function genDate(y,m,d,h) {
-    var y = "甲乙丙丁戌己庚辛壬癸".indexOf(y) + 1;
-    var m = "寅卯辰巳午未申酉戌亥子丑".indexOf(m) + 1;
-    var d = "子丑寅卯辰巳午未申酉戌亥".indexOf(d) + 1;
-    var h = "子丑寅卯辰巳午未申酉戌亥".indexOf(h) + 1;
+    //var y = "子丑寅卯辰巳午未申酉戌亥".indexOf(y) + 1;
+    //var m = "寅卯辰巳午未申酉戌亥子丑".indexOf(m) + 1;
+    //var d = "子丑寅卯辰巳午未申酉戌亥".indexOf(d) + 1;
+    //var h = "子丑寅卯辰巳午未申酉戌亥".indexOf(h) + 1;
     var up = (y + m + d) % 8; if(up == 0) up = 8;
     var down = (y + m + d + h) % 8; if(down == 0) down = 8;
     var chg = (y + m + d + h) % 6; if(chg == 0) chg = 6;
@@ -25,7 +25,7 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
       case 2: d = d[0] + ((d[1] == '1') ? '0' : '1') + d[2]; break;
       case 1: d = d[0] + d[1] + ((d[2] == '1') ? '0' : '1'); break;
     }
-    return gen(a,b,c,d);
+    return gen(a,b,c,d,h);
   }
   function rand() {
     var a = Math.floor(Math.random() * 2)+''+Math.floor(Math.random() * 2)+''+Math.floor(Math.random() * 2),
@@ -52,7 +52,8 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
         g = ''+c[1]+c[2]+d[0],
         h = ''+c[2]+d[0]+d[1];
     var ab = upper[a]+lower[b],
-        cd = upper[c]+''+lower[d];
+        cd = upper[c]+''+lower[d],
+        ef = upper[e]+lower[f];
     //定世應
     var sy = (a[0] == b[0] ? "0":"1")+(a[1] == b[1] ? "0":"1")+(a[2] == b[2] ? "0":"1");
     if(sy == '000') sy = '世　　應　　';
@@ -73,16 +74,26 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
     else if(sy2 == '100') sy2 = '　世　　應　';
     else if(sy2 == '101') sy2 = '　　世　　應';
     else if(sy2 == '010') sy2 = '應　　世　　';
+    //
+    if(arguments.length > 4) {
+      if(a == b && (a == '000' || a == '111')) {
+        if(arguments[4]%2 == 1) {
+          e = d[2] + c[0] + c[1] ; f =  c[2] + d[0] + d[1];
+        } else {
+          e = c[1] + c[2] + d[0] ; f =  d[1] + d[2] + c[0];
+        }
+        ef = upper[e]+lower[f];
+      }
+    }
     return {
-            0:sy[0]+ab[0]+check(a[0],c[0])+(a[0] != c[0]?'－&rArr;':'　　')+cd[0]+sy2[0],
-            1:sy[1]+ab[1]+check(a[1],c[1])+(a[1] != c[1]?'－&rArr;':'　　')+cd[1]+sy2[1],
-            2:sy[2]+ab[2]+check(a[2],c[2])+(a[2] != c[2]?'－&rArr;':'　　')+cd[2]+sy2[2],
-            3:sy[3]+ab[3]+check(b[0],d[0])+(b[0] != d[0]?'－&rArr;':'　　')+cd[3]+sy2[3],
-            4:sy[4]+ab[4]+check(b[1],d[1])+(b[1] != d[1]?'－&rArr;':'　　')+cd[4]+sy2[4],
-            5:sy[5]+ab[5]+check(b[2],d[2])+(b[2] != d[2]?'－&rArr;':'　　')+cd[5]+sy2[5],
+            0:sy[0]+ab[0]+check(a[0],c[0])+(a[0] != c[0]?'－&rArr;':'　　')+cd[0]+sy2[0]+'　'+ef[0],
+            1:sy[1]+ab[1]+check(a[1],c[1])+(a[1] != c[1]?'－&rArr;':'　　')+cd[1]+sy2[1]+'　'+ef[1],
+            2:sy[2]+ab[2]+check(a[2],c[2])+(a[2] != c[2]?'－&rArr;':'　　')+cd[2]+sy2[2]+'　'+ef[2],
+            3:sy[3]+ab[3]+check(b[0],d[0])+(b[0] != d[0]?'－&rArr;':'　　')+cd[3]+sy2[3]+'　'+ef[3],
+            4:sy[4]+ab[4]+check(b[1],d[1])+(b[1] != d[1]?'－&rArr;':'　　')+cd[4]+sy2[4]+'　'+ef[4],
+            5:sy[5]+ab[5]+check(b[2],d[2])+(b[2] != d[2]?'－&rArr;':'　　')+cd[5]+sy2[5]+'　'+ef[5],
             //1:sy[1]+'▅'+(a[1]=='1'?'▅':'　')+'▅'+ab[1]+''+(a[1] != c[1]?'－&rArr;':'　　')+''+'▅'+(c[1]=='1'?'▅':'　')+'▅'+cd[1],
-            
-            6:'　'+main[a]+main[b]+'　　'+main[c]+main[d],
+            6:'　'+main[a]+main[b]+'　　'+main[c]+main[d]+'　'+main[e]+main[f],
            };
     
   }

@@ -33,7 +33,7 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
       }
       start_time = jtoday - jqTime[jqpos2];//console.log('陰男陽女',jtoday,jqTime[jqpos2],start_time,jqpos,jqpos2);
     }
-    console.log('gender',gender,'posneg',posneg,'jqpos2',jqpos2);
+    //console.log('gender',gender,'posneg',posneg,'jqpos2',jqpos2);
     // 計小運
     var start_small = start_time / 3;
     _out.small = new Array();
