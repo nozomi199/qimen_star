@@ -42,11 +42,20 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
     } else {
       var tinIdx = "甲乙丙丁戊己庚辛壬癸".indexOf(fcol[6]);
       var deiIdx = "子丑寅卯辰巳午未申酉戌亥".indexOf((fcol[7]));
-      for(var i = 1; i <= start_small; i++) {
-        _out.small.push(
-          "甲乙丙丁戊己庚辛壬癸".charAt((tinIdx+i)%10) +
-          "子丑寅卯辰巳午未申酉戌亥".charAt((deiIdx+i)%12)
-        );
+      if((gender == 1 && posneg == 1) || (gender == 0 && posneg == 0)) { // 陽男, 陰女
+        for(var i = 1; i <= start_small; i++) {
+          _out.small.push(
+            "甲乙丙丁戊己庚辛壬癸".charAt((tinIdx+i)%10) +
+            "子丑寅卯辰巳午未申酉戌亥".charAt((deiIdx+i)%12)
+          );
+        }
+      } else {// 陽女, 陰男
+        for(var i = 1; i <= start_small; i++) {
+          _out.small.push(
+            "甲乙丙丁戊己庚辛壬癸".charAt((tinIdx-i)%10) +
+            "子丑寅卯辰巳午未申酉戌亥".charAt((deiIdx-i)%12)
+          );
+        }
       }
     }
     // 計大運起始
