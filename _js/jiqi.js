@@ -271,6 +271,52 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
     dytm+= ((ss < 10) ? "0" : "") + ss+"秒";
     return dytm.trim();
   };
+  /*****
+   * 將儒略日換成Date object(年月日時分秒)
+   */
+  function Jtime2 (op,jd){
+    if(jd>=2299160.5 || op){
+      var y4h=146097;
+      var init=1721119.5;
+    }
+    else{
+      var y4h=146100;
+      var init=1721117.5;
+    }
+    var jdr=Math.floor(jd-init);
+    var yh=y4h/4;
+    var cen=Math.floor((jdr+0.75)/yh);
+    var d=Math.floor(jdr+0.75-cen*yh);
+    var ywl=1461/4;
+    var jy=Math.floor((d+0.75)/ywl);
+    d=Math.floor(d+0.75-ywl*jy+1);
+    var ml=153/5;
+    var mp=Math.floor((d-0.5)/ml);
+    d=Math.floor((d-0.5)-30.6*mp+1);
+    var y=(100*cen)+jy;
+    var m=(mp+2)%12+1;
+    if(m<3) y=y+1;
+    var sd=Math.floor((jd+0.5-Math.floor(jd+0.5))*24*60*60+0.00005);
+    var mt=Math.floor(sd/60);
+    var ss=sd%60;
+    var hh=Math.floor(mt/60);
+    var mmt=mt%60;
+    var yy=Math.floor(y);
+    var mm=Math.floor(m);
+    var dd=Math.floor(d);
+    /**
+    var yc="     "+yy;
+    yc=yc.substr(yc.length-5,5);
+    var dytm=yc;dytm+="年";
+    dytm+= ((mm < 10) ? "0" : "") + mm+"月";
+    dytm+= ((dd < 10) ? "0" : "") + dd+"日";
+    dytm+= ((hh < 10) ? "0" : "") + hh+"時";
+    dytm+= ((mmt < 10) ? "0" : "") + mmt+"分";
+    dytm+= ((ss < 10) ? "0" : "") + ss+"秒";
+    return dytm.trim();
+    **/
+    return new Date(yy,mm,dd,hh,mmt,ss);
+  };
   /**
    * 計算當年節氣
    */
@@ -278,9 +324,21 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
     var jtoday = date_to_julian_day2(y,m,d) + 
       date_to_julian_time(h,i,s);
     GetPureJQsinceSpring2(y,0,0,0,_array);  // 計算當年節氣(以立春日為新一年)
+	/**
     if(jtoday < _array[0]) {
       y = y - 1;
       GetPureJQsinceSpring2(y,0,0,0,_array);  // 計算上一年節氣(以立春日為新一年)
+    }
+	**/
+	if(jtoday < _array[0]) {
+	  var jt1 = Math.ceil((jtoday - Math.floor(jtoday))*86400);
+	  var jq1 = Math.ceil((_array[0] - Math.floor(_array[0]))*86400);
+	  if(Math.floor(jtoday) == Math.floor(_array[0]) && jt1 >= jq1) {
+		  // nothing to change by same second(針對同秒不同年)
+	  }else{
+		y = y - 1;
+		GetPureJQsinceSpring2(y,0,0,0,_array);  // 計算上一年節氣(以立春日為新一年)
+	  }
     }
   }
   /**
@@ -292,17 +350,29 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
     var jqTime=new Array;
     GetPureJQsinceSpring2(y,0,0,0,jqTime);  // 計算當年節氣(以立春日為新一年)
     if(jtoday < jqTime[0]) {
-      y = y - 1;
-      GetPureJQsinceSpring2(y,0,0,0,jqTime);  // 計算上一年節氣(以立春日為新一年)
-      //console.log("計算上一年節氣(以立春日為新一年)");
+	  var jt1 = Math.ceil((jtoday - Math.floor(jtoday))*86400);
+	  var jq1 = Math.ceil((jqTime[0] - Math.floor(jqTime[0]))*86400);
+	  if(Math.floor(jtoday) == Math.floor(jqTime[0]) && jt1 >= jq1) {
+	  }else{
+		y = y - 1;
+		GetPureJQsinceSpring2(y,0,0,0,jqTime);  // 計算上一年節氣(以立春日為新一年)
+	  }
     }
     var dgz = -1;
+	var jt2 = Math.ceil((jtoday - Math.floor(jtoday))*86400);
     for(var ii = 24; ii > 0; ii--) {
       if(jtoday > jqTime[ii-1]) {
         dgz = ii;
         break;
       }
+	  if(Math.floor(jtoday) == Math.floor(jqTime[ii-1])) {
+		if( Math.ceil((jqTime[ii-1] - Math.floor(jqTime[ii-1]))*86400) <= jt2) {
+			dgz = ii;
+			break;
+		}
+	  }
     }
+	
     //return jq0[dgz];
     return dgz;
   }
@@ -316,9 +386,17 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
     //var y = this.Jtime(jtoday);
     GetPureJQsinceSpring2(y,0,0,0,jqTime);  // 計算當年節氣(以立春日為新一年)
     if(jtoday < jqTime[0]) {
-      y = y - 1;
-      GetPureJQsinceSpring2(y,0,0,0,jqTime);  // 計算上一年節氣(以立春日為新一年)
-      //console.log("計算上一年節氣(以立春日為新一年)");
+      console.log(jtoday,jqTime[0]);
+	  var jt1 = Math.ceil((jtoday - Math.floor(jtoday))*86400);
+	  var jq1 = Math.ceil((jqTime[0] - Math.floor(jqTime[0]))*86400);
+	  console.log("jt1",jt1,"jq1",jq1);
+	  if(Math.floor(jtoday) == Math.floor(jqTime[0]) && jt1 >= jq1) {
+	  }else{
+		y = y - 1;
+		GetPureJQsinceSpring2(y,0,0,0,jqTime);  // 計算上一年節氣(以立春日為新一年)
+		console.log("計算上一年節氣(以立春日為新一年)");
+	  }
+      
     }
     // 四柱回傳
     var tin = "甲乙丙丁戊己庚辛壬癸甲乙丙丁戊己庚辛壬癸甲乙";
@@ -331,11 +409,26 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
     rtn_gz.push(di[ygz % 12]);
     // 計月柱
     var dgz = -1;
+	/*
     for(var ii = 24; ii > 0; ii--) {
       if(jtoday > jqTime[ii-1]) {
         dgz = ii;
         break;
       }
+    }
+	*/
+	var jt2 = Math.ceil((jtoday - Math.floor(jtoday))*86400);
+    for(var ii = 24; ii > 0; ii--) {
+      if(jtoday > jqTime[ii-1]) {
+        dgz = ii;
+        break;
+      }
+	  if(Math.floor(jtoday) == Math.floor(jqTime[ii-1])) {
+		if( Math.ceil((jqTime[ii-1] - Math.floor(jqTime[ii-1]))*86400) <= jt2) {
+			dgz = ii;
+			break;
+		}
+	  }
     }
     if(dgz < 0) dgz = 1;if(dgz%2 == 0) dgz--;
     dgz = Math.floor(dgz / 2);if(dgz == 12) dgz = 11;
@@ -428,17 +521,22 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
   _e.jiqi.JTime = function(jtoday) {
     return Jtime(false,jtoday);
   };
+  _e.jiqi.JTime2 = function(jtoday) {
+    return Jtime2(false,jtoday);
+  };
   _e.jiqi.CalJiqiByYear = function(y,m,d,h,i,s,_arr) {
     CalJiqiByYear(y,m,d,h,i,s,_arr);
   };
   _e.jiqi.GetJiqiInfo = function(y,m,d,h,i,s,ms) {
     var _out = new Array();
-    _out.julian = date_to_julian_day2(y,m,d) + date_to_julian_time(h,i,s);
+    _out.jd = date_to_julian_day2(y,m,d);
+    _out.julian = _out.jd + date_to_julian_time(h,i,s);
     _out.jiqi = jq0.slice();
     _out.currentJiqiIdx = CalCurrentJiqi(y,m,d,h,i,s);
     _out.bazi = GetGZ(y,m,d,h,i,s,ms);
     _out.bazi_hak_fun = calc_hak_fun(_out.bazi.substr(6,2), h, i);
     _out.wholeYear = new Array();
+	_out.year=y;
     CalJiqiByYear(y,m,d,h,i,s,_out.wholeYear);
     return _out;
   };
