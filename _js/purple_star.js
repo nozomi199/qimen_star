@@ -1,7 +1,11 @@
 ﻿if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
+QIMEN_STAR.purple_star = {};
 (function(_e) {
   "use strict";
-  if(!QIMEN_STAR.hasOwnProperty('jiqi')) return;
+  if(!QIMEN_STAR.hasOwnProperty('jiqi')) {
+	  delete QIMEN_STAR['purple_star'];
+	  return;
+  }
   // 
   /**
    * 計紫白飛星年盤
@@ -131,18 +135,17 @@
     return "一二三四五六七八九一二三四五六七八九".substr(_output-4,9);
   }
   /** setup object **/
-  var purple_star = new Object();
-  purple_star.CalYear = function(yy,mm,dd,hh,ii,ss) {
+  //var purple_star = new Object();
+  _e.CalYear = function(yy,mm,dd,hh,ii,ss) {
     return CalYear(yy,mm,dd,hh,ii,ss);
   };
-  purple_star.CalMonth = function(yy,mm,dd,hh,ii,ss) {
+  _e.CalMonth = function(yy,mm,dd,hh,ii,ss) {
     return CalMonth(yy,mm,dd,hh,ii,ss);
   };
-  purple_star.CalDay = function(yy,mm,dd,hh,ii,ss) {
+  _e.CalDay = function(yy,mm,dd,hh,ii,ss) {
     return CalDay(yy,mm,dd,hh,ii,ss);
   };
-  purple_star.CalHour = function(yy,mm,dd,hh,ii,ss) {
+  _e.CalHour = function(yy,mm,dd,hh,ii,ss) {
     return CalHour(yy,mm,dd,hh,ii,ss);
   };
-  _e.purple_star = purple_star;
-}(QIMEN_STAR || {}));
+}(QIMEN_STAR.purple_star || {}));

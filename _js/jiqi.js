@@ -1,4 +1,5 @@
 if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
+QIMEN_STAR.jiqi = {};
 (function(_e) {
   "use strict";
   /**
@@ -202,7 +203,7 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
         var dt= DeltaT(yy,Math.floor(i/2)+3);	//修正dynamical time to Universal time
         jdjq[i]= jdez[i]+ptb-dt/60/24;	//加上攝動調整值ptb，減去對應的Delta T值(分鐘轉換為日)
         //jdjq[i]=jdjq[i]+1/3;	//因中國時間比格林威治時間先行8小時，即1/3日
-        jdjq[i]=jdjq[i]+_e.jiqi.timezone;	//因中國時間比格林威治時間先行8小時，即1/3日
+        jdjq[i]=jdjq[i]+_e.timezone;	//因中國時間比格林威治時間先行8小時，即1/3日
       }
     }
   }
@@ -315,7 +316,8 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
     dytm+= ((ss < 10) ? "0" : "") + ss+"秒";
     return dytm.trim();
     **/
-    return new Date(yy,mm,dd,hh,mmt,ss);
+	//console.log(yy,mm,dd,hh,mmt,ss);
+    return new Date(yy,mm-1,dd,hh,mmt,ss);
   };
   /**
    * 計算當年節氣
@@ -376,25 +378,27 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
     //return jq0[dgz];
     return dgz;
   }
+  
   /**
    * 四柱計算, 子初換日
    */
+  
   function GetGZ(y,m,d,h,i,s,ms) {
-    var jtoday = date_to_julian_day2(y,m,d) + 
-      date_to_julian_time(h,i,s);
+    var jtoday = date_to_julian_day2(y,m,d) + date_to_julian_time(h,i,s);
+      
     var jqTime=new Array;
     //var y = this.Jtime(jtoday);
     GetPureJQsinceSpring2(y,0,0,0,jqTime);  // 計算當年節氣(以立春日為新一年)
     if(jtoday < jqTime[0]) {
-      console.log(jtoday,jqTime[0]);
+      //console.log(jtoday,jqTime[0]);
 	  var jt1 = Math.ceil((jtoday - Math.floor(jtoday))*86400);
 	  var jq1 = Math.ceil((jqTime[0] - Math.floor(jqTime[0]))*86400);
-	  console.log("jt1",jt1,"jq1",jq1);
+	  //console.log("jt1",jt1,"jq1",jq1);
 	  if(Math.floor(jtoday) == Math.floor(jqTime[0]) && jt1 >= jq1) {
 	  }else{
 		y = y - 1;
 		GetPureJQsinceSpring2(y,0,0,0,jqTime);  // 計算上一年節氣(以立春日為新一年)
-		console.log("計算上一年節氣(以立春日為新一年)");
+		//console.log("計算上一年節氣(以立春日為新一年)");
 	  }
       
     }
@@ -504,30 +508,41 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
    // console.log(gz, c, c2, c3,c3%10, c3%12, tin[c3%10]+di[c3%12]);
     return tin[c3%10]+di[c3%12];
   }
-  _e.jiqi = new Object();
-  _e.jiqi.GetBazi = function(y,m,d,h,i,s,ms) {
+  //_e.jiqi = new Object();
+  _e.GetBazi = function(y,m,d,h,i,s,ms) {
     if(!ms) ms = 0;
     return GetGZ(y,m,d,h,i,s,ms);
   };
-  _e.jiqi.CalCurrentJiqi = function(y,m,d,h,i,s) {
+  _e.GetBazi2 = function(jtoday) {
+	var d = Jtime2(false,jtoday);
+    return GetGZ(d.getFullYear(),
+		d.getMonth()+1,
+		d.getDate(),
+		d.getHours(),
+		d.getMinutes(),
+		d.getSeconds(),
+		d.getMilliseconds()
+		);
+  };
+  _e.CalCurrentJiqi = function(y,m,d,h,i,s) {
     return jq0[CalCurrentJiqi(y,m,d,h,i,s)];
   };
-  _e.jiqi.CalCurrentJiqiIdx = function(y,m,d,h,i,s) {
+  _e.CalCurrentJiqiIdx = function(y,m,d,h,i,s) {
     return CalCurrentJiqi(y,m,d,h,i,s);
   };
-  _e.jiqi.GetJulianToday = function(y,m,d,h,i,s) {
+  _e.GetJulianToday = function(y,m,d,h,i,s) {
     return date_to_julian_day2(y,m,d) + date_to_julian_time(h,i,s);
   };
-  _e.jiqi.JTime = function(jtoday) {
+  _e.JTime = function(jtoday) {
     return Jtime(false,jtoday);
   };
-  _e.jiqi.JTime2 = function(jtoday) {
+  _e.JTime2 = function(jtoday) {
     return Jtime2(false,jtoday);
   };
-  _e.jiqi.CalJiqiByYear = function(y,m,d,h,i,s,_arr) {
+  _e.CalJiqiByYear = function(y,m,d,h,i,s,_arr) {
     CalJiqiByYear(y,m,d,h,i,s,_arr);
   };
-  _e.jiqi.GetJiqiInfo = function(y,m,d,h,i,s,ms) {
+  _e.GetJiqiInfo = function(y,m,d,h,i,s,ms) {
     var _out = new Array();
     _out.jd = date_to_julian_day2(y,m,d);
     _out.julian = _out.jd + date_to_julian_time(h,i,s);
@@ -540,5 +555,5 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
     CalJiqiByYear(y,m,d,h,i,s,_out.wholeYear);
     return _out;
   };
-  _e.jiqi.timezone = 8/24;
-}(QIMEN_STAR || {}));
+  _e.timezone = 8/24;
+}(QIMEN_STAR.jiqi || {}));

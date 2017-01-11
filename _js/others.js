@@ -1,8 +1,9 @@
 if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
+QIMEN_STAR.others = {};
 (function(_e) {
   "use strict";
-  _e.others = new Object();
-  _e.others.calc = function(jiqi) {
+  //_e.others = new Object();
+  _e.calc = function(jiqi) {
 	  if(!jiqi.jd) return 0;
 	  var out = new Object();
 	  out.weekday = Math.floor(jiqi.jd+2)%7;
@@ -107,4 +108,4 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
 	  }
 	  return out;
   };
-})(QIMEN_STAR || {});
+})(QIMEN_STAR.others);

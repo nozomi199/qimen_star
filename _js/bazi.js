@@ -1,11 +1,13 @@
 if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
+QIMEN_STAR.bazi = {};
 (function(_e) {
   "use strict";
+  
   function info(y,m,d,h,i,s,ms,_g) {
     // output
     var _out = new Object();
     //
-    var jiqi = _e.jiqi.GetJiqiInfo(y,m,d,h,i,s,ms);
+	var jiqi = QIMEN_STAR.jiqi.GetJiqiInfo(y,m,d,h,i,s,ms);
     var gender = _g;
     var fcol   = jiqi.bazi;
     var jtoday = jiqi.julian;
@@ -22,14 +24,14 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
       var jqpos2 = jqpos + (jqpos%2 == 0 ? 2 : 1);
       if(jqpos2 > 23) {
         jqpos2 = 0;
-        _e.jiqi.CalJiqiByYear(y+1,m,d,h,i,s,jqTime);
+        QIMEN_STAR.jiqi.CalJiqiByYear(y+1,m,d,h,i,s,jqTime);
       }
       start_time = jqTime[jqpos2] - jtoday;//console.log('陽男陰女',jtoday,jqTime[jqpos2],start_time,jqpos,jqpos2);
     } else { // 陰男, 陽女
       var jqpos2 = jqpos - (jqpos%2 == 0 ? 0 : 1);
       if(jqpos2 < 0) {
         jqpos2 = 22;
-        _e.jiqi.CalJiqiByYear(y-1,m,d,h,i,s,jqTime);
+        QIMEN_STAR.jiqi.CalJiqiByYear(y-1,m,d,h,i,s,jqTime);
       }
       start_time = jtoday - jqTime[jqpos2];//console.log('陰男陽女',jtoday,jqTime[jqpos2],start_time,jqpos,jqpos2);
     }
@@ -42,27 +44,26 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
     } else {
       var tinIdx = "甲乙丙丁戊己庚辛壬癸".indexOf(fcol[6]);
       var deiIdx = "子丑寅卯辰巳午未申酉戌亥".indexOf((fcol[7]));
-      if((gender == 1 && posneg == 1) || (gender == 0 && posneg == 0)) { // 陽男, 陰女
-        for(var i = 1; i <= start_small; i++) {
-          _out.small.push(
-            "甲乙丙丁戊己庚辛壬癸".charAt((tinIdx+i)%10) +
-            "子丑寅卯辰巳午未申酉戌亥".charAt((deiIdx+i)%12)
-          );
-        }
-      } else {// 陽女, 陰男
-        for(var i = 1; i <= start_small; i++) {
-          _out.small.push(
-            "甲乙丙丁戊己庚辛壬癸".charAt((tinIdx-i+10)%10) +
-            "子丑寅卯辰巳午未申酉戌亥".charAt((deiIdx-i+12)%12)
-          );
-        }
-      }
+	  if((gender==1 && posneg==1) || (gender==0 && posneg==0)) // 陽男, 陰女
+		for(var i = 1; i <= start_small; i++) {
+		  _out.small.push(
+		    "甲乙丙丁戊己庚辛壬癸".charAt((tinIdx+i)%10) +
+		    "子丑寅卯辰巳午未申酉戌亥".charAt((deiIdx+i)%12)
+		  );
+		}
+	  else
+	    for(var i = 1; i <= start_small; i++) {
+		  _out.small.push(
+		    "甲乙丙丁戊己庚辛壬癸".charAt((tinIdx-i+10)%10) +
+		    "子丑寅卯辰巳午未申酉戌亥".charAt((deiIdx-i+12)%12)
+		  );
+		}
     }
     // 計大運起始
     //console.log(jtoday,_e.jiqi.JTime(jtoday),start_time);
     start_time = jtoday + 365.25 * (start_time / 3.0);
     _out.start = start_time;
-    _out.start_text = _e.jiqi.JTime(start_time);
+    _out.start_text = QIMEN_STAR.jiqi.JTime(start_time);
     // 計一百二十年大運, 參照吠陀占星及法達星限120年大限
     _out.big = new Array();
     var tinIdx = "甲乙丙丁戊己庚辛壬癸".indexOf(fcol[2]);
@@ -88,12 +89,24 @@ if(typeof(QIMEN_STAR) == "undefined") var QIMEN_STAR = {};
     // return
     return _out;
   }
+  function _gz2idx(gz)
+  {
+    //var g = gz[0];
+    //var z = gz[1];
+    var g1 = "甲乙丙丁戊己庚辛壬癸".indexOf(gz[0]);
+    var z1 = "子丑寅卯辰巳午未申酉戌亥".indexOf(gz[1]);
+    var a = g1, b = z1;
+    while(a > 0) { a--; b--;if(b < 0) b+=12; }
+    var s = "子戌申午辰寅".indexOf("子丑寅卯辰巳午未申酉戌亥"[b]);
+    return s*10 + g1;
+  }
   /*
   var d = new Date();
   console.log(info(d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds(),d.getMilliseconds(),1));
   */
-  _e.bazi = new Object();
-  _e.bazi.info = function(y,m,d,h,i,s,ms,_g) {
+  //_e = new Object();
+  _e.info = function(y,m,d,h,i,s,ms,_g) {
     return info(y,m,d,h,i,s,ms,_g);
   };
-})(QIMEN_STAR || {});
+  _e.gz2idx = _gz2idx;
+})(QIMEN_STAR.bazi || {});
