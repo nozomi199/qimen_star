@@ -51,13 +51,13 @@ QIMEN_STAR.jiqi = {};
     var jd=jdy+jdm+jdd+jdh+init;
     return jd;
   }
-  function date_to_julian_time(h,i,s) {
+  function date_to_julian_time(h,i,s,ms=0) {
     /*****
      * h: hour
      * i: minutes
      * s: second
      */
-    return ((h * 3600) + (i * 60) + s) /86400;
+    return ((h * 3600) + (i * 60) + s + (ms/1000)) /86400;
   }
   /*****
    * 計算指定年份之春分點
@@ -254,11 +254,14 @@ QIMEN_STAR.jiqi = {};
     var y=(100*cen)+jy;
     var m=(mp+2)%12+1;
     if(m<3) y=y+1;
-    var sd=Math.floor((jd+0.5-Math.floor(jd+0.5))*24*60*60+0.00005);
+    // 計時分秒毫秒
+    var sd2=((jd+0.5-Math.floor(jd+0.5))*24*60*60+0.00005),sd=Math.floor(sd2);
+    var ms=Math.floor(sd2*1000%1000);
     var mt=Math.floor(sd/60);
     var ss=sd%60;
     var hh=Math.floor(mt/60);
     var mmt=mt%60;
+    // 計年/月/日
     var yy=Math.floor(y);
     var mm=Math.floor(m);
     var dd=Math.floor(d);
@@ -270,6 +273,7 @@ QIMEN_STAR.jiqi = {};
     dytm+= ((hh < 10) ? "0" : "") + hh+"時";
     dytm+= ((mmt < 10) ? "0" : "") + mmt+"分";
     dytm+= ((ss < 10) ? "0" : "") + ss+"秒";
+    if(ms < 10) { dytm += "00"+ms; } elseif(ms < 100) { dytm+="0"+ms; } else { dytm+=""+ms; }
     return dytm.trim();
   };
   /*****
@@ -297,11 +301,15 @@ QIMEN_STAR.jiqi = {};
     var y=(100*cen)+jy;
     var m=(mp+2)%12+1;
     if(m<3) y=y+1;
-    var sd=Math.floor((jd+0.5-Math.floor(jd+0.5))*24*60*60+0.00005);
+    // 計時分秒毫秒
+    //var sd=Math.floor((jd+0.5-Math.floor(jd+0.5))*24*60*60+0.00005);
+    var sd2=((jd+0.5-Math.floor(jd+0.5))*24*60*60+0.00005),sd=Math.floor(sd2);
+    var ms=Math.floor(sd2*1000%1000);
     var mt=Math.floor(sd/60);
     var ss=sd%60;
     var hh=Math.floor(mt/60);
     var mmt=mt%60;
+    // 計年/月/日
     var yy=Math.floor(y);
     var mm=Math.floor(m);
     var dd=Math.floor(d);
@@ -317,7 +325,7 @@ QIMEN_STAR.jiqi = {};
     return dytm.trim();
     **/
 	//console.log(yy,mm,dd,hh,mmt,ss);
-    return new Date(yy,mm-1,dd,hh,mmt,ss);
+    return new Date(yy,mm-1,dd,hh,mmt,ss,ms);
   };
   /**
    * 計算當年節氣
@@ -477,16 +485,16 @@ QIMEN_STAR.jiqi = {};
       var minhz2 = Math.floor(minhz%600000/50000); //秒柱
       var minhz3 = Math.floor(minhz%50000/(50000/12.0)); //毫秒柱
       var minhz4 = Math.floor(minhz%(50000/12.0)/(50000/12.0/12.0)); //無極柱
-      var minhz5 = Math.floor(minhz%(50000/12.0/12.0)/(50000/12.0/12.0/12.0)); //究竟柱
-      var minhz6 = Math.floor(minhz%(50000/12.0/12.0/12.0)/(50000/12.0/12.0/12.0/12.0)); //破限柱
+      var minhz5 = Math.floor(minhz%(50000/12.0/12.0)/(50000/12.0/12.0/12.0)); //混元柱
+      var minhz6 = Math.floor(minhz%(50000/12.0/12.0/12.0)/(50000/12.0/12.0/12.0/12.0)); //究竟柱
       //
       //console.log(minhz1,minhz2,minhz3,minhz4,minhz5,minhz6);
       var gan_idx = [0,2,4,6,8,0,2,4,6,8];
       rtn_gz.push(tin.substr(gan_idx[tin.indexOf(rtn_gz[10])],12).charAt(minhz3)); // 毫秒柱
       rtn_gz.push(di[minhz3 % 12]);  // 
-      rtn_gz.push(tin.substr(gan_idx[tin.indexOf(rtn_gz[12])],12).charAt(minhz4)); // 混元柱
+      rtn_gz.push(tin.substr(gan_idx[tin.indexOf(rtn_gz[12])],12).charAt(minhz4)); // 無極柱
       rtn_gz.push(di[minhz4 % 12]);  // 
-      rtn_gz.push(tin.substr(gan_idx[tin.indexOf(rtn_gz[14])],12).charAt(minhz5)); // 無極柱
+      rtn_gz.push(tin.substr(gan_idx[tin.indexOf(rtn_gz[14])],12).charAt(minhz5)); // 混元柱
       rtn_gz.push(di[minhz5 % 12]);  // 
       rtn_gz.push(tin.substr(gan_idx[tin.indexOf(rtn_gz[16])],12).charAt(minhz6)); // 究竟柱
       rtn_gz.push(di[minhz6 % 12]);  // 
