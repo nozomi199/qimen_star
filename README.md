@@ -1,8 +1,12 @@
 qimen_star
 ==========
 
+Declaration to the world and universe.
+
 Qimen Star is end of support and discontinue to maintain.
-All karma and risk is owned by users and forker (fork from this repo.), and othing relationsip, karma and risk from founder(summer179).
+
+All karma and risk is owned by users and forker (fork from this repo.), and no any relationship, karmas and risks from founder(summer179).
+
 2023-03-07
 
 ==========
